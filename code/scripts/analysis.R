@@ -29,7 +29,7 @@ data <- center_variable(data, "LS_BMD_adjust")
 
 # Model 1: correction for baseline differences
 LS_LMM <- lmer(
-  formula = LS_BMD ~ 1 + group + time + group:time + LS_BMD_adjust + (1 | subj),
+  formula = LS_BMD ~ 1 + group + time + group:time + LS_BMD_adjust_centered + (1 | subj),
   data = data
 )
 
