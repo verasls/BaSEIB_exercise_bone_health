@@ -6,31 +6,32 @@ library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
 source("code/functions/center_variable.R")
+source("code/functions/bonferroni.R")
 
 # Load and prepare data ---------------------------------------------------
 
 data <- read_csv("data/database.csv")
-data <- data %>% select(subj, time, group, LS_BMD, LS_BMD_adjust)
+LS_data <- data %>% select(subj, time, group, LS_BMD, LS_BMD_adjust)
 
 # Code the group and time variables as factors
-data$group <- as.factor(data$group)
-data$time <- as.factor(data$time)
+LS_data$group <- as.factor(LS_data$group)
+LS_data$time <- as.factor(LS_data$time)
 
 # Set contrasts of variable group to deviation
-contrasts(data$group) <- matrix(rev(contr.sum(2)), ncol = 1)
+contrasts(LS_data$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 
 # Set contrasts of variable time to polynomial
-contrasts(data$time) <- contr.poly(4)
+contrasts(LS_data$time) <- contr.poly(4)
 
 # Center variable
-data <- center_variable(data, "LS_BMD_adjust")
+LS_data <- center_variable(LS_data, "LS_BMD_adjust")
 
 # Build models ------------------------------------------------------------
 
-# Model 1: correction for baseline differences
+# ** LS_BMD ---------------------------------------------------------------
 LS_LMM <- lmer(
   formula = LS_BMD ~ 1 + group + time + group:time + LS_BMD_adjust_centered + (1 | subj),
-  data = data
+  data = LS_data
 )
 
 # R-squared
@@ -51,15 +52,13 @@ time_emm <- emmeans(LS_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_emm  <- emmeans(LS_LMM, ~ group:time)
 
-# Post hocs ---------------------------------------------------------------
-
-ph_none <- pairs(interaction_emm, adjust = "none")
-ph_bonf <- pairs(interaction_emm, adjust = "bonferroni")
-ph_holm <- pairs(interaction_emm, adjust = "holm")
+# Post hocs
+ph_LS_none <- pairs(interaction_emm, adjust = "none")
+ph_LS_bonf <- bonferroni(LS_data, 16)
 
 # Plot models -------------------------------------------------------------
 
-# Model 1
+# LS_BMD
 # Put the interaction emmeans into a data frame
 interaction_emm_df <- interaction_emm %>% as.data.frame()
 
