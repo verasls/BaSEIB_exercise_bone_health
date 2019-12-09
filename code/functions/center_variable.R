@@ -1,10 +1,12 @@
-center_variable <- function(data, variable) {
-  # Center a variable based on the grand mean
+center_variable <- function(data, variable, by_group = FALSE) {
+  # Center a variable based either on the grand mean or on the group mean
   #
   # Args:
   #   data: A data frame containing the variable to be centered and a Group
   #   factor
   #   variable: The name of the variable to be centered as character string
+  #   by_group: A boolean indicating whether to center based on the grand
+  #   mean (FALSE, default) or the group mean (TRUE)
   #
   # Returns:
   #   The original data frame plus a column in the last position with the
@@ -14,15 +16,69 @@ center_variable <- function(data, variable) {
   n_col <- ncol(data)
   idx   <- which(names(data) == variable)
   
-  variable_mean <- mean(data[, idx], na.rm = TRUE)
-  data$centered <- NA
-  for (i in 1:nrow(data)) {
-    data$centered[i] <- data[i, variable] - variable_mean
+  if (by_group == FALSE) {
+    variable_mean <- mean(data[, idx], na.rm = TRUE)
+    data$centered <- NA
+    for (i in 1:nrow(data)) {
+      data$centered[i] <- data[i, variable] - variable_mean
+    }
+    data <- as_tibble(data)
+    
+    # Rename centered variable
+    names(data)[ncol(data)] <- str_c(variable, "_centered", sep = "")
+  } else {
+    if (by_group == TRUE) {
+      # Control group
+      CG <- data %>% filter(group == "Control")
+      CG_mean <- mean(CG[, idx], na.rm = TRUE)
+      CG_centered <- NA
+      for (i in 1:nrow(CG)) {
+        CG_centered[i] <- CG[i, variable] - CG_mean 
+      }
+      CG <- cbind(CG, CG_centered)
+      
+      # Exercise group
+      EG <- data %>% filter(group == "Exercise")
+      EG_mean <- mean(EG[, idx], na.rm = TRUE)
+      EG_centered <- NA
+      for (i in 1:nrow(EG)) {
+        EG_centered[i] <- EG[i, variable] - EG_mean 
+      }
+      EG <- cbind(EG, EG_centered)
+      
+      # NA group
+      NG <- data %>% filter(is.na(group))
+      NG$NG_centered <- NA
+      
+      # Join data frames
+      data <- plyr::join_all(
+        list(CG, EG, NG),
+        type = "full",
+        by = names(data)
+      )
+      data <- as_tibble(data)
+      
+      # Keep only one column for the centered variable
+      data$centered <- NA
+      for (i in 1:nrow(data)) {
+        if (is.na(data$EG_centered[i]) & is.na(data$NG_centered[i])) {
+          data$centered[i] <- data$CG_centered[i]
+        } else {
+          if (is.na(data$CG_centered[i]) & is.na(data$NG_centered[i])) {
+            data$centered[i] <- data$EG_centered[i]
+          } else {
+            if (is.na(data$EG_centered[i]) & is.na(data$CG_centered[i])) {
+              data$centered[i] <- data$NG_centered
+            }
+          }
+        }
+      }
+      data <- data[, c(1:n_col, ncol(data))]
+      
+      # Rename centered variable
+      names(data)[ncol(data)] <- str_c(variable, "_group_centered", sep = "")
+    }
   }
-  data <- as_tibble(data)
-  
-  # Rename centered variable
-  names(data)[ncol(data)] <- str_c(variable, "_centered", sep = "")
   
   # Arrange dataframe before returning
   data <- arrange(data, subj, time)
