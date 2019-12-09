@@ -16,11 +16,11 @@ data <- data %>% select(subj, time, group, LS_BMD, LS_BMD_adjust)
 data$group <- as.factor(data$group)
 data$time <- as.factor(data$time)
 
-# Set contrasts of variable time to polynomial
-contrasts(data$time) <- contr.poly(4)
-
 # Set contrasts of variable group to deviation
 contrasts(data$group) <- matrix(rev(contr.sum(2)), ncol = 1)
+
+# Set contrasts of variable time to polynomial
+contrasts(data$time) <- contr.poly(4)
 
 # Center variable
 data <- group_center_variable(data, "LS_BMD_adjust")
