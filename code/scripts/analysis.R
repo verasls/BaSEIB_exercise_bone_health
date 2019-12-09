@@ -5,7 +5,7 @@ library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
-source("code/functions/group_center_variable.R")
+source("code/functions/center_variable.R")
 
 # Load and prepare data ---------------------------------------------------
 
@@ -23,7 +23,7 @@ contrasts(data$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 contrasts(data$time) <- contr.poly(4)
 
 # Center variable
-data <- group_center_variable(data, "LS_BMD_adjust")
+data <- center_variable(data, "LS_BMD_adjust")
 
 # Build models ------------------------------------------------------------
 
