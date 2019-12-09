@@ -15,7 +15,7 @@ group_center_variable <- function(data, variable) {
   idx   <- which(names(data) == variable)
   
   # Control group
-  CG <- data %>% filter(group == 0)
+  CG <- data %>% filter(group == "Control")
   CG_mean <- mean(CG[, idx], na.rm = TRUE)
   CG_centered <- NA
   for (i in 1:nrow(CG)) {
@@ -24,7 +24,7 @@ group_center_variable <- function(data, variable) {
   CG <- cbind(CG, CG_centered)
   
   # Exercise group
-  EG <- data %>% filter(group == 1)
+  EG <- data %>% filter(group == "Exercise")
   EG_mean <- mean(EG[, idx], na.rm = TRUE)
   EG_centered <- NA
   for (i in 1:nrow(EG)) {
