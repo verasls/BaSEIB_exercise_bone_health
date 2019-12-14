@@ -10,20 +10,17 @@ source("code/functions/bonferroni.R")
 
 # Load and prepare data ---------------------------------------------------
 
-data <- read_csv("data/database.csv")
-# Code the group and time variables as factors
-data$attend_cat <- as.factor(data$attend_cat)
-data$time <- as.factor(data$time)
+source("code/scripts/01_tidy_data.R")
 # Set contrasts of variable group to deviation
-contrasts(data$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
+contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
 # Set contrasts of variable time to polynomial
-contrasts(data$time) <- contr.poly(4)
+contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-LS_data <- data %>% select(subj, time, attend_cat, delta_LS_BMD)
-TH_data <- data %>% select(subj, time, attend_cat, delta_TH_BMD)
-FN_data <- data %>% select(subj, time, attend_cat, delta_FN_BMD)
-TR_data <- data %>% select(subj, time, attend_cat, delta_TR_BMD)
+LS_data <- df %>% select(subj, time, attend_cat, delta_LS_BMD)
+TH_data <- df %>% select(subj, time, attend_cat, delta_TH_BMD)
+FN_data <- df %>% select(subj, time, attend_cat, delta_FN_BMD)
+TR_data <- df %>% select(subj, time, attend_cat, delta_TR_BMD)
 
 # Build models ------------------------------------------------------------
 
@@ -175,12 +172,9 @@ interaction_df <- interaction_delta_LS_emm_df %>%
   select(
     group = attend_cat, region, time, emmean, lower.CL, upper.CL
   )
-interaction_df$region <- factor(interaction_df$region, levels = c("Total hip", "Femoral neck", "Lumbar spine", "One-third radius"))
-interaction_df$group <- dplyr::recode(
-  interaction_df$group,
-  "0" = "Control",
-  "1" = "Under 50% training attendance",
-  "2" = "Over 50% training attendance",
+interaction_df$region <- factor(
+  interaction_df$region, 
+  levels = c("Total hip", "Femoral neck", "Lumbar spine", "One-third radius")
 )
 
 # Plot
