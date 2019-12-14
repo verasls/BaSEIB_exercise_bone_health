@@ -10,21 +10,18 @@ source("code/functions/bonferroni.R")
 
 # Load and prepare data ---------------------------------------------------
 
-data <- read_csv("data/database.csv")
-# Code the group and time variables as factors
-data$group <- as.factor(data$group)
-data$time <- as.factor(data$time)
+source("code/scripts/01_tidy_data.R")
 # Set contrasts of variable group to deviation
-contrasts(data$group) <- matrix(rev(contr.sum(2)), ncol = 1)
+contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
-contrasts(data$time) <- contr.poly(4)
+contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-P1NP_data       <- data %>% select(subj, time, group, P1NP, P1NP_adjust)
-CTX_data        <- data %>% select(subj, time, group, CTX, CTX_adjust)
-PTH_data        <- data %>% select(subj, time, group, PTH, PTH_adjust)
-vitD_data       <- data %>% select(subj, time, group, vitD, vitD_adjust)
-sclerostin_data <- data %>% select(subj, time, group, sclerostin, sclerostin_adjust)
+P1NP_data       <- df %>% select(subj, time, group, P1NP, P1NP_adjust)
+CTX_data        <- df %>% select(subj, time, group, CTX, CTX_adjust)
+PTH_data        <- df %>% select(subj, time, group, PTH, PTH_adjust)
+vitD_data       <- df %>% select(subj, time, group, vitD, vitD_adjust)
+sclerostin_data <- df %>% select(subj, time, group, sclerostin, sclerostin_adjust)
 
 # Center variables
 P1NP_data       <- center_variable(P1NP_data, "P1NP_adjust")
