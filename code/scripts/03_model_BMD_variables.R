@@ -10,20 +10,17 @@ source("code/functions/bonferroni.R")
 
 # Load and prepare data ---------------------------------------------------
 
-data <- read_csv("data/database.csv")
-# Code the group and time variables as factors
-data$group <- as.factor(data$group)
-data$time <- as.factor(data$time)
+source("code/scripts/01_tidy_data.R")
 # Set contrasts of variable group to deviation
-contrasts(data$group) <- matrix(rev(contr.sum(2)), ncol = 1)
+contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
-contrasts(data$time) <- contr.poly(4)
+contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-LS_data <- data %>% select(subj, time, group, LS_BMD, LS_BMD_adjust)
-TH_data <- data %>% select(subj, time, group, TH_BMD, TH_BMD_adjust)
-FN_data <- data %>% select(subj, time, group, FN_BMD, FN_BMD_adjust)
-TR_data <- data %>% select(subj, time, group, TR_BMD, TR_BMD_adjust)
+LS_data <- df %>% select(subj, time, group, LS_BMD, LS_BMD_adjust)
+TH_data <- df %>% select(subj, time, group, TH_BMD, TH_BMD_adjust)
+FN_data <- df %>% select(subj, time, group, FN_BMD, FN_BMD_adjust)
+TR_data <- df %>% select(subj, time, group, TR_BMD, TR_BMD_adjust)
 
 # Center variables
 LS_data <- center_variable(LS_data, "LS_BMD_adjust")
