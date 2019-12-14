@@ -45,3 +45,42 @@ df <- read_csv("data/database.csv") %>%
     vitD_adjust = VitaminD_adjust, sclerostin_adjust = Sclerostin_adjust, BMSi_Cat,
     time_continuous = Continuous_Time, time_continuous_0123 = Continuous_Time_0123
   )
+
+# Recode variables --------------------------------------------------------
+
+df$time <- as.factor(df$time)
+df$group <- as.factor(df$group)
+df$group <- recode(df$group, "0" = "Control", "1" = "Exercise")
+df$surgery <- as.factor(df$surgery)
+df$surgery <- recode(df$surgery, "0" = "RYGB", "1" = "Sleeve")
+df$sex <- as.factor(df$sex)
+df$sex <- recode(df$sex, "0" = "Female", "1" = "Male")
+df$menopause <- as.factor(df$menopause)
+df$menopause <- recode(df$menopause, "0" = "No", "1" = "Yes")
+df$pre_diabetes <- as.factor(df$pre_diabetes)
+df$pre_diabetes <- recode(df$pre_diabetes, "0" = "No", "1" = "Yes")
+df$diabetes <- as.factor(df$diabetes)
+df$diabetes <- recode(df$diabetes, "0" = "No", "1" = "Yes")
+df$thiazides <- as.factor(df$thiazides)
+df$thiazides <- recode(df$thiazides, "0" = "No", "1" = "Yes")
+df$smoker <- as.factor(df$smoker)
+df$smoker <- recode(df$smoker, "0" = "No", "1" = "Yes")
+df$attend_cat <- as.factor(df$attend_cat)
+df$attend_cat <- recode(
+  df$attend_cat,
+  "0" = "Control",
+  "1" = "Under 50% training attendance",
+  "2" = "Over 50% training attendance"
+)
+
+# Filter subjects ---------------------------------------------------------
+
+# Subjects to exclude due to not having at least one follow-up assessment
+exclude <- c(
+  13, 15, 18, 19, 25, 32, 33, 35, 37, 40, 42, 48, 
+  53, 57, 59, 64, 65, 66, 74, 76, 82, 84, 86
+)
+all <- unique(df$subj)
+keep <- all[-exclude]
+
+df <- df %>% filter(subj %in% keep)
