@@ -35,25 +35,36 @@ delta_plot_df$attend_cat <- recode(
 )
 
 # Overall plots config
-dodge <- position_dodge(0.4)
+dodge <- position_dodge(0.5)
 
 # Plot --------------------------------------------------------------------
 
 delta_plot <- ggplot(data = delta_plot_df) +
   geom_point(
-    aes(x = region, y = emmean, colour = attend_cat),
-    position = dodge, size = 2
+    aes(x = region, y = emmean, shape = attend_cat),
+    position = dodge, size = 4
   ) +
   geom_errorbar(
-    aes(x = region, ymin = lower.CL, ymax = upper.CL, colour = attend_cat),
+    aes(x = region, ymin = lower.CL, ymax = upper.CL, group = attend_cat),
     position = dodge, size = 1, width = 0.4
-  ) +
-  scale_color_manual(values = c("#0072B2", "#E69F00", "#D55E00")) +
-  labs(
-    x = "",
-    y = "% bone mineral density change",
-    colour = "Group"
   ) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   scale_y_continuous(breaks = seq(-10, 4, 2)) +
-  theme_classic()
+  theme_classic() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    axis.title.y = element_text(size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 12)
+  ) +
+  labs(
+    x = "",
+    y = "% bone mineral density change"
+  )
+
+# Uncomment lines below to save plot
+# ggsave(
+#   filename = "figs/fig2.tiff",
+#   plot = delta_plot, width = 30, height = 20, dpi = 600, units = "cm"
+# )
