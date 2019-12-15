@@ -75,70 +75,118 @@ dodge <- position_dodge(0.2)
 
 TH_plot <- ggplot(data = TH_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, colour = group),
-    position = dodge, size = 2
+    aes(x = time, y = emmean, shape = group),
+    position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, colour = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, colour = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
     position = dodge, size = 1, width = 0.1
   ) +
-  scale_color_manual(values = c("#0072B2", "#E69F00")) +
   scale_y_continuous(breaks = seq(0, 2, 0.01)) +
-  labs(
-    x = "Time",
-    y = "Femoral neck BMD",
-    colour = "Group" 
+  theme_classic() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    legend.position = "top",
+    axis.title.y = element_text(size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 12)
   ) +
-  theme_classic()
+  labs(
+    x = "",
+    y = quote("Total hip bone mineral density"~(g%.%cm^3))
+  )
 
 # FN plot -----------------------------------------------------------------
 
 FN_plot <- ggplot(data = FN_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, colour = group),
-    position = dodge, size = 2
+    aes(x = time, y = emmean, shape = group),
+    position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, colour = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, colour = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
     position = dodge, size = 1, width = 0.1
   ) +
-  scale_color_manual(values = c("#0072B2", "#E69F00")) +
   scale_y_continuous(breaks = seq(0, 2, 0.01)) +
-  labs(
-    x = "Time",
-    y = "Femoral neck BMD",
-    colour = "Group" 
+  theme_classic() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    legend.position = "top",
+    axis.title.y = element_text(size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 12)
   ) +
-  theme_classic()
+  labs(
+    x = "",
+    y = quote("Femoral neck bone mineral density"~(g%.%cm^3))
+  )
 
 # LS plot -----------------------------------------------------------------
 
 LS_plot <- ggplot(data = LS_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, colour = group),
-    position = dodge, size = 2
+    aes(x = time, y = emmean, shape = group),
+    position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, colour = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, colour = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
     position = dodge, size = 1, width = 0.1
   ) +
-  scale_color_manual(values = c("#0072B2", "#E69F00")) +
   scale_y_continuous(breaks = seq(0, 2, 0.01)) +
-  labs(
-    x = "Time",
-    y = "Lumbar spine BMD",
-    colour = "Group" 
+  theme_classic() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    legend.position = "top",
+    axis.title.y = element_text(size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 12)
   ) +
-  theme_classic()
+  labs(
+    x = "",
+    y = quote("Lumbar spine bone mineral density"~(g%.%cm^3))
+  )
+
+# TR plot -----------------------------------------------------------------
+
+TR_plot <- ggplot(data = TR_plot_df) +
+  geom_point(
+    aes(x = time, y = emmean, shape = group),
+    position = dodge, size = 4
+  ) +
+  geom_line(
+    aes(x = time, y = emmean, linetype = group, group = group),
+    position = dodge, size = 1
+  ) +
+  geom_errorbar(
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
+    position = dodge, size = 1, width = 0.1
+  ) +
+  scale_y_continuous(breaks = seq(0, 2, 0.005)) +
+  theme_classic() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    legend.position = "top",
+    axis.title.y = element_text(size = 14),
+    axis.text.y = element_text(size = 12),
+    axis.text.x = element_text(size = 12)
+  ) +
+  labs(
+    x = "",
+    y = quote("One-third radius bone mineral density"~(g%.%cm^3))
+  )
