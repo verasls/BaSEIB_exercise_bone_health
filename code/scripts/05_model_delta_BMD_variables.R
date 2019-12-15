@@ -48,6 +48,9 @@ time_delta_LS_emm <- emmeans(delta_LS_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_delta_LS_emm  <- emmeans(delta_LS_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_delta_LS_emm_df <- as.data.frame(interaction_delta_LS_emm)
+write_csv(interaction_delta_LS_emm_df, "output/interaction_delta_LS_emm.csv")
 
 # Post hocs
 ph_delta_LS_none <- pairs(interaction_delta_LS_emm, adjust = "none")
@@ -77,6 +80,9 @@ time_delta_TH_emm <- emmeans(delta_TH_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_delta_TH_emm  <- emmeans(delta_TH_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_delta_TH_emm_df <- as.data.frame(interaction_delta_TH_emm)
+write_csv(interaction_delta_TH_emm_df, "output/interaction_delta_TH_emm.csv")
 
 # Post hocs
 ph_delta_TH_none <- pairs(interaction_delta_TH_emm, adjust = "none")
@@ -106,6 +112,9 @@ time_delta_FN_emm <- emmeans(delta_FN_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_delta_FN_emm  <- emmeans(delta_FN_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_delta_FN_emm_df <- as.data.frame(interaction_delta_FB_emm)
+write_csv(interaction_delta_FN_emm_df, "output/interaction_delta_FN_emm.csv")
 
 # Post hocs
 ph_delta_FN_none <- pairs(interaction_delta_FN_emm, adjust = "none")
@@ -135,6 +144,9 @@ time_delta_TR_emm <- emmeans(delta_TR_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_delta_TR_emm  <- emmeans(delta_TR_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_delta_TR_emm_df <- as.data.frame(interaction_delta_TR_emm)
+write_csv(interaction_delta_TR_emm_df, "output/interaction_delta_TR_emm.csv")
 
 # Post hocs
 ph_delta_TR_none <- pairs(interaction_delta_TR_emm, adjust = "none")
