@@ -27,6 +27,14 @@ delta_plot_df$region <- factor(
   delta_plot_df$region,
   levels = c("Total hip", "Femoral neck", "Lumbar spine", "One-third radius")
 )
+delta_plot_df$attend_cat <- factor(
+  delta_plot_df$attend_cat,
+  levels = c(
+    "Control", 
+    "Under 50% training attendance", 
+    "Over 50% training attendance"
+  )
+)
 delta_plot_df$attend_cat <- recode(
   delta_plot_df$attend_cat,
   "Control" = "Control group",
