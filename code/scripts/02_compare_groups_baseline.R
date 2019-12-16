@@ -1,6 +1,7 @@
 # Load packages and functions ---------------------------------------------
 
 library(tidyverse)
+library(gmodels)
 
 # Load and prepare data ---------------------------------------------------
 
@@ -69,3 +70,35 @@ t.test(PAEE ~ group, data = baseline_df, paired = FALSE)
 t.test(SB_h ~ group, data = baseline_df, paired = FALSE)
 t.test(LPA_h ~ group, data = baseline_df, paired = FALSE)
 t.test(MVPA_min ~ group, data = baseline_df, paired = FALSE)
+
+# Categorical variables ---------------------------------------------------
+
+CrossTable(
+  baseline_df$sex, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$surgery, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$menopause, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$diabetes, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$thiazides, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$smoker, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
