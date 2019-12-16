@@ -26,7 +26,7 @@ TH_plot_df$group <- recode(
 )
 TH_plot_df$time <- recode(
   TH_plot_df$time,
-  "1" = "Pre_BS",
+  "1" = "Pre-BS",
   "2" = "1-month post-BS",
   "3" = "6-months post-BS",
   "4" = "12-months post-BS"
@@ -38,7 +38,7 @@ FN_plot_df$group <- recode(
 )
 FN_plot_df$time <- recode(
   FN_plot_df$time,
-  "1" = "Pre_BS",
+  "1" = "Pre-BS",
   "2" = "1-month post-BS",
   "3" = "6-months post-BS",
   "4" = "12-months post-BS"
@@ -50,7 +50,7 @@ LS_plot_df$group <- recode(
 )
 LS_plot_df$time <- recode(
   LS_plot_df$time,
-  "1" = "Pre_BS",
+  "1" = "Pre-BS",
   "2" = "1-month post-BS",
   "3" = "6-months post-BS",
   "4" = "12-months post-BS"
@@ -62,7 +62,7 @@ TR_plot_df$group <- recode(
 )
 TR_plot_df$time <- recode(
   TR_plot_df$time,
-  "1" = "Pre_BS",
+  "1" = "Pre-BS",
   "2" = "1-month post-BS",
   "3" = "6-months post-BS",
   "4" = "12-months post-BS"
