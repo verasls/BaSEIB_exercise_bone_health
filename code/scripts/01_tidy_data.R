@@ -95,7 +95,7 @@ df_wide <- df_wide %>%
   select(
     subj = ID, group = Group,height = Height, 
     waist_circunference = Waist_circunference__1st,
-    Hip_circunference = Hip_circunference__1st, 
+    hip_circunference = Hip_circunference__1st, 
     waist_hip_ratio = Waist_to_Hip_ratio
   )
 df_wide$group <- as.factor(df_wide$group)
