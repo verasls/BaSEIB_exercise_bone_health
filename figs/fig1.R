@@ -86,7 +86,10 @@ TH_plot <- ggplot(data = TH_plot_df) +
     aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
-  scale_y_continuous(breaks = seq(0, 2, 0.01)) +
+  scale_y_continuous(
+    breaks = seq(0, 2, 0.01), 
+    labels = scales::number_format(accuracy = 0.001)
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
@@ -117,7 +120,10 @@ FN_plot <- ggplot(data = FN_plot_df) +
     aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
-  scale_y_continuous(breaks = seq(0, 2, 0.01)) +
+  scale_y_continuous(
+    breaks = seq(0, 2, 0.01), 
+    labels = scales::number_format(accuracy = 0.001)
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
@@ -148,7 +154,10 @@ LS_plot <- ggplot(data = LS_plot_df) +
     aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
-  scale_y_continuous(breaks = seq(0, 2, 0.01)) +
+  scale_y_continuous(
+    breaks = seq(0, 2, 0.01), 
+    labels = scales::number_format(accuracy = 0.001)
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
