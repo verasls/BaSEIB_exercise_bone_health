@@ -80,7 +80,28 @@ exclude <- c(
   13, 15, 18, 19, 25, 32, 33, 35, 37, 40, 42, 48, 
   53, 57, 59, 64, 65, 66, 74, 76, 82, 84, 86
 )
-all <- unique(df$subj)
+all <- seq(1:91)
 keep <- all[-exclude]
 
 df <- df %>% filter(subj %in% keep)
+
+# Prepare data frame for baseline comparisons -----------------------------
+
+baseline_df <- df %>% filter(time == 1)
+
+df_wide <- read_csv("data/Database__Wide_format.csv")
+df_wide <- df_wide %>%
+  filter(ID %in% keep) %>% 
+  select(
+    subj = ID, group = Group,height = Height, 
+    waist_circunference = Waist_circunference__1st,
+    Hip_circunference = Hip_circunference__1st, 
+    waist_hip_ratio = Waist_to_Hip_ratio
+  )
+df_wide$group <- as.factor(df_wide$group)
+df_wide$group <- recode(df_wide$group, "0" = "Control", "1" = "Exercise")
+
+baseline_df <- baseline_df %>% 
+  full_join(
+    df_wide, by = c("subj", "group")
+  )
