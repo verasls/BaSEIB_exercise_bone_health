@@ -75,26 +75,27 @@ dodge <- position_dodge(0.2)
 
 TH_plot <- ggplot(data = TH_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, shape = group),
+    aes(x = time, y = emmean, shape = group, colour = group),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group, colour = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(breaks = seq(0, 2, 0.01)) +
+  scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     legend.position = "top",
-    axis.title.y = element_text(size = 14),
-    axis.text.y = element_text(size = 12),
-    axis.text.x = element_text(size = 12)
+    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
     x = "",
@@ -105,26 +106,27 @@ TH_plot <- ggplot(data = TH_plot_df) +
 
 FN_plot <- ggplot(data = FN_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, shape = group),
+    aes(x = time, y = emmean, shape = group, colour = group),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group, colour = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(breaks = seq(0, 2, 0.01)) +
+  scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     legend.position = "top",
-    axis.title.y = element_text(size = 14),
-    axis.text.y = element_text(size = 12),
-    axis.text.x = element_text(size = 12)
+    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
     x = "",
@@ -135,26 +137,27 @@ FN_plot <- ggplot(data = FN_plot_df) +
 
 LS_plot <- ggplot(data = LS_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, shape = group),
+    aes(x = time, y = emmean, shape = group, colour = group),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group, colour = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(breaks = seq(0, 2, 0.01)) +
+  scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     legend.position = "top",
-    axis.title.y = element_text(size = 14),
-    axis.text.y = element_text(size = 12),
-    axis.text.x = element_text(size = 12)
+    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
     x = "",
@@ -165,26 +168,27 @@ LS_plot <- ggplot(data = LS_plot_df) +
 
 TR_plot <- ggplot(data = TR_plot_df) +
   geom_point(
-    aes(x = time, y = emmean, shape = group),
+    aes(x = time, y = emmean, shape = group, colour = group),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = group, group = group),
+    aes(x = time, y = emmean, linetype = group, group = group, colour = group),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group), 
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(breaks = seq(0, 2, 0.005)) +
+  scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     legend.position = "top",
-    axis.title.y = element_text(size = 14),
-    axis.text.y = element_text(size = 12),
-    axis.text.x = element_text(size = 12)
+    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
     x = "",
