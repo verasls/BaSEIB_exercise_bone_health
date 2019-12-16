@@ -17,10 +17,10 @@ contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-TH_data <- df %>% select(subj, time, group, TH_BMD, TH_BMD_adjust)
-FN_data <- df %>% select(subj, time, group, FN_BMD, FN_BMD_adjust)
-LS_data <- df %>% select(subj, time, group, LS_BMD, LS_BMD_adjust)
-TR_data <- df %>% select(subj, time, group, TR_BMD, TR_BMD_adjust)
+TH_data <- df %>% select(subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust)
+FN_data <- df %>% select(subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust)
+LS_data <- df %>% select(subj, time, group, LS_BMD, LS_BMD_adjust, BMI_adjust)
+TR_data <- df %>% select(subj, time, group, TR_BMD, TR_BMD_adjust, BMI_adjust)
 
 # Center variables
 LS_data <- center_variable(LS_data, "LS_BMD_adjust")
@@ -33,7 +33,7 @@ TR_data <- center_variable(TR_data, "TR_BMD_adjust")
 # ** TH_BMD ---------------------------------------------------------------
 
 TH_LMM <- lmer(
-  formula = TH_BMD ~ 1 + group + time + group:time + TH_BMD_adjust_centered + (1 | subj),
+  formula = TH_BMD ~ 1 + group + time + group:time + TH_BMD_adjust_centered + BMI_adjust + (1 | subj),
   data = TH_data
 )
 
@@ -65,7 +65,7 @@ ph_TH_bonf <- bonferroni(as.data.frame(ph_TH_none), 16)
 # ** FN_BMD ---------------------------------------------------------------
 
 FN_LMM <- lmer(
-  formula = FN_BMD ~ 1 + group + time + group:time + FN_BMD_adjust_centered + (1 | subj),
+  formula = FN_BMD ~ 1 + group + time + group:time + FN_BMD_adjust_centered + BMI_adjust + (1 | subj),
   data = FN_data
 )
 
@@ -97,7 +97,7 @@ ph_FN_bonf <- bonferroni(as.data.frame(ph_FN_none), 16)
 # ** LS_BMD ---------------------------------------------------------------
 
 LS_LMM <- lmer(
-  formula = LS_BMD ~ 1 + group + time + group:time + LS_BMD_adjust_centered + (1 | subj),
+  formula = LS_BMD ~ 1 + group + time + group:time + LS_BMD_adjust_centered+ BMI_adjust + (1 | subj),
   data = LS_data
 )
 
@@ -128,10 +128,10 @@ ph_LS_bonf <- bonferroni(as.data.frame(ph_LS_none), 16)
 
 # ** TR_BMD ---------------------------------------------------------------
   
-  TR_LMM <- lmer(
-    formula = TR_BMD ~ 1 + group + time + group:time + TR_BMD_adjust_centered + (1 | subj),
-    data = TR_data
-  )
+TR_LMM <- lmer(
+  formula = TR_BMD ~ 1 + group + time + group:time + TR_BMD_adjust_centered + BMI_adjust + (1 | subj),
+  data = TR_data
+)
 
 # R-squared
 rsquared(TR_LMM)
