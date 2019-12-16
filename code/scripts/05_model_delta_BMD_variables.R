@@ -81,7 +81,7 @@ time_delta_FN_emm <- emmeans(delta_FN_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_delta_FN_emm  <- emmeans(delta_FN_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
-interaction_delta_FN_emm_df <- as.data.frame(interaction_delta_FB_emm)
+interaction_delta_FN_emm_df <- as.data.frame(interaction_delta_FN_emm)
 write_csv(interaction_delta_FN_emm_df, "output/interaction_delta_FN_emm.csv")
 
 # Post hocs
