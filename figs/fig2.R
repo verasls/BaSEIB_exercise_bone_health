@@ -68,7 +68,7 @@ delta_plot <- ggplot(data = delta_plot_df) +
   ) +
   labs(
     x = "",
-    y = "% bone mineral density change"
+    y = "% bone mineral density change from pre-BS to 12-months post-BS"
   )
 
 # Uncomment lines below to save plot
