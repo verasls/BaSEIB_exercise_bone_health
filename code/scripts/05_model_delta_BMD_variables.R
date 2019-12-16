@@ -17,17 +17,17 @@ contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-TH_data <- df %>% select(subj, time, attend_cat, delta_TH_BMD)
-FN_data <- df %>% select(subj, time, attend_cat, delta_FN_BMD)
-LS_data <- df %>% select(subj, time, attend_cat, delta_LS_BMD)
-TR_data <- df %>% select(subj, time, attend_cat, delta_TR_BMD)
+TH_data <- df %>% select(subj, time, attend_cat, delta_TH_BMD, BMI_adjust)
+FN_data <- df %>% select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
+LS_data <- df %>% select(subj, time, attend_cat, delta_LS_BMD, BMI_adjust)
+TR_data <- df %>% select(subj, time, attend_cat, delta_TR_BMD, BMI_adjust)
 
 # Build models ------------------------------------------------------------
 
 # ** delta_TH_BMD ---------------------------------------------------------
 
 delta_TH_LMM <- lmer(
-  formula = delta_TH_BMD ~ 1 + attend_cat + time + attend_cat:time + (1 | subj),
+  formula = delta_TH_BMD ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
   data = TH_data
 )
 
@@ -59,7 +59,7 @@ ph_delta_TH_bonf <- bonferroni(as.data.frame(ph_delta_TH_none), 3)
 # ** delta_FN_BMD ---------------------------------------------------------
 
 delta_FN_LMM <- lmer(
-  formula = delta_FN_BMD ~ 1 + attend_cat + time + attend_cat:time + (1 | subj),
+  formula = delta_FN_BMD ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
   data = FN_data
 )
 
@@ -91,7 +91,7 @@ ph_delta_FN_bonf <- bonferroni(as.data.frame(ph_delta_FN_none), 3)
 # ** delta_LS_BMD ---------------------------------------------------------
 
 delta_LS_LMM <- lmer(
-  formula = delta_LS_BMD ~ 1 + attend_cat + time + attend_cat:time + (1 | subj),
+  formula = delta_LS_BMD ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
   data = LS_data
 )
 
@@ -123,7 +123,7 @@ ph_delta_LS_bonf <- bonferroni(as.data.frame(ph_delta_LS_none), 3)
 # ** delta_TR_BMD ---------------------------------------------------------
 
 delta_TR_LMM <- lmer(
-  formula = delta_TR_BMD ~ 1 + attend_cat + time + attend_cat:time + (1 | subj),
+  formula = delta_TR_BMD ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
   data = TR_data
 )
 
