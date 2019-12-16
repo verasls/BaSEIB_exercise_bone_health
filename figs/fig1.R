@@ -98,7 +98,7 @@ TH_plot <- ggplot(data = TH_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("Total hip bone mineral density"~(g%.%cm^3))
+    y = quote("Total hip bone mineral density"~(g%.%cm^2))
   )
 
 # FN plot -----------------------------------------------------------------
@@ -128,7 +128,7 @@ FN_plot <- ggplot(data = FN_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("Femoral neck bone mineral density"~(g%.%cm^3))
+    y = quote("Femoral neck bone mineral density"~(g%.%cm^2))
   )
 
 # LS plot -----------------------------------------------------------------
@@ -158,7 +158,7 @@ LS_plot <- ggplot(data = LS_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("Lumbar spine bone mineral density"~(g%.%cm^3))
+    y = quote("Lumbar spine bone mineral density"~(g%.%cm^2))
   )
 
 # TR plot -----------------------------------------------------------------
@@ -188,7 +188,7 @@ TR_plot <- ggplot(data = TR_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("One-third radius bone mineral density"~(g%.%cm^3))
+    y = quote("One-third radius bone mineral density"~(g%.%cm^2))
   )
 
 # Plot grid ---------------------------------------------------------------
