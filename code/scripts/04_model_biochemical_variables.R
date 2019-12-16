@@ -22,6 +22,7 @@ CTX_data        <- df %>% select(subj, time, group, CTX, CTX_adjust)
 PTH_data        <- df %>% select(subj, time, group, PTH, PTH_adjust)
 vitD_data       <- df %>% select(subj, time, group, vitD, vitD_adjust)
 sclerostin_data <- df %>% select(subj, time, group, sclerostin, sclerostin_adjust)
+BMSi            <- df %>% select(subj, time, group, BMSi, BMSi_adjust)
 
 # Center variables
 P1NP_data       <- center_variable(P1NP_data, "P1NP_adjust")
@@ -29,6 +30,7 @@ CTX_data        <- center_variable(CTX_data, "CTX_adjust")
 PTH_data        <- center_variable(PTH_data, "PTH_adjust")
 vitD_data       <- center_variable(vitD_data, "vitD_adjust")
 sclerostin_data <- center_variable(sclerostin_data, "sclerostin_adjust")
+BMSi_data       <- center_variable(BMSi, "BMSi_adjust")
 
 # Build models ------------------------------------------------------------
 
@@ -176,3 +178,32 @@ interaction_sclerostin_emm  <- emmeans(sclerostin_LMM, ~ group:time)
 # Post hocs
 ph_sclerostin_none <- pairs(interaction_sclerostin_emm, adjust = "none")
 ph_sclerostin_bonf <- bonferroni(as.data.frame(ph_sclerostin_none), 16)
+
+# ** BMSi -----------------------------------------------------------------
+
+BMSi_LMM <- lmer(
+  formula = BMSi ~ 1 + group + time + group:time + BMSi_adjust_centered + (1 | subj),
+  data = BMSi_data
+)
+
+# R-squared
+rsquared(BMSi_LMM)
+
+# Fixed effects test
+anova(BMSi_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(BMSi_LMM)
+
+# Estimated marginal means for group
+group_BMSi_emm <- emmeans(BMSi_LMM, ~ group)
+
+# Estimated marginal means for time
+time_BMSi_emm <- emmeans(BMSi_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_BMSi_emm  <- emmeans(BMSi_LMM, ~ group:time)
+
+# Post hocs
+ph_BMSi_none <- pairs(interaction_BMSi_emm, adjust = "none")
+ph_BMSi_bonf <- bonferroni(as.data.frame(ph_BMSi_none), 16)
