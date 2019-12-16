@@ -49,15 +49,16 @@ dodge <- position_dodge(0.5)
 
 delta_plot <- ggplot(data = delta_plot_df) +
   geom_point(
-    aes(x = region, y = emmean, shape = attend_cat),
+    aes(x = region, y = emmean, shape = attend_cat, colour = attend_cat),
     position = dodge, size = 4
   ) +
   geom_errorbar(
-    aes(x = region, ymin = lower.CL, ymax = upper.CL, group = attend_cat),
+    aes(x = region, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat),
     position = dodge, size = 1, width = 0.4
   ) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   scale_y_continuous(breaks = seq(-10, 4, 2)) +
+  scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
