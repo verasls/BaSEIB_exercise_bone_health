@@ -12,6 +12,8 @@ center_variable <- function(data, variable, by_group = FALSE) {
   #   The original data frame plus a column in the last position with the
   #   centered variable
   
+  require(tidyverse)
+  
   data  <- as.data.frame(data)
   n_col <- ncol(data)
   idx   <- which(names(data) == variable)
