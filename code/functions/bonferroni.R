@@ -1,4 +1,14 @@
 bonferroni <- function(data, comparisons) {
+  # Apply the Bonferroni correction on the pairwise tests p value
+  #
+  # Args:
+  #   data: A data frame containing the pairwise comparisons results
+  #   comparisons: An interger with the number of comparisons to be considered
+  #   in the corrections
+  #
+  # Returns:
+  #   A data frame with the pairwise comparisons with their p values adjusted
+  #   with the Bonferroni correction
   
   data <- as.data.frame(data)
   
