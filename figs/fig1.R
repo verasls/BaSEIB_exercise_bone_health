@@ -24,48 +24,20 @@ TH_plot_df$group <- recode(
   "Control" = "Control group",
   "Exercise" = "Exercise group"
 )
-TH_plot_df$time <- recode(
-  TH_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
-)
 FN_plot_df$group <- recode(
   FN_plot_df$group,
   "Control" = "Control group",
   "Exercise" = "Exercise group"
-)
-FN_plot_df$time <- recode(
-  FN_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
 )
 LS_plot_df$group <- recode(
   LS_plot_df$group,
   "Control" = "Control group",
   "Exercise" = "Exercise group"
 )
-LS_plot_df$time <- recode(
-  LS_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
-)
 TR_plot_df$group <- recode(
   TR_plot_df$group,
   "Control" = "Control group",
   "Exercise" = "Exercise group"
-)
-TR_plot_df$time <- recode(
-  TR_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
 )
 
 # Overall plots config
@@ -89,6 +61,14 @@ TH_plot <- ggplot(data = TH_plot_df) +
   scale_y_continuous(
     breaks = seq(0, 2, 0.01), 
     labels = scales::number_format(accuracy = 0.001)
+  ) +
+  scale_x_discrete(
+    labels = c(
+      "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
+      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 40",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 40",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 36"
+    )
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
@@ -124,6 +104,14 @@ FN_plot <- ggplot(data = FN_plot_df) +
     breaks = seq(0, 2, 0.01), 
     labels = scales::number_format(accuracy = 0.001)
   ) +
+  scale_x_discrete(
+    labels = c(
+      "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
+      "2" = "1-month post-BS\n\nCG: n = 19\nEG: n = 40",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 40",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 34"
+    )
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
@@ -158,6 +146,14 @@ LS_plot <- ggplot(data = LS_plot_df) +
     breaks = seq(0, 2, 0.01), 
     labels = scales::number_format(accuracy = 0.001)
   ) +
+  scale_x_discrete(
+    labels = c(
+      "1" = "Pre-BS\n\nCG: n = 19\nEG: n = 39",
+      "2" = "1-month post-BS\n\nCG: n = 19\nEG: n = 39",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 38",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 32"
+    )
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
@@ -189,6 +185,14 @@ TR_plot <- ggplot(data = TR_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(breaks = seq(0, 2, 0.005)) +
+  scale_x_discrete(
+    labels = c(
+      "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
+      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 39",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 40",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 33"
+    )
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
