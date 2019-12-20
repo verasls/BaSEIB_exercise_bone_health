@@ -30,6 +30,13 @@ PT_fle_data           <- df %>% select(subj, time, attend_cat, delta_peak_torque
 PT_ext_body_mass_data <- df %>% select(subj, time, attend_cat, delta_peak_torque_knee_ext_60ds_body_mass, BMI_adjust)
 PT_fle_body_mass_data <- df %>% select(subj, time, attend_cat, delta_peak_torque_knee_fle_60ds_body_mass, BMI_adjust)
 
+# Physical activity
+steps_data <- df %>% select(subj, time, attend_cat, delta_steps, BMI_adjust)
+SB_data    <- df %>% select(subj, time, attend_cat, delta_SB_h, BMI_adjust)
+LPA_data   <- df %>% select(subj, time, attend_cat, delta_LPA_h, BMI_adjust)
+MVPA_data  <- df %>% select(subj, time, attend_cat, delta_MVPA_min, BMI_adjust)
+
+
 # Build models ------------------------------------------------------------
 
 # ** Body composition variables -------------------------------------------
@@ -283,3 +290,129 @@ write_csv(interaction_PT_fle_body_mass_emm_df, "output/interaction_PT_fle_body_m
 
 # Post hocs
 ph_PT_fle_body_mass_none <- pairs(interaction_PT_fle_body_mass_emm, adjust = "none")
+
+# ** Physical activity variables ------------------------------------------
+
+# **** Steps --------------------------------------------------------------
+
+steps_LMM <- lmer(
+  formula = delta_steps ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  data = steps_data
+)
+
+# R-squared
+rsquared(steps_LMM)
+
+# Fixed effects test
+anova(steps_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(steps_LMM)
+
+# Estimated marginal means for group
+group_steps_emm <- emmeans(steps_LMM, ~ attend_cat)
+
+# Estimated marginal means for time
+time_steps_emm <- emmeans(steps_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_steps_emm  <- emmeans(steps_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_steps_emm_df <- as.data.frame(interaction_steps_emm)
+write_csv(interaction_steps_emm_df, "output/interaction_steps_emm.csv")
+
+# Post hocs
+ph_steps_none <- pairs(interaction_steps_emm, adjust = "none")
+
+# **** Sedentary behaviour ------------------------------------------------
+
+SB_LMM <- lmer(
+  formula = delta_SB_h ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  data = SB_data
+)
+
+# R-squared
+rsquared(SB_LMM)
+
+# Fixed effects test
+anova(SB_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(SB_LMM)
+
+# Estimated marginal means for group
+group_SB_emm <- emmeans(SB_LMM, ~ attend_cat)
+
+# Estimated marginal means for time
+time_SB_emm <- emmeans(SB_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_SB_emm  <- emmeans(SB_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_SB_emm_df <- as.data.frame(interaction_SB_emm)
+write_csv(interaction_SB_emm_df, "output/interaction_SB_emm.csv")
+
+# Post hocs
+ph_SB_none <- pairs(interaction_SB_emm, adjust = "none")
+
+# **** Light physical activity --------------------------------------------
+
+LPA_LMM <- lmer(
+  formula = delta_LPA_h ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  data = LPA_data
+)
+
+# R-squared
+rsquared(LPA_LMM)
+
+# Fixed effects test
+anova(LPA_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(LPA_LMM)
+
+# Estimated marginal means for group
+group_LPA_emm <- emmeans(LPA_LMM, ~ attend_cat)
+
+# Estimated marginal means for time
+time_LPA_emm <- emmeans(LPA_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_LPA_emm  <- emmeans(LPA_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_LPA_emm_df <- as.data.frame(interaction_LPA_emm)
+write_csv(interaction_LPA_emm_df, "output/interaction_LPA_emm.csv")
+
+# Post hocs
+ph_LPA_none <- pairs(interaction_LPA_emm, adjust = "none")
+
+# **** Moderate-to-vigorous physical activity -----------------------------
+
+MVPA_LMM <- lmer(
+  formula = delta_MVPA_min ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  data = MVPA_data
+)
+
+# R-squared
+rsquared(MVPA_LMM)
+
+# Fixed effects test
+anova(MVPA_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(MVPA_LMM)
+
+# Estimated marginal means for group
+group_MVPA_emm <- emmeans(MVPA_LMM, ~ attend_cat)
+
+# Estimated marginal means for time
+time_MVPA_emm <- emmeans(MVPA_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_MVPA_emm  <- emmeans(MVPA_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_MVPA_emm_df <- as.data.frame(interaction_MVPA_emm)
+write_csv(interaction_MVPA_emm_df, "output/interaction_MVPA_emm.csv")
+
+# Post hocs
+ph_MVPA_none <- pairs(interaction_MVPA_emm, adjust = "none")
