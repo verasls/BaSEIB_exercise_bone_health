@@ -211,3 +211,105 @@ CrossTable(
   baseline_df$smoker, baseline_df$exclude, 
   fisher = TRUE, chisq = TRUE, format = "SPSS"
 )
+
+# Descriptives ------------------------------------------------------------
+
+# Control group
+control_descriptives <- summarise(
+  .data = control_df,
+  age_mean       = round(mean(age), digits = 1),
+  age_sd         = round(sd(age), digits = 1),
+  body_mass_mean = round(mean(body_mass), digits = 1),
+  body_mass_sd   = round(sd(body_mass), digits = 1),
+  height_mean    = round(mean(height), digits = 1),
+  height_sd      = round(sd(height), digits = 1),
+  BMI_mean       = round(mean(BMI), digits = 1),
+  BMI_sd         = round(sd(BMI), digits = 1),
+  waist_mean     = round(mean(waist_circunference), digits = 1),
+  waist_sd       = round(sd(waist_circunference), digits = 1),
+  hip_mean       = round(mean(hip_circunference), digits = 1),
+  hip_sd         = round(sd(hip_circunference), digits = 1),
+  ratio_mean     = round(mean(waist_hip_ratio), digits = 1),
+  ratio_sd       = round(sd(waist_hip_ratio), digits = 1)
+)
+control_sex       <- table(control_df$sex)
+control_surgery   <- table(control_df$surgery)
+control_menopause <- table(control_df$menopause)
+control_diabetes  <- table(control_df$diabetes)
+control_thiazides <- table(control_df$thiazides)
+control_smoker    <- table(control_df$smoker)
+
+# Exercise group
+exercise_descriptives <- summarise(
+  .data = exercise_df,
+  age_mean       = round(mean(age), digits = 1),
+  age_sd         = round(sd(age), digits = 1),
+  body_mass_mean = round(mean(body_mass), digits = 1),
+  body_mass_sd   = round(sd(body_mass), digits = 1),
+  height_mean    = round(mean(height), digits = 1),
+  height_sd      = round(sd(height), digits = 1),
+  BMI_mean       = round(mean(BMI), digits = 1),
+  BMI_sd         = round(sd(BMI), digits = 1),
+  waist_mean     = round(mean(waist_circunference), digits = 1),
+  waist_sd       = round(sd(waist_circunference), digits = 1),
+  hip_mean       = round(mean(hip_circunference), digits = 1),
+  hip_sd         = round(sd(hip_circunference), digits = 1),
+  ratio_mean     = round(mean(waist_hip_ratio), digits = 1),
+  ratio_sd       = round(sd(waist_hip_ratio), digits = 1)
+)
+exercise_sex       <- table(exercise_df$sex)
+exercise_surgery   <- table(exercise_df$surgery)
+exercise_menopause <- table(exercise_df$menopause)
+exercise_diabetes  <- table(exercise_df$diabetes)
+exercise_thiazides <- table(exercise_df$thiazides)
+exercise_smoker    <- table(exercise_df$smoker)
+
+# Included subjects
+included_descriptives <- summarise(
+  .data = baseline_inc_df,
+  age_mean       = round(mean(age, na.rm = TRUE), digits = 1),
+  age_sd         = round(sd(age, na.rm = TRUE), digits = 1),
+  body_mass_mean = round(mean(body_mass, na.rm = TRUE), digits = 1),
+  body_mass_sd   = round(sd(body_mass, na.rm = TRUE), digits = 1),
+  height_mean    = round(mean(height, na.rm = TRUE), digits = 1),
+  height_sd      = round(sd(height, na.rm = TRUE), digits = 1),
+  BMI_mean       = round(mean(BMI, na.rm = TRUE), digits = 1),
+  BMI_sd         = round(sd(BMI, na.rm = TRUE), digits = 1),
+  waist_mean     = round(mean(waist_circunference, na.rm = TRUE), digits = 1),
+  waist_sd       = round(sd(waist_circunference, na.rm = TRUE), digits = 1),
+  hip_mean       = round(mean(hip_circunference, na.rm = TRUE), digits = 1),
+  hip_sd         = round(sd(hip_circunference, na.rm = TRUE), digits = 1),
+  ratio_mean     = round(mean(waist_hip_ratio, na.rm = TRUE), digits = 1),
+  ratio_sd       = round(sd(waist_hip_ratio, na.rm = TRUE), digits = 1)
+)
+included_sex       <- table(baseline_inc_df$sex)
+included_surgery   <- table(baseline_inc_df$surgery)
+included_menopause <- table(baseline_inc_df$menopause)
+included_diabetes  <- table(baseline_inc_df$diabetes)
+included_thiazides <- table(baseline_inc_df$thiazides)
+included_smoker    <- table(baseline_inc_df$smoker)
+
+# Excluded subjects
+included_descriptives <- summarise(
+  .data = baseline_exc_df,
+  age_mean       = round(mean(age, na.rm = TRUE), digits = 1),
+  age_sd         = round(sd(age, na.rm = TRUE), digits = 1),
+  body_mass_mean = round(mean(body_mass, na.rm = TRUE), digits = 1),
+  body_mass_sd   = round(sd(body_mass, na.rm = TRUE), digits = 1),
+  height_mean    = round(mean(height, na.rm = TRUE), digits = 1),
+  height_sd      = round(sd(height, na.rm = TRUE), digits = 1),
+  BMI_mean       = round(mean(BMI, na.rm = TRUE), digits = 1),
+  BMI_sd         = round(sd(BMI, na.rm = TRUE), digits = 1),
+  waist_mean     = round(mean(waist_circunference, na.rm = TRUE), digits = 1),
+  waist_sd       = round(sd(waist_circunference, na.rm = TRUE), digits = 1),
+  hip_mean       = round(mean(hip_circunference, na.rm = TRUE), digits = 1),
+  hip_sd         = round(sd(hip_circunference, na.rm = TRUE), digits = 1),
+  ratio_mean     = round(mean(waist_hip_ratio, na.rm = TRUE), digits = 1),
+  ratio_sd       = round(sd(waist_hip_ratio, na.rm = TRUE), digits = 1)
+)
+excluded_sex       <- table(baseline_exc_df$sex)
+excluded_surgery   <- table(baseline_exc_df$surgery)
+excluded_menopause <- table(baseline_exc_df$menopause)
+excluded_diabetes  <- table(baseline_exc_df$diabetes)
+excluded_thiazides <- table(baseline_exc_df$thiazides)
+excluded_smoker    <- table(baseline_exc_df$smoker)
