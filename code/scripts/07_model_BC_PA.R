@@ -19,16 +19,16 @@ contrasts(df$time) <- contr.poly(4)
 
 # Select variables
 # Body composition
-body_mass_data <- df %>% select(subj, time, attend_cat, delta_body_mass, BMI_adjust)
-BMI_data       <- df %>% select(subj, time, attend_cat, delta_BMI, BMI_adjust)
-fat_mass_data  <- df %>% select(subj, time, attend_cat, delta_whole_body_fat_mass, BMI_adjust)
-lean_mass_data <- df %>% select(subj, time, attend_cat, delta_whole_body_lean_mass, BMI_adjust)
+body_mass_data <- df %>% dplyr::select(subj, time, attend_cat, delta_body_mass, BMI_adjust)
+BMI_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_BMI, BMI_adjust)
+fat_mass_data  <- df %>% dplyr::select(subj, time, attend_cat, delta_whole_body_fat_mass, BMI_adjust)
+lean_mass_data <- df %>% dplyr::select(subj, time, attend_cat, delta_whole_body_lean_mass, BMI_adjust)
 
 # Physical activity
-steps_data <- df %>% select(subj, time, attend_cat, delta_steps, BMI_adjust)
-SB_data    <- df %>% select(subj, time, attend_cat, delta_SB_h, BMI_adjust)
-LPA_data   <- df %>% select(subj, time, attend_cat, delta_LPA_h, BMI_adjust)
-MVPA_data  <- df %>% select(subj, time, attend_cat, delta_MVPA_min, BMI_adjust)
+steps_data <- df %>% dplyr::select(subj, time, attend_cat, delta_steps, BMI_adjust)
+SB_data    <- df %>% dplyr::select(subj, time, attend_cat, delta_SB_h, BMI_adjust)
+LPA_data   <- df %>% dplyr::select(subj, time, attend_cat, delta_LPA_h, BMI_adjust)
+MVPA_data  <- df %>% dplyr::select(subj, time, attend_cat, delta_MVPA_min, BMI_adjust)
 
 
 # Build models ------------------------------------------------------------

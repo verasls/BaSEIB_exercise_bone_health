@@ -17,12 +17,12 @@ contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-P1NP_data       <- df %>% select(subj, time, group, P1NP, P1NP_adjust, BMI_adjust)
-CTX_data        <- df %>% select(subj, time, group, CTX, CTX_adjust, BMI_adjust)
-PTH_data        <- df %>% select(subj, time, group, PTH, PTH_adjust, BMI_adjust)
-vitD_data       <- df %>% select(subj, time, group, vitD, vitD_adjust, BMI_adjust)
-sclerostin_data <- df %>% select(subj, time, group, sclerostin, sclerostin_adjust, BMI_adjust)
-BMSi_data       <- df %>% select(subj, time, group, BMSi, BMSi_adjust, BMI_adjust)
+P1NP_data       <- df %>% dplyr::select(subj, time, group, P1NP, P1NP_adjust, BMI_adjust)
+CTX_data        <- df %>% dplyr::select(subj, time, group, CTX, CTX_adjust, BMI_adjust)
+PTH_data        <- df %>% dplyr::select(subj, time, group, PTH, PTH_adjust, BMI_adjust)
+vitD_data       <- df %>% dplyr::select(subj, time, group, vitD, vitD_adjust, BMI_adjust)
+sclerostin_data <- df %>% dplyr::select(subj, time, group, sclerostin, sclerostin_adjust, BMI_adjust)
+BMSi_data       <- df %>% dplyr::select(subj, time, group, BMSi, BMSi_adjust, BMI_adjust)
 
 # Center variables
 P1NP_data       <- center_variable(P1NP_data, "P1NP_adjust")

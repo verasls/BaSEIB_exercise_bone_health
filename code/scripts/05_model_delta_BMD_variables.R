@@ -17,10 +17,10 @@ contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-TH_delta_data <- df %>% select(subj, time, attend_cat, delta_TH_BMD, BMI_adjust)
-FN_delta_data <- df %>% select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
-LS_delta_data <- df %>% select(subj, time, attend_cat, delta_LS_BMD, BMI_adjust)
-TR_delta_data <- df %>% select(subj, time, attend_cat, delta_TR_BMD, BMI_adjust)
+TH_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_TH_BMD, BMI_adjust)
+FN_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
+LS_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_LS_BMD, BMI_adjust)
+TR_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_TR_BMD, BMI_adjust)
 
 # Build models ------------------------------------------------------------
 

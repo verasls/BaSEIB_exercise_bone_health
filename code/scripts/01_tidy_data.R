@@ -5,7 +5,7 @@ library(tidyverse)
 # Rename variables --------------------------------------------------------
 
 df <- read_csv("data/database.csv") %>% 
-  select(
+  dplyr::select(
     subj = Subj, time = Time, group = Group, surgery = Surgery, sex = Sex, age = Age, 
     menopause = Menopause, pre_diabetes = `Pre-diabetes`, diabetes = Diabetes,
     thiazides = Thiazides, smoker = Smoker, BMSi, FN_BMD = Neck_BMD,
@@ -96,7 +96,7 @@ baseline_df <- df %>% filter(time == 1)
 
 df_wide <- read_csv("data/Database__Wide_format.csv")
 df_wide <- df_wide %>%
-  select(
+  dplyr::select(
     subj = ID, group = Group,height = Height, 
     waist_circunference = Waist_circunference__1st,
     hip_circunference = Hip_circunference__1st, 

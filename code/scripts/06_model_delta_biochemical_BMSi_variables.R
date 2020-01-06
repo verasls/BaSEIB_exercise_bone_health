@@ -17,12 +17,12 @@ contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-P1NP_delta_data       <- df %>% select(subj, time, attend_cat, delta_P1NP, BMI_adjust)
-CTX_delta_data        <- df %>% select(subj, time, attend_cat, delta_CTX, BMI_adjust)
-PTH_delta_data        <- df %>% select(subj, time, attend_cat, delta_PTH, BMI_adjust)
-vitD_delta_data       <- df %>% select(subj, time, attend_cat, delta_vitD, BMI_adjust)
-sclerostin_delta_data <- df %>% select(subj, time, attend_cat, delta_sclerostin, BMI_adjust)
-BMSi_delta_data       <- df %>% select(subj, time, attend_cat, delta_BMSi, BMI_adjust)
+P1NP_delta_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_P1NP, BMI_adjust)
+CTX_delta_data        <- df %>% dplyr::select(subj, time, attend_cat, delta_CTX, BMI_adjust)
+PTH_delta_data        <- df %>% dplyr::select(subj, time, attend_cat, delta_PTH, BMI_adjust)
+vitD_delta_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_vitD, BMI_adjust)
+sclerostin_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_sclerostin, BMI_adjust)
+BMSi_delta_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_BMSi, BMI_adjust)
 
 # Build models ------------------------------------------------------------
 
