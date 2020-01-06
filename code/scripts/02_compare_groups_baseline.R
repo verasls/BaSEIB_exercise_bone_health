@@ -264,6 +264,56 @@ exercise_diabetes  <- table(exercise_df$diabetes)
 exercise_thiazides <- table(exercise_df$thiazides)
 exercise_smoker    <- table(exercise_df$smoker)
 
+# Exercise group (under 50% training attendance)
+exercise_descriptives <- summarise(
+  .data = exercise_under_50_df,
+  age_mean       = round(mean(age), digits = 1),
+  age_sd         = round(sd(age), digits = 1),
+  body_mass_mean = round(mean(body_mass), digits = 1),
+  body_mass_sd   = round(sd(body_mass), digits = 1),
+  height_mean    = round(mean(height), digits = 2),
+  height_sd      = round(sd(height), digits = 2),
+  BMI_mean       = round(mean(BMI), digits = 1),
+  BMI_sd         = round(sd(BMI), digits = 1),
+  waist_mean     = round(mean(waist_circunference), digits = 1),
+  waist_sd       = round(sd(waist_circunference), digits = 1),
+  hip_mean       = round(mean(hip_circunference), digits = 1),
+  hip_sd         = round(sd(hip_circunference), digits = 1),
+  ratio_mean     = round(mean(waist_hip_ratio), digits = 2),
+  ratio_sd       = round(sd(waist_hip_ratio), digits = 2)
+)
+exercise_under_50_sex       <- table(exercise_under_50_df$sex)
+exercise_under_50_surgery   <- table(exercise_under_50_df$surgery)
+exercise_under_50_menopause <- table(exercise_under_50_df$menopause)
+exercise_under_50_diabetes  <- table(exercise_under_50_df$diabetes)
+exercise_under_50_thiazides <- table(exercise_under_50_df$thiazides)
+exercise_under_50_smoker    <- table(exercise_under_50_df$smoker)
+
+# Exercise group (over 50% training attendance)
+exercise_descriptives <- summarise(
+  .data = exercise_over_50_df,
+  age_mean       = round(mean(age), digits = 1),
+  age_sd         = round(sd(age), digits = 1),
+  body_mass_mean = round(mean(body_mass), digits = 1),
+  body_mass_sd   = round(sd(body_mass), digits = 1),
+  height_mean    = round(mean(height), digits = 2),
+  height_sd      = round(sd(height), digits = 2),
+  BMI_mean       = round(mean(BMI), digits = 1),
+  BMI_sd         = round(sd(BMI), digits = 1),
+  waist_mean     = round(mean(waist_circunference), digits = 1),
+  waist_sd       = round(sd(waist_circunference), digits = 1),
+  hip_mean       = round(mean(hip_circunference), digits = 1),
+  hip_sd         = round(sd(hip_circunference), digits = 1),
+  ratio_mean     = round(mean(waist_hip_ratio), digits = 2),
+  ratio_sd       = round(sd(waist_hip_ratio), digits = 2)
+)
+exercise_over_50_sex       <- table(exercise_over_50_df$sex)
+exercise_over_50_surgery   <- table(exercise_over_50_df$surgery)
+exercise_over_50_menopause <- table(exercise_over_50_df$menopause)
+exercise_over_50_diabetes  <- table(exercise_over_50_df$diabetes)
+exercise_over_50_thiazides <- table(exercise_over_50_df$thiazides)
+exercise_over_50_smoker    <- table(exercise_over_50_df$smoker)
+
 # Included subjects
 included_descriptives <- summarise(
   .data = baseline_inc_df,
