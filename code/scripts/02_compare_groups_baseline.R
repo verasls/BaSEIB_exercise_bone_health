@@ -221,16 +221,16 @@ control_descriptives <- summarise(
   age_sd         = round(sd(age), digits = 1),
   body_mass_mean = round(mean(body_mass), digits = 1),
   body_mass_sd   = round(sd(body_mass), digits = 1),
-  height_mean    = round(mean(height), digits = 1),
-  height_sd      = round(sd(height), digits = 1),
+  height_mean    = round(mean(height), digits = 2),
+  height_sd      = round(sd(height), digits = 2),
   BMI_mean       = round(mean(BMI), digits = 1),
   BMI_sd         = round(sd(BMI), digits = 1),
   waist_mean     = round(mean(waist_circunference), digits = 1),
   waist_sd       = round(sd(waist_circunference), digits = 1),
   hip_mean       = round(mean(hip_circunference), digits = 1),
   hip_sd         = round(sd(hip_circunference), digits = 1),
-  ratio_mean     = round(mean(waist_hip_ratio), digits = 1),
-  ratio_sd       = round(sd(waist_hip_ratio), digits = 1)
+  ratio_mean     = round(mean(waist_hip_ratio), digits = 2),
+  ratio_sd       = round(sd(waist_hip_ratio), digits = 2)
 )
 control_sex       <- table(control_df$sex)
 control_surgery   <- table(control_df$surgery)
@@ -246,16 +246,16 @@ exercise_descriptives <- summarise(
   age_sd         = round(sd(age), digits = 1),
   body_mass_mean = round(mean(body_mass), digits = 1),
   body_mass_sd   = round(sd(body_mass), digits = 1),
-  height_mean    = round(mean(height), digits = 1),
-  height_sd      = round(sd(height), digits = 1),
+  height_mean    = round(mean(height), digits = 2),
+  height_sd      = round(sd(height), digits = 2),
   BMI_mean       = round(mean(BMI), digits = 1),
   BMI_sd         = round(sd(BMI), digits = 1),
   waist_mean     = round(mean(waist_circunference), digits = 1),
   waist_sd       = round(sd(waist_circunference), digits = 1),
   hip_mean       = round(mean(hip_circunference), digits = 1),
   hip_sd         = round(sd(hip_circunference), digits = 1),
-  ratio_mean     = round(mean(waist_hip_ratio), digits = 1),
-  ratio_sd       = round(sd(waist_hip_ratio), digits = 1)
+  ratio_mean     = round(mean(waist_hip_ratio), digits = 2),
+  ratio_sd       = round(sd(waist_hip_ratio), digits = 2)
 )
 exercise_sex       <- table(exercise_df$sex)
 exercise_surgery   <- table(exercise_df$surgery)
@@ -271,16 +271,16 @@ included_descriptives <- summarise(
   age_sd         = round(sd(age, na.rm = TRUE), digits = 1),
   body_mass_mean = round(mean(body_mass, na.rm = TRUE), digits = 1),
   body_mass_sd   = round(sd(body_mass, na.rm = TRUE), digits = 1),
-  height_mean    = round(mean(height, na.rm = TRUE), digits = 1),
-  height_sd      = round(sd(height, na.rm = TRUE), digits = 1),
+  height_mean    = round(mean(height, na.rm = TRUE), digits = 2),
+  height_sd      = round(sd(height, na.rm = TRUE), digits = 2),
   BMI_mean       = round(mean(BMI, na.rm = TRUE), digits = 1),
   BMI_sd         = round(sd(BMI, na.rm = TRUE), digits = 1),
   waist_mean     = round(mean(waist_circunference, na.rm = TRUE), digits = 1),
   waist_sd       = round(sd(waist_circunference, na.rm = TRUE), digits = 1),
   hip_mean       = round(mean(hip_circunference, na.rm = TRUE), digits = 1),
   hip_sd         = round(sd(hip_circunference, na.rm = TRUE), digits = 1),
-  ratio_mean     = round(mean(waist_hip_ratio, na.rm = TRUE), digits = 1),
-  ratio_sd       = round(sd(waist_hip_ratio, na.rm = TRUE), digits = 1)
+  ratio_mean     = round(mean(waist_hip_ratio, na.rm = TRUE), digits = 2),
+  ratio_sd       = round(sd(waist_hip_ratio, na.rm = TRUE), digits = 2)
 )
 included_sex       <- table(baseline_inc_df$sex)
 included_surgery   <- table(baseline_inc_df$surgery)
@@ -290,22 +290,22 @@ included_thiazides <- table(baseline_inc_df$thiazides)
 included_smoker    <- table(baseline_inc_df$smoker)
 
 # Excluded subjects
-included_descriptives <- summarise(
+excluded_descriptives <- summarise(
   .data = baseline_exc_df,
   age_mean       = round(mean(age, na.rm = TRUE), digits = 1),
   age_sd         = round(sd(age, na.rm = TRUE), digits = 1),
   body_mass_mean = round(mean(body_mass, na.rm = TRUE), digits = 1),
   body_mass_sd   = round(sd(body_mass, na.rm = TRUE), digits = 1),
-  height_mean    = round(mean(height, na.rm = TRUE), digits = 1),
-  height_sd      = round(sd(height, na.rm = TRUE), digits = 1),
+  height_mean    = round(mean(height, na.rm = TRUE), digits = 2),
+  height_sd      = round(sd(height, na.rm = TRUE), digits = 2),
   BMI_mean       = round(mean(BMI, na.rm = TRUE), digits = 1),
   BMI_sd         = round(sd(BMI, na.rm = TRUE), digits = 1),
   waist_mean     = round(mean(waist_circunference, na.rm = TRUE), digits = 1),
   waist_sd       = round(sd(waist_circunference, na.rm = TRUE), digits = 1),
   hip_mean       = round(mean(hip_circunference, na.rm = TRUE), digits = 1),
   hip_sd         = round(sd(hip_circunference, na.rm = TRUE), digits = 1),
-  ratio_mean     = round(mean(waist_hip_ratio, na.rm = TRUE), digits = 1),
-  ratio_sd       = round(sd(waist_hip_ratio, na.rm = TRUE), digits = 1)
+  ratio_mean     = round(mean(waist_hip_ratio, na.rm = TRUE), digits = 2),
+  ratio_sd       = round(sd(waist_hip_ratio, na.rm = TRUE), digits = 2)
 )
 excluded_sex       <- table(baseline_exc_df$sex)
 excluded_surgery   <- table(baseline_exc_df$surgery)
