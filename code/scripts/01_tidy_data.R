@@ -92,11 +92,10 @@ for (i in 1:nrow(df)) {
 
 # Prepare data frame for baseline comparisons -----------------------------
 
-baseline_df <- df %>% filter(time == 1 & exclude == "No")
+baseline_df <- df %>% filter(time == 1)
 
 df_wide <- read_csv("data/Database__Wide_format.csv")
 df_wide <- df_wide %>%
-  filter(ID %in% keep) %>% 
   select(
     subj = ID, group = Group,height = Height, 
     waist_circunference = Waist_circunference__1st,
