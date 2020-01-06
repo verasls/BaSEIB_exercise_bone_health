@@ -6,10 +6,12 @@ library(gmodels)
 # Load and prepare data ---------------------------------------------------
 
 source("code/scripts/01_tidy_data.R")
-control_df <- filter(baseline_df, group == "Control")
-exercise_df <- filter(baseline_df, group == "Exercise")
-exercise_under_50_df <- filter(baseline_df, attend_cat == "Under 50% training attendance")
-exercise_over_50_df <- filter(baseline_df, attend_cat == "Over 50% training attendance")
+baseline_inc_df <- filter(baseline_df, exclude == "No")
+baseline_exc_df <- filter(baseline_df, exclude == "Yes")
+control_df <- filter(baseline_df, group == "Control" & exclude == "No")
+exercise_df <- filter(baseline_df, group == "Exercise" & exclude == "No")
+exercise_under_50_df <- filter(baseline_df, attend_cat == "Under 50% training attendance" & exclude == "No")
+exercise_over_50_df <- filter(baseline_df, attend_cat == "Over 50% training attendance" & exclude == "No")
 
 # Compare 2 groups --------------------------------------------------------
 
@@ -144,5 +146,68 @@ CrossTable(
 
 CrossTable(
   baseline_df$smoker, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+# Included X Excluded subjects --------------------------------------------
+
+# ** Continuous variables -------------------------------------------------
+
+# Normality tests included subjects
+shapiro.test(baseline_inc_df$age)
+shapiro.test(baseline_inc_df$height)
+shapiro.test(baseline_inc_df$body_mass)
+shapiro.test(baseline_inc_df$BMI)
+shapiro.test(baseline_inc_df$waist_circunference)
+shapiro.test(baseline_inc_df$hip_circunference)
+shapiro.test(baseline_inc_df$waist_hip_ratio)
+
+# Normality tests excluded subjects
+shapiro.test(baseline_exc_df$age)
+shapiro.test(baseline_exc_df$height)
+shapiro.test(baseline_exc_df$body_mass)
+shapiro.test(baseline_exc_df$BMI)
+shapiro.test(baseline_exc_df$waist_circunference)
+shapiro.test(baseline_exc_df$hip_circunference)
+shapiro.test(baseline_exc_df$waist_hip_ratio)
+
+# Independent samples t-test
+t.test(age ~ exclude, data = baseline_df, paired = FALSE)
+t.test(height ~ exclude, data = baseline_df, paired = FALSE)
+t.test(body_mass ~ exclude, data = baseline_df, paired = FALSE)
+t.test(BMI ~ exclude, data = baseline_df, paired = FALSE)
+t.test(waist_circunference ~ exclude, data = baseline_df, paired = FALSE)
+t.test(hip_circunference ~ exclude, data = baseline_df, paired = FALSE)
+t.test(waist_hip_ratio ~ exclude, data = baseline_df, paired = FALSE)
+
+# ** Categorical variables ------------------------------------------------
+
+CrossTable(
+  baseline_df$sex, baseline_df$exclude, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$surgery, baseline_df$exclude, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$menopause, baseline_df$exclude, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$diabetes, baseline_df$exclude, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$thiazides, baseline_df$exclude, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$smoker, baseline_df$exclude, 
   fisher = TRUE, chisq = TRUE, format = "SPSS"
 )
