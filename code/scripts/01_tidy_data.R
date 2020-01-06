@@ -110,6 +110,15 @@ baseline_df <- baseline_df %>%
     df_wide, by = c("subj", "group")
   )
 
+baseline_df$exclude <- NA
+for (i in 1:nrow(baseline_df)) {
+  if (baseline_df$subj[i] %in% exclude) {
+    baseline_df$exclude[i] <- "Yes"
+  } else {
+    baseline_df$exclude[i] <- "No"
+  }
+}
+
 # Filter subjects out -----------------------------------------------------
 
 df <- df %>% filter(exclude == "No")
