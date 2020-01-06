@@ -18,6 +18,7 @@ shapiro.test(control_df$body_mass)
 shapiro.test(control_df$BMI)
 shapiro.test(control_df$waist_circunference)
 shapiro.test(control_df$hip_circunference)
+shapiro.test(control_df$waist_hip_ratio)
 
 # Normality tests exercise group
 shapiro.test(exercise_df$age)
@@ -26,6 +27,7 @@ shapiro.test(exercise_df$body_mass)
 shapiro.test(exercise_df$BMI)
 shapiro.test(exercise_df$waist_circunference)
 shapiro.test(exercise_df$hip_circunference)
+shapiro.test(exercise_df$waist_hip_ratio)
 
 # Independent samples t-test
 t.test(age ~ group, data = baseline_df, paired = FALSE)
@@ -34,6 +36,7 @@ t.test(body_mass ~ group, data = baseline_df, paired = FALSE)
 t.test(BMI ~ group, data = baseline_df, paired = FALSE)
 t.test(waist_circunference ~ group, data = baseline_df, paired = FALSE)
 t.test(hip_circunference ~ group, data = baseline_df, paired = FALSE)
+t.test(waist_hip_ratio ~ group, data = baseline_df, paired = FALSE)
 
 # Categorical variables ---------------------------------------------------
 
