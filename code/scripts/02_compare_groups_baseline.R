@@ -8,8 +8,12 @@ library(gmodels)
 source("code/scripts/01_tidy_data.R")
 control_df <- filter(baseline_df, group == "Control")
 exercise_df <- filter(baseline_df, group == "Exercise")
+exercise_under_50_df <- filter(baseline_df, attend_cat == "Under 50% training attendance")
+exercise_over_50_df <- filter(baseline_df, attend_cat == "Over 50% training attendance")
 
-# Continuous variables ----------------------------------------------------
+# Compare 2 groups --------------------------------------------------------
+
+# ** Continuous variables -------------------------------------------------
 
 # Normality tests control group
 shapiro.test(control_df$age)
@@ -38,7 +42,7 @@ t.test(waist_circunference ~ group, data = baseline_df, paired = FALSE)
 t.test(hip_circunference ~ group, data = baseline_df, paired = FALSE)
 t.test(waist_hip_ratio ~ group, data = baseline_df, paired = FALSE)
 
-# Categorical variables ---------------------------------------------------
+# ** Categorical variables ------------------------------------------------
 
 CrossTable(
   baseline_df$sex, baseline_df$group, 
@@ -67,5 +71,78 @@ CrossTable(
 
 CrossTable(
   baseline_df$smoker, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+# Compare 3 groups --------------------------------------------------------
+
+# ** Continuous variables -------------------------------------------------
+
+# Normality tests exercise group under 50% training attendance
+shapiro.test(exercise_under_50_df$age)
+shapiro.test(exercise_under_50_df$height)
+shapiro.test(exercise_under_50_df$body_mass)
+shapiro.test(exercise_under_50_df$BMI)
+shapiro.test(exercise_under_50_df$waist_circunference)
+shapiro.test(exercise_under_50_df$hip_circunference)
+shapiro.test(exercise_under_50_df$waist_hip_ratio)
+
+# Normality tests exercise group over 50% training attendance
+shapiro.test(exercise_over_50_df$age)
+shapiro.test(exercise_over_50_df$height)
+shapiro.test(exercise_over_50_df$body_mass)
+shapiro.test(exercise_over_50_df$BMI)
+shapiro.test(exercise_over_50_df$waist_circunference)
+shapiro.test(exercise_over_50_df$hip_circunference)
+shapiro.test(exercise_over_50_df$waist_hip_ratio)
+
+# ANOVA
+age_model <- aov(age ~ attend_cat, data = baseline_df)
+height_model <- aov(height ~ attend_cat, data = baseline_df)
+body_mass_model <- aov(body_mass ~ attend_cat, data = baseline_df)
+BMI_model <- aov(BMI ~ attend_cat, data = baseline_df)
+waist_circunference_model <- aov(waist_circunference ~ attend_cat, data = baseline_df)
+hip_circunference_model <- aov(hip_circunference ~ attend_cat, data = baseline_df)
+waist_hip_ratio_model <- aov(waist_hip_ratio ~ attend_cat, data = baseline_df)
+
+summary(age_model)
+summary(height_model)
+summary(body_mass_model)
+summary(BMI_model)
+summary(waist_circunference_model)
+summary(hip_circunference_model)
+summary(waist_hip_ratio_model)
+
+pairwise.t.test(baseline_df$BMI, baseline_df$attend_cat, p.adjust.method = "bonferroni")
+
+# ** Categorical variables ------------------------------------------------
+
+CrossTable(
+  baseline_df$sex, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$surgery, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$menopause, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$diabetes, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$thiazides, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+CrossTable(
+  baseline_df$smoker, baseline_df$attend_cat, 
   fisher = TRUE, chisq = TRUE, format = "SPSS"
 )
