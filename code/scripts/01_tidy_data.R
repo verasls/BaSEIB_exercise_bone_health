@@ -73,21 +73,26 @@ df$attend_cat <- recode(
   "2" = "Over 50% training attendance"
 )
 
-# Filter subjects ---------------------------------------------------------
+# Create a filter ---------------------------------------------------------
 
 # Subjects to exclude due to not having at least one follow-up assessment
 exclude <- c(
-  13, 15, 18, 19, 25, 32, 33, 35, 37, 40, 42, 48, 
+  13, 15, 18, 19, 25, 32, 33, 35, 37, 40, 42, 48,
   53, 57, 59, 64, 65, 66, 74, 76, 82, 84, 86
 )
-all <- seq(1:91)
-keep <- all[-exclude]
 
-df <- df %>% filter(subj %in% keep)
+df$exclude <- NA
+for (i in 1:nrow(df)) {
+  if (df$subj[i] %in% exclude) {
+    df$exclude[i] <- "Yes"
+  } else {
+    df$exclude[i] <- "No"
+  }
+}
 
 # Prepare data frame for baseline comparisons -----------------------------
 
-baseline_df <- df %>% filter(time == 1)
+baseline_df <- df %>% filter(time == 1 & exclude == "No")
 
 df_wide <- read_csv("data/Database__Wide_format.csv")
 df_wide <- df_wide %>%
@@ -105,3 +110,7 @@ baseline_df <- baseline_df %>%
   full_join(
     df_wide, by = c("subj", "group")
   )
+
+# Filter subjects out -----------------------------------------------------
+
+df <- df %>% filter(exclude == "No")
