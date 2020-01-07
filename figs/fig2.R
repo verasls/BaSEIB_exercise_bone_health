@@ -65,9 +65,9 @@ TH_plot <- ggplot(data = TH_plot_df) +
   scale_x_discrete(
     labels = c(
       "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
-      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 40",
-      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 40",
-      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 36"
+      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 39",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 39",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 33"
     )
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
@@ -82,7 +82,7 @@ TH_plot <- ggplot(data = TH_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("Total hip bone mineral density"~(g%.%cm^2))
+    y = quote("Total hip bone mineral density"~(g%.%cm^-2))
   )
 
 # FN plot -----------------------------------------------------------------
@@ -108,8 +108,8 @@ FN_plot <- ggplot(data = FN_plot_df) +
     labels = c(
       "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
       "2" = "1-month post-BS\n\nCG: n = 19\nEG: n = 40",
-      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 40",
-      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 34"
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 39",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 33"
     )
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
@@ -124,7 +124,7 @@ FN_plot <- ggplot(data = FN_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("Femoral neck bone mineral density"~(g%.%cm^2))
+    y = quote("Femoral neck bone mineral density"~(g%.%cm^-2))
   )
 
 # LS plot -----------------------------------------------------------------
@@ -151,7 +151,7 @@ LS_plot <- ggplot(data = LS_plot_df) +
       "1" = "Pre-BS\n\nCG: n = 19\nEG: n = 39",
       "2" = "1-month post-BS\n\nCG: n = 19\nEG: n = 39",
       "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 38",
-      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 32"
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 31"
     )
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
@@ -166,7 +166,7 @@ LS_plot <- ggplot(data = LS_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("Lumbar spine bone mineral density"~(g%.%cm^2))
+    y = quote("Lumbar spine bone mineral density"~(g%.%cm^-2))
   )
 
 # TR plot -----------------------------------------------------------------
@@ -188,8 +188,8 @@ TR_plot <- ggplot(data = TR_plot_df) +
   scale_x_discrete(
     labels = c(
       "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
-      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 39",
-      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 40",
+      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 38",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 39",
       "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 33"
     )
   ) +
@@ -205,7 +205,7 @@ TR_plot <- ggplot(data = TR_plot_df) +
   ) +
   labs(
     x = "",
-    y = quote("One-third radius bone mineral density"~(g%.%cm^2))
+    y = quote("One-third radius bone mineral density"~(g%.%cm^-2))
   )
 
 # Plot grid ---------------------------------------------------------------
