@@ -58,6 +58,14 @@ delta_plot <- ggplot(data = delta_plot_df) +
   ) +
   geom_hline(yintercept = 0, linetype = "dotted") +
   scale_y_continuous(breaks = seq(-10, 4, 2)) +
+  scale_x_discrete(
+    labels = c(
+      "Total hip" = "Total hip\n\nCG: n = 16         \nEG<50%: n = 19\nEG≥50%: n = 14",
+      "Femoral neck" = "Femoral neck\n\nCG: n = 16         \nEG<50%: n = 19\nEG≥50%: n = 14",
+      "Lumbar spine" = "Lumbar spine\n\nCG: n = 16         \nEG<50%: n = 17\nEG≥50%: n = 14",
+      "One-third radius" = "One-third radius\n\nCG: n = 16         \nEG<50%: n = 18\nEG≥50%: n = 15"
+    )
+  ) +
   scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
   theme_classic() +
   theme(
