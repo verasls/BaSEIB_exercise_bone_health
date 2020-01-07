@@ -6,8 +6,6 @@ library(tidyverse)
 
 # Body mass
 body_mass_plot_df <- read.csv("output/interaction_body_mass_emm.csv")
-body_mass_plot_df$lower.CL[1:3] <- 0
-body_mass_plot_df$upper.CL[1:3] <- 0
 
 body_mass_plot_df$time <- as.factor(body_mass_plot_df$time)
 body_mass_plot_df$time <- recode(
@@ -35,8 +33,6 @@ body_mass_plot_df$attend_cat <- recode(
 
 # BMI
 BMI_plot_df <- read.csv("output/interaction_BMI_emm.csv")
-BMI_plot_df$lower.CL[1:3] <- 0
-BMI_plot_df$upper.CL[1:3] <- 0
 
 BMI_plot_df$time <- as.factor(BMI_plot_df$time)
 BMI_plot_df$time <- recode(
@@ -64,8 +60,6 @@ BMI_plot_df$attend_cat <- recode(
 
 # Fat mass
 fat_mass_plot_df <- read.csv("output/interaction_fat_mass_emm.csv")
-fat_mass_plot_df$lower.CL[1:3] <- 0
-fat_mass_plot_df$upper.CL[1:3] <- 0
 
 fat_mass_plot_df$time <- as.factor(fat_mass_plot_df$time)
 fat_mass_plot_df$time <- recode(
@@ -93,8 +87,6 @@ fat_mass_plot_df$attend_cat <- recode(
 
 # Lean mass
 lean_mass_plot_df <- read.csv("output/interaction_lean_mass_emm.csv")
-lean_mass_plot_df$lower.CL[1:3] <- 0
-lean_mass_plot_df$upper.CL[1:3] <- 0
 
 lean_mass_plot_df$time <- as.factor(lean_mass_plot_df$time)
 lean_mass_plot_df$time <- recode(
@@ -240,5 +232,5 @@ lean_mass_plot <- ggplot(data = lean_mass_plot_df) +
   ) +
   labs(
     x = "",
-    y = "% whole body fat mass change"
+    y = "% whole body lean mass change"
   )
