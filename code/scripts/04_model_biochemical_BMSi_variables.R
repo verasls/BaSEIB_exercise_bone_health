@@ -37,7 +37,7 @@ BMSi_data       <- center_variable(BMSi_data, "BMSi_adjust")
 # ** P1NP_BMD ---------------------------------------------------------------
 
 P1NP_LMM <- lmer(
-  formula = P1NP ~ 1 + group + time + group:time + P1NP_adjust_centered + (1 | subj),
+  formula = P1NP ~ 1 + group + time + group:time + P1NP_adjust_centered + BMI_adjust + (1 | subj),
   data = P1NP_data
 )
 
@@ -66,7 +66,7 @@ ph_P1NP_bonf <- bonferroni(as.data.frame(ph_P1NP_none), 16)
 # ** CTX_BMD ---------------------------------------------------------------
 
 CTX_LMM <- lmer(
-  formula = CTX ~ 1 + group + time + group:time + CTX_adjust_centered + (1 | subj),
+  formula = CTX ~ 1 + group + time + group:time + CTX_adjust_centered + BMI_adjust + (1 | subj),
   data = CTX_data
 )
 
@@ -95,7 +95,7 @@ ph_CTX_bonf <- bonferroni(as.data.frame(ph_CTX_none), 16)
 # ** PTH_BMD ---------------------------------------------------------------
 
 PTH_LMM <- lmer(
-  formula = PTH ~ 1 + group + time + group:time + PTH_adjust_centered + (1 | subj),
+  formula = PTH ~ 1 + group + time + group:time + PTH_adjust_centered + BMI_adjust + (1 | subj),
   data = PTH_data
 )
 
@@ -124,7 +124,7 @@ ph_PTH_bonf <- bonferroni(as.data.frame(ph_PTH_none), 16)
 # ** vitD_BMD ---------------------------------------------------------------
 
 vitD_LMM <- lmer(
-  formula = vitD ~ 1 + group + time + group:time + vitD_adjust_centered + (1 | subj),
+  formula = vitD ~ 1 + group + time + group:time + vitD_adjust_centered + BMI_adjust + (1 | subj),
   data = vitD_data
 )
 
@@ -153,7 +153,7 @@ ph_vitD_bonf <- bonferroni(as.data.frame(ph_vitD_none), 16)
 # ** sclerostin_BMD ---------------------------------------------------------------
 
 sclerostin_LMM <- lmer(
-  formula = sclerostin ~ 1 + group + time + group:time + sclerostin_adjust_centered + (1 | subj),
+  formula = sclerostin ~ 1 + group + time + group:time + sclerostin_adjust_centered + BMI_adjust + (1 | subj),
   data = sclerostin_data
 )
 
@@ -182,7 +182,7 @@ ph_sclerostin_bonf <- bonferroni(as.data.frame(ph_sclerostin_none), 16)
 # ** BMSi -----------------------------------------------------------------
 
 BMSi_LMM <- lmer(
-  formula = BMSi ~ 1 + group + time + group:time + BMSi_adjust_centered + (1 | subj),
+  formula = BMSi ~ 1 + group + time + group:time + BMSi_adjust_centered + BMI_adjust + (1 | subj),
   data = BMSi_data
 )
 
