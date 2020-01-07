@@ -74,6 +74,6 @@ delta_plot <- ggplot(data = delta_plot_df) +
 
 # Uncomment lines below to save plot
 # ggsave(
-#   filename = "figs/fig2.tiff",
+#   filename = "figs/fig3.tiff",
 #   plot = delta_plot, width = 30, height = 20, dpi = 600, units = "cm"
 # )
