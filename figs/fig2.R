@@ -212,7 +212,7 @@ TR_plot <- ggplot(data = TR_plot_df) +
 
 legend <- get_legend(TH_plot)
 
-grid_2x2_1 <- plot_grid(
+grid_1 <- plot_grid(
   TH_plot + theme(legend.position = "none"),
   FN_plot + theme(legend.position = "none"),
   LS_plot + theme(legend.position = "none"),
@@ -220,26 +220,10 @@ grid_2x2_1 <- plot_grid(
   ncol = 2, nrow = 2
 )
 
-grid_2x2 <- plot_grid(legend, grid_2x2_1, ncol = 1, rel_heights = c(0.1, 1))
+grid <- plot_grid(legend, grid_1, ncol = 1, rel_heights = c(0.1, 1))
 
 # Uncomment lines below to save plot
 # ggsave(
-#   filename = "figs/fig1_2x2.tiff",
-#   plot = grid_2x2, width = 40, height = 40, dpi = 600, units = "cm"
-# )
-
-grid_4x1_1 <- plot_grid(
-  TH_plot + theme(legend.position = "none"),
-  FN_plot + theme(legend.position = "none"),
-  LS_plot + theme(legend.position = "none"),
-  TR_plot + theme(legend.position = "none"),
-  ncol = 4, nrow = 1
-)
-
-grid_4x1 <- plot_grid(legend, grid_4x1_1, ncol = 1, rel_heights = c(0.1, 1))
-
-# Uncomment lines below to save plot
-# ggsave(
-#   filename = "figs/fig1_4x1.tiff",
-#   plot = grid_4x1, width = 80, height = 20, dpi = 600, units = "cm"
+#   filename = "figs/fig2.tiff",
+#   plot = grid, width = 40, height = 40, dpi = 600, units = "cm"
 # )
