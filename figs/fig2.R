@@ -83,7 +83,10 @@ TH_plot <- ggplot(data = TH_plot_df) +
   labs(
     x = "",
     y = quote("Total hip bone mineral density"~(g%.%cm^-2))
-  )
+  ) +
+  annotate("text", x = 3.2, y = 0.982, label = "a'', b''") +
+  annotate("text", x = 4.31, y = 0.9482558, label = "a'', b'', c''") +
+  annotate("text", x = 4.18, y = 0.967, label = "a'', b'', c''")
 
 # FN plot -----------------------------------------------------------------
 
@@ -125,7 +128,11 @@ FN_plot <- ggplot(data = FN_plot_df) +
   labs(
     x = "",
     y = quote("Femoral neck bone mineral density"~(g%.%cm^-2))
-  )
+  ) +
+  annotate("text", x = 2.89, y = 0.858, label = "a") +
+  annotate("text", x = 4.2, y = 0.8125381, label = "a'', b'', c''") +
+  annotate("text", x = 3.18, y = 0.865, label = "a', b") +
+  annotate("text", x = 4.24, y = 0.8378519, label = "a'', b''")
 
 # LS plot -----------------------------------------------------------------
 
@@ -167,7 +174,11 @@ LS_plot <- ggplot(data = LS_plot_df) +
   labs(
     x = "",
     y = quote("Lumbar spine bone mineral density"~(g%.%cm^-2))
-  )
+  ) +
+  annotate("text", x = 3.05, y = 1.0255085, label = "b") +
+  annotate("text", x = 3.05, y = 1.0255085, label = "b") +
+  annotate("text", x = 4.18, y = 0.9960772, label = "a'', b'', c'") +
+  annotate("text", x = 4.2, y = 1.0226401, label = "a, b'")
 
 # TR plot -----------------------------------------------------------------
 
@@ -206,7 +217,8 @@ TR_plot <- ggplot(data = TR_plot_df) +
   labs(
     x = "",
     y = quote("One-third radius bone mineral density"~(g%.%cm^-2))
-  )
+  ) +
+  annotate("text", x = 4.15, y = 0.6981351, label = "a")
 
 # Plot grid ---------------------------------------------------------------
 
