@@ -4,112 +4,47 @@ library(tidyverse)
 
 # Load and prepare data ---------------------------------------------------
 
-# Steps
-steps_plot_df <- read.csv("output/interaction_steps_emm.csv")
+steps_plot_df <- read.csv("output/interaction_steps_emm.csv") %>% 
+  mutate(variable = "% number of steps change")
+SB_plot_df <- read.csv("output/interaction_SB_emm.csv") %>% 
+  mutate(variable = "% time in sedentary behavior change")
+LPA_plot_df <- read.csv("output/interaction_LPA_emm.csv") %>% 
+  mutate(variable = "% time in light physical activity change")
+MVPA_plot_df <- read.csv("output/interaction_MVPA_emm.csv") %>% 
+  mutate(variable = "% time in moderate-to-vigorous physical activity change")
 
-steps_plot_df$time <- as.factor(steps_plot_df$time)
-steps_plot_df$time <- recode(
-  steps_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
+# Combine into a single data frame
+delta_PA_plot_df <- steps_plot_df %>% 
+  rbind(
+    SB_plot_df,
+    LPA_plot_df,
+    MVPA_plot_df
+  ) %>% 
+  filter(time == 4)
+
+# Refactor variables
+delta_PA_plot_df$variable <- factor(
+  delta_PA_plot_df$variable,
+  levels = c(
+    "% number of steps change", 
+    "% time in sedentary behavior change", 
+    "% time in light physical activity change", 
+    "% time in moderate-to-vigorous physical activity change"
+  )
 )
-
-steps_plot_df$attend_cat <- factor(
-  steps_plot_df$attend_cat,
+delta_PA_plot_df$attend_cat <- factor(
+  delta_PA_plot_df$attend_cat,
   levels = c(
     "Control", 
     "Under 50% training attendance", 
     "Over 50% training attendance"
   )
 )
-steps_plot_df$attend_cat <- recode(
-  steps_plot_df$attend_cat,
-  "Control" = "Control group",
-  "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
-  "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
-)
-
-# Sedentary behaviour
-SB_plot_df <- read.csv("output/interaction_SB_emm.csv")
-
-SB_plot_df$time <- as.factor(SB_plot_df$time)
-SB_plot_df$time <- recode(
-  SB_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
-)
-
-SB_plot_df$attend_cat <- factor(
-  SB_plot_df$attend_cat,
-  levels = c(
-    "Control", 
-    "Under 50% training attendance", 
-    "Over 50% training attendance"
-  )
-)
-SB_plot_df$attend_cat <- recode(
-  SB_plot_df$attend_cat,
-  "Control" = "Control group",
-  "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
-  "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
-)
-
-# Light physical activity
-LPA_plot_df <- read.csv("output/interaction_LPA_emm.csv")
-
-LPA_plot_df$time <- as.factor(LPA_plot_df$time)
-LPA_plot_df$time <- recode(
-  LPA_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
-)
-
-LPA_plot_df$attend_cat <- factor(
-  LPA_plot_df$attend_cat,
-  levels = c(
-    "Control", 
-    "Under 50% training attendance", 
-    "Over 50% training attendance"
-  )
-)
-LPA_plot_df$attend_cat <- recode(
-  LPA_plot_df$attend_cat,
-  "Control" = "Control group",
-  "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
-  "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
-)
-
-# Moderate-to-vigorous physical activity
-MVPA_plot_df <- read.csv("output/interaction_MVPA_emm.csv")
-
-MVPA_plot_df$time <- as.factor(MVPA_plot_df$time)
-MVPA_plot_df$time <- recode(
-  MVPA_plot_df$time,
-  "1" = "Pre-BS",
-  "2" = "1-month post-BS",
-  "3" = "6-months post-BS",
-  "4" = "12-months post-BS"
-)
-
-MVPA_plot_df$attend_cat <- factor(
-  MVPA_plot_df$attend_cat,
-  levels = c(
-    "Control", 
-    "Under 50% training attendance", 
-    "Over 50% training attendance"
-  )
-)
-MVPA_plot_df$attend_cat <- recode(
-  MVPA_plot_df$attend_cat,
-  "Control" = "Control group",
-  "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
-  "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
+delta_PA_plot_df$attend_cat <- recode(
+  delta_PA_plot_df$attend_cat,
+  "Control" = "CG: n  = 12",
+  "Under 50% training attendance" = "EG<50%: n = 12",
+  "Over 50% training attendance" = "EG≥50%: n = 14"
 )
 
 # Overall plots config
@@ -117,20 +52,21 @@ dodge <- position_dodge(0.2)
 
 # Steps plot --------------------------------------------------------------
 
-steps_plot <- ggplot(data = steps_plot_df) +
+steps_plot <- ggplot(data = filter(delta_PA_plot_df, variable == "% number of steps change")) +
   geom_point(
-    aes(x = time, y = emmean, shape = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, shape = attend_cat, colour = attend_cat),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
+    aes(x = attend_cat, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
+  scale_y_continuous(limits = c(5, 85), breaks = seq(5, 85, 5)) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
@@ -147,20 +83,21 @@ steps_plot <- ggplot(data = steps_plot_df) +
 
 # SB plot -----------------------------------------------------------------
 
-SB_plot <- ggplot(data = SB_plot_df) +
+SB_plot <- ggplot(data = filter(delta_PA_plot_df, variable == "% time in sedentary behavior change")) +
   geom_point(
-    aes(x = time, y = emmean, shape = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, shape = attend_cat, colour = attend_cat),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
+    aes(x = attend_cat, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
+  scale_y_continuous(limits = c(-20, 20), breaks = seq(-20, 20, 5)) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
@@ -172,25 +109,26 @@ SB_plot <- ggplot(data = SB_plot_df) +
   ) +
   labs(
     x = "",
-    y = "% time in sedentary behaviour change"
+    y = "% time in sedentary behavior change"
   )
 
 # LPA plot ----------------------------------------------------------------
 
-LPA_plot <- ggplot(data = LPA_plot_df) +
+LPA_plot <- ggplot(data = filter(delta_PA_plot_df, variable == "% time in light physical activity change")) +
   geom_point(
-    aes(x = time, y = emmean, shape = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, shape = attend_cat, colour = attend_cat),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
+    aes(x = attend_cat, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
+  scale_y_continuous(limits = c(-10, 40), breaks = seq(-10, 40, 5)) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
@@ -207,20 +145,21 @@ LPA_plot <- ggplot(data = LPA_plot_df) +
 
 # MVPA plot ---------------------------------------------------------------
 
-MVPA_plot <- ggplot(data = MVPA_plot_df) +
+MVPA_plot <- ggplot(data = filter(delta_PA_plot_df, variable == "% time in moderate-to-vigorous physical activity change")) +
   geom_point(
-    aes(x = time, y = emmean, shape = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, shape = attend_cat, colour = attend_cat),
     position = dodge, size = 4
   ) +
   geom_line(
-    aes(x = time, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
+    aes(x = attend_cat, y = emmean, linetype = attend_cat, group = attend_cat, colour = attend_cat),
     position = dodge, size = 1
   ) +
   geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
+    aes(x = attend_cat, ymin = lower.CL, ymax = upper.CL, group = attend_cat, colour = attend_cat), 
     position = dodge, size = 1, width = 0.1
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
+  scale_y_continuous(limits = c(-20, 120), breaks = seq(-20, 120, 10)) +
   theme_classic() +
   theme(
     legend.title = element_blank(),
