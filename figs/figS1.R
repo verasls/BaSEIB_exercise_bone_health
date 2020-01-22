@@ -10,9 +10,7 @@ source("figs/plot_physical_activity.R")
 
 # Plot --------------------------------------------------------------------
 
-legend <- get_legend(body_mass_plot)
-
-grid_1 <- plot_grid(
+grid <- plot_grid(
   body_mass_plot + theme(legend.position = "none"),
   BMI_plot + theme(legend.position = "none"),
   fat_mass_plot + theme(legend.position = "none"),
@@ -24,8 +22,6 @@ grid_1 <- plot_grid(
   labels = c("A", "", "", "", "B", "", "", ""),
   ncol = 4, nrow = 2
 )
-
-grid <- plot_grid(legend, grid_1, ncol = 1, rel_heights = c(0.1, 1))
 
 # Uncomment lines below to save plot
 # ggsave(
