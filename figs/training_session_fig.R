@@ -7,7 +7,11 @@ library(tidyverse)
 plot_df <- read_csv("data/training_session_data.csv", skip = 10) %>% 
   mutate(Resultant = sqrt(`Accelerometer X`^2 + `Accelerometer Y`^2 + `Accelerometer Z`^2))
 
+<<<<<<< HEAD
 max <- which(plot_df$Timestamp == "21-02-2018 19:42:59.990")
+=======
+max <- which(plot_df$Timestamp == "21-02-2018 19:32:59.990")
+>>>>>>> 592bb3477afeeb19512218638af2b4ee12d25fa0
 plot_df <- plot_df[1:max, ]
 
 plot_df$Timestamp <- as.POSIXct(
@@ -40,7 +44,14 @@ plot <- ggplot(data = plot_df) +
   )
 
 # Uncomment lines below to save plot
+<<<<<<< HEAD
 # ggsave(
 #   filename = "figs/training_session_fig.pdf",
 #   plot = plot, width = 50, height = 40, dpi = 200, units = "cm"
 # )
+=======
+ggsave(
+  filename = "figs/training_session_fig.pdf",
+  plot = plot, width = 50, height = 40, dpi = 200, units = "cm"
+)
+>>>>>>> 592bb3477afeeb19512218638af2b4ee12d25fa0
