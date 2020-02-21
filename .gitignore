@@ -1,5 +1,6 @@
 *.pdf
 *.tiff
+*.html
 data/
 docs/
 output/
