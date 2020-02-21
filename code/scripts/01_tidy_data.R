@@ -1,11 +1,13 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 
 # Rename variables --------------------------------------------------------
 
-df <- read_csv("data/database.csv") %>% 
-  dplyr::select(
+df <- read_csv(here("data", "database.csv"))
+
+df <- df %>% dplyr::select(
     subj = Subj, time = Time, group = Group, surgery = Surgery, sex = Sex, age = Age, 
     menopause = Menopause, pre_diabetes = `Pre-diabetes`, diabetes = Diabetes,
     thiazides = Thiazides, smoker = Smoker, BMSi, FN_BMD = Neck_BMD,
@@ -94,7 +96,7 @@ for (i in 1:nrow(df)) {
 
 baseline_df <- df %>% filter(time == 1)
 
-df_wide <- read_csv("data/Database__Wide_format.csv")
+df_wide <- read_csv(here("data", "Database__Wide_format.csv"))
 df_wide <- df_wide %>%
   dplyr::select(
     subj = ID, group = Group,height = Height, 
@@ -122,3 +124,4 @@ for (i in 1:nrow(baseline_df)) {
 # Filter subjects out -----------------------------------------------------
 
 df <- df %>% filter(exclude == "No")
+baseline_df <- baseline_df %>% filter(exclude == "No")
