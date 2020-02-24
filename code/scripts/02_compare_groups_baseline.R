@@ -1,17 +1,18 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 library(gmodels)
 
 # Load and prepare data ---------------------------------------------------
 
-source("code/scripts/01_tidy_data.R")
-baseline_inc_df <- filter(baseline_df, exclude == "No")
-baseline_exc_df <- filter(baseline_df, exclude == "Yes")
+source(here("code", "scripts", "01_tidy_data.R"))
 control_df <- filter(baseline_df, group == "Control" & exclude == "No")
 exercise_df <- filter(baseline_df, group == "Exercise" & exclude == "No")
 exercise_under_50_df <- filter(baseline_df, attend_cat == "Under 50% training attendance" & exclude == "No")
 exercise_over_50_df <- filter(baseline_df, attend_cat == "Over 50% training attendance" & exclude == "No")
+baseline_inc_df <- filter(baseline_df, exclude == "No")
+baseline_exc_df <- filter(baseline_df, exclude == "Yes")
 
 # Compare 2 groups --------------------------------------------------------
 
