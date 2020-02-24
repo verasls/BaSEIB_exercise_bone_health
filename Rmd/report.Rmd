@@ -6,33 +6,169 @@ author: "Lucas Veras"
 date: "`r Sys.Date()`"
 output: 
   html_document:
-    df_print: paged
     toc: true
     number_sections: true
     toc_float: 
       collapsed: true
-    code_folding: "show"
     highlight: tango
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, results = "hide")
 ```
-
+ 
+<br>
+ 
 This report covers the content of a [github repository](https://github.com/verasls/BaSEIB_exercise_bone_health) that encompasses the data analysis of a manuscript entitled "The effect of an exercise intervention program on bone health after bariatric surgery: BaSEIB clinical trial". The [code](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code) folder contains two subfolders: [functions](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/functions), with some function definitions, and [scripts](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/scripts), with 9 different scripts regarding distinct steps of the data processing and statistical analysis. Also, code to generate the manuscript figures are inside the [figs](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/figs) folder.
+
+<br>
 
 # Load and tidy data
 
-The [01_tidy_data.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/01_tidy_data.R) script loads the database.csv file. It, then, selects, renames and recodes some variables and excludes data from subjects who do not have at least one follow-up assessment. A part of the resulting data frame, that is the base for all subsequent analyses, can be seen below.
+The [01_tidy_data.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/01_tidy_data.R) script loads the database.csv file. It, then, selects, renames and recodes some variables and excludes data from subjects who do not have at least one follow-up assessment.
 
 ```{r loads, echo=FALSE}
 library(here)
 source(here("code", "scripts", "01_tidy_data.R"))
+source(here("code", "scripts", "02_compare_groups_baseline.R"))
+source(here("code", "scripts", "03_model_BMD_variables.R"))
+source(here("code", "scripts", "04_model_biochemical_BMSi_variables.R"))
+```
+
+<br>
+
+# Baseline group comparisons
+
+The next step was to compare the variables at the baseline to see if there were any differences between groups, which was done in the [02_compare_groups_baseline.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/02_compare_groups_baseline.R) script. These comparisons were done in three ways:
+
+1. Between the control and exercise groups;
+2. Between the control group, the exercise group with training sessions attendance below 50% and the exercise group with training sessions attendance above or equal to 50%;
+3. Between the subjects included and excluded from the analysis.
+
+To do so, new data frames needed to be built, with one group per data frame containing only the baseline values of the variables.
+
+```{r compare_df}
+control_df <- filter(baseline_df, group == "Control" & exclude == "No")
+exercise_df <- filter(baseline_df, group == "Exercise" & exclude == "No")
+exercise_under_50_df <- filter(baseline_df, attend_cat == "Under 50% training attendance" & exclude == "No")
+exercise_over_50_df <- filter(baseline_df, attend_cat == "Over 50% training attendance" & exclude == "No")
+baseline_inc_df <- filter(baseline_df, exclude == "No")
+baseline_exc_df <- filter(baseline_df, exclude == "Yes")
+```
+
+For the continuous variables, first, normality tests were run with the `shapiro.test()` function. Then, independent samples t tests were run with the `t.test()` function, when comparing two groups, and analysis of variance (ANOVA) were run with the `aov()` function when comparing three groups. If the ANOVA results showed significant results, parwise t tests with the Bonferroni correction were done with the `pairwise.t.test()` function. All of these functions are on the `stats` package.
+
+For the categorical variabels, the chi-square test was used to the baseline comparisons with the `CrossTable()` function of the `gmodels` package.
+
+An example of the code used to these analyses is shown below.
+
+```{r baseline_comparisons}
+# Compare: control X exercise ---------------------------------------------
+# Normality test
+shapiro.test(control_df$BMI)
+shapiro.test(exercise_df$BMI)
+# Independent samples t test
+t.test(BMI ~ group, data = baseline_df, paired = FALSE)
+# Chi-square test
+CrossTable(
+  baseline_df$sex, baseline_df$group, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+
+# Compare: control X exercise < 50% X exercise >= 50% ---------------------
+# Normality test
+shapiro.test(control_df$BMI)
+shapiro.test(exercise_under_50_df$BMI)
+shapiro.test(exercise_over_50_df$BMI)
+# ANOVA
+BMI_model <- aov(BMI ~ attend_cat, data = filter(baseline_df, exclude == "No"))
+summary(BMI_model)
+pairwise.t.test(baseline_df$BMI, baseline_df$attend_cat, p.adjust.method = "bonferroni")
+# Chi-square test
+CrossTable(
+  baseline_df$sex, baseline_df$attend_cat, 
+  fisher = TRUE, chisq = TRUE, format = "SPSS"
+)
+```
+
+<br>
+
+# Primary analysis
+
+A primary analysis was conducted comparing the outcomes between the groups (control and exercise) as randomized. These analysis were divided into two separate scripts, [03_model_BMD_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/03_model_BMD_variables.R) for the bone mineral density (BMD) variables, and [04_model_biochemical_BMSi_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/04_model_biochemical_BMSi_variables.R) for the biochemical variables and the bone material strength index (BMSi). The analyses in both scripts were done similarly, varying only in the variables.
+
+Initially, a sum contrast was set to the `group` variable and a polynomial contrast was set to the `time` variable. This was accomplished with the functions `contrasts()`, `contr.sum()` and `contr.poly()` from the `stats` package. After that, a different data frame was created for each variable analyzed, selecting only the necessary columns from the main data frame. These variables were:
+
+- `subj`: subject identifier;
+- `group` and `time`: factors included in the analysis;
+- Dependent variable (e.g., `FN_MBD`);
+- Baseline values of the dependent variable (e.g., `FN_BMD_adjust`) for adjustment;
+- `BMI_adjust`: with baseline BMI values for adjustment (significant differences between groups at baseline were found).
+
+Then, the baseline values of the dependent variable were centered, using the user-defined `center_variable()` [function](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/functions/center_variable.R).
+
+An example of the code used to this process is shown below:
+
+```{r setip_LMM}
+# Set contrasts of variable group to sum
+contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
+# Set contrasts of variable time to polynomial
+contrasts(df$time) <- contr.poly(4)
+
+# Select variables
+FN_data <- df %>% dplyr::select(subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust)
+
+# Center variables
+FN_data <- center_variable(FN_data, "FN_BMD_adjust")
+```
+
+## Linear mixed models
+
+The treatment effect on bone parameters was tested by linear mixed-models analysis  using the `lmer()` function the `lme4` package. The models included group, time and group X time interaction as fixed factors, baseline values of the BMI and of the dependent variable as covariates and the subjects as a random factor. An example of the code to build the models can be seen below:
+
+```{r primary_LMM}
+FN_LMM <- lmer(
+  formula = FN_BMD ~ 1 + group + time + group:time + FN_BMD_adjust_centered + BMI_adjust + (1 | subj),
+  data = FN_data
+)
+```
+
+```{r primary_LMM_parameters}
+# R-squared
+rsquared(FN_LMM)
+
+# Fixed effects test
+anova(FN_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(FN_LMM)
+
+# Estimated marginal means for group
+group_FN_emm <- emmeans(FN_LMM, ~ group)
+
+# Estimated marginal means for time
+time_FN_emm <- emmeans(FN_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_FN_emm  <- emmeans(FN_LMM, ~ group:time)
+# Save into a data frame to build the plots
+interaction_FN_emm_df <- as.data.frame(interaction_FN_emm)
+write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
+
+# Post hocs
+ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
+ph_FN_bonf <- bonferroni(as.data.frame(ph_FN_none), 16)
 ```
 
 
-```{r df, rows.print=12}
-df
+<br>
+
+# R session info
+
+R session info with all lackages loaded and their versions.
+
+```{r session_info}
+devtools::session_info()
 ```
