@@ -1,17 +1,18 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
-source("code/functions/center_variable.R")
-source("code/functions/bonferroni.R")
+source(here("code", "functions", "center_variable.R"))
+source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source("code/scripts/01_tidy_data.R")
-# Set contrasts of variable group to deviation
+source(here("code", "scripts", "01_tidy_data.R"))
+# Set contrasts of variable group to sum
 contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
 contrasts(df$time) <- contr.poly(4)
@@ -56,7 +57,7 @@ time_TH_emm <- emmeans(TH_LMM, ~ time)
 interaction_TH_emm  <- emmeans(TH_LMM, ~ group:time)
 # Save into a data frame to build the plots
 interaction_TH_emm_df <- as.data.frame(interaction_TH_emm)
-write_csv(interaction_TH_emm_df, "output/interaction_TH_emm.csv")
+write_csv(interaction_TH_emm_df, here("output", "interaction_TH_emm.csv"))
 
 # Post hocs
 ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
@@ -88,7 +89,7 @@ time_FN_emm <- emmeans(FN_LMM, ~ time)
 interaction_FN_emm  <- emmeans(FN_LMM, ~ group:time)
 # Save into a data frame to build the plots
 interaction_FN_emm_df <- as.data.frame(interaction_FN_emm)
-write_csv(interaction_FN_emm_df, "output/interaction_FN_emm.csv")
+write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
 
 # Post hocs
 ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
@@ -120,7 +121,7 @@ time_LS_emm <- emmeans(LS_LMM, ~ time)
 interaction_LS_emm  <- emmeans(LS_LMM, ~ group:time)
 # Save into a data frame to build the plots
 interaction_LS_emm_df <- as.data.frame(interaction_LS_emm)
-write_csv(interaction_LS_emm_df, "output/interaction_LS_emm.csv")
+write_csv(interaction_LS_emm_df, here("output", "interaction_LS_emm.csv"))
 
 # Post hocs
 ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
@@ -152,7 +153,7 @@ time_TR_emm <- emmeans(TR_LMM, ~ time)
 interaction_TR_emm  <- emmeans(TR_LMM, ~ group:time)
 # Save into a data frame to build the plots
 interaction_TR_emm_df <- as.data.frame(interaction_TR_emm)
-write_csv(interaction_TR_emm_df, "output/interaction_TR_emm.csv")
+write_csv(interaction_TR_emm_df, here("output", "interaction_TR_emm.csv"))
 
 # Post hocs
 ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
