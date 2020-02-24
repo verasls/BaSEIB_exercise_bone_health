@@ -30,7 +30,7 @@ plot <- ggplot(data = plot_df) +
   geom_line(mapping = aes(x = Timestamp, y = Resultant)) +
   geom_hline(yintercept = 4.9, linetype = "dashed") +
   scale_x_datetime(
-    date_breaks = "5 min",
+    date_breaks = "10 min",
     date_labels = "%H:%M",
     expand = c(0, 0)
   ) +
@@ -38,9 +38,9 @@ plot <- ggplot(data = plot_df) +
   coord_cartesian(ylim = c(1, 9)) +
   theme_classic() +
   theme(
-    axis.title.y = element_text(size = 14),
-    axis.text.y = element_text(size = 14),
-    axis.text.x = element_text(size = 14)
+    axis.title.y = element_text(size = 16),
+    axis.text.y = element_text(size = 16),
+    axis.text.x = element_text(size = 16)
   ) +
   labs(
     x = "",
@@ -49,6 +49,6 @@ plot <- ggplot(data = plot_df) +
 
 # Uncomment lines below to save plot
 # ggsave(
-#   filename = "figs/training_session_fig.pdf",
-#   plot = plot, width = 50, height = 40, dpi = 200, units = "cm"
+#   filename = "figs/training_session_fig.tiff",
+#   plot = plot, width = 30, height = 15, dpi = 100, units = "cm"
 # )
