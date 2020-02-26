@@ -10,7 +10,7 @@ Florêncio Diniz-Sousa, Giorjines Boppre, Lucas Veras, Pedro Sa-Couto, Vítor De
 
 ---
 
-You can find the data analysis report [here]().
+You can find the data analysis report [here](https://lveras.com/reports/report.html).
 
 There are 2 subdirectories in this repository:
 
@@ -23,7 +23,7 @@ Subdirectory **R** contains 2 subdirectories and a file:
 
 1. [functions](code/functions): contains all user-defined functions used in the analyses
 2. [scripts](code/scripts): contains all scripts used to run the analyses
-3. [report.Rmd](code/report.Rmd): source file to the data analysis report. The html version of the report can be visualized [here]().
+3. [report.Rmd](code/report.Rmd): source file to the data analysis report. The html version of the report can be visualized [here](https://lveras.com/reports/report.html).
 
 ## [figs](figs/) contents
 
