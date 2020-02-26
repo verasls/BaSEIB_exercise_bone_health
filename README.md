@@ -1,5 +1,7 @@
 # BaSEIB_exercise_bone_health
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3688685.svg)](https://doi.org/10.5281/zenodo.3688685)
+
 This repository contains data analysis resources from the manuscript "The effect of an exercise intervention program on bone health after bariatric surgery: BaSEIB clinical trial".
 
  ---
