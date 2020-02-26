@@ -1,18 +1,19 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
-source("code/functions/adjust_variable.R")
-source("code/functions/center_variable.R")
-source("code/functions/bonferroni.R")
+source(here("code", "functions", "adjust_variable.R"))
+source(here("code", "functions", "center_variable.R"))
+source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source("code/scripts/01_tidy_data.R")
-# Set contrasts of variable group to deviation
+source(here("code", "scripts", "01_tidy_data.R"))
+# Set contrasts of variable group to sum
 contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
 contrasts(df$time) <- contr.poly(4)
@@ -61,7 +62,7 @@ time_body_mass_emm <- emmeans(body_mass_LMM, ~ time)
 interaction_body_mass_emm  <- emmeans(body_mass_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_body_mass_emm_df <- as.data.frame(interaction_body_mass_emm)
-write_csv(interaction_body_mass_emm_df, "output/interaction_body_mass_emm.csv")
+write_csv(interaction_body_mass_emm_df, here("output", "interaction_body_mass_emm.csv"))
 
 # Post hocs
 ph_body_mass_none <- pairs(interaction_body_mass_emm, adjust = "none")
@@ -92,7 +93,7 @@ time_BMI_emm <- emmeans(BMI_LMM, ~ time)
 interaction_BMI_emm  <- emmeans(BMI_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_BMI_emm_df <- as.data.frame(interaction_BMI_emm)
-write_csv(interaction_BMI_emm_df, "output/interaction_BMI_emm.csv")
+write_csv(interaction_BMI_emm_df, here("output", "interaction_BMI_emm.csv"))
 
 # Post hocs
 ph_BMI_none <- pairs(interaction_BMI_emm, adjust = "none")
@@ -123,7 +124,7 @@ time_fat_mass_emm <- emmeans(fat_mass_LMM, ~ time)
 interaction_fat_mass_emm  <- emmeans(fat_mass_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_fat_mass_emm_df <- as.data.frame(interaction_fat_mass_emm)
-write_csv(interaction_fat_mass_emm_df, "output/interaction_fat_mass_emm.csv")
+write_csv(interaction_fat_mass_emm_df, here("output", "interaction_fat_mass_emm.csv"))
 
 # Post hocs
 ph_fat_mass_none <- pairs(interaction_fat_mass_emm, adjust = "none")
@@ -154,7 +155,7 @@ time_lean_mass_emm <- emmeans(whole_body_lean_mass_LMM, ~ time)
 interaction_lean_mass_emm  <- emmeans(whole_body_lean_mass_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_lean_mass_emm_df <- as.data.frame(interaction_lean_mass_emm)
-write_csv(interaction_lean_mass_emm_df, "output/interaction_lean_mass_emm.csv")
+write_csv(interaction_lean_mass_emm_df, here("output", "interaction_lean_mass_emm.csv"))
 
 # Post hocs
 ph_lean_mass_none <- pairs(interaction_lean_mass_emm, adjust = "none")
@@ -187,7 +188,7 @@ time_steps_emm <- emmeans(steps_LMM, ~ time)
 interaction_steps_emm  <- emmeans(steps_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_steps_emm_df <- as.data.frame(interaction_steps_emm)
-write_csv(interaction_steps_emm_df, "output/interaction_steps_emm.csv")
+write_csv(interaction_steps_emm_df, here("output", "interaction_steps_emm.csv"))
 
 # Post hocs
 ph_steps_none <- pairs(interaction_steps_emm, adjust = "none")
@@ -218,7 +219,7 @@ time_SB_emm <- emmeans(SB_LMM, ~ time)
 interaction_SB_emm  <- emmeans(SB_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_SB_emm_df <- as.data.frame(interaction_SB_emm)
-write_csv(interaction_SB_emm_df, "output/interaction_SB_emm.csv")
+write_csv(interaction_SB_emm_df, here("output", "interaction_SB_emm.csv"))
 
 # Post hocs
 ph_SB_none <- pairs(interaction_SB_emm, adjust = "none")
@@ -249,7 +250,7 @@ time_LPA_emm <- emmeans(LPA_LMM, ~ time)
 interaction_LPA_emm  <- emmeans(LPA_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_LPA_emm_df <- as.data.frame(interaction_LPA_emm)
-write_csv(interaction_LPA_emm_df, "output/interaction_LPA_emm.csv")
+write_csv(interaction_LPA_emm_df, here("output", "interaction_LPA_emm.csv"))
 
 # Post hocs
 ph_LPA_none <- pairs(interaction_LPA_emm, adjust = "none")
@@ -280,7 +281,7 @@ time_MVPA_emm <- emmeans(MVPA_LMM, ~ time)
 interaction_MVPA_emm  <- emmeans(MVPA_LMM, ~ attend_cat:time)
 # Save into a data frame to build the plots
 interaction_MVPA_emm_df <- as.data.frame(interaction_MVPA_emm)
-write_csv(interaction_MVPA_emm_df, "output/interaction_MVPA_emm.csv")
+write_csv(interaction_MVPA_emm_df, here("output", "interaction_MVPA_emm.csv"))
 
 # Post hocs
 ph_MVPA_none <- pairs(interaction_MVPA_emm, adjust = "none")
