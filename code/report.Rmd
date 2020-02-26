@@ -34,7 +34,7 @@ source(here("code", "scripts", "09_model_mediation.R"))
 
 <br>
  
-This report covers the content of a [github repository](https://github.com/verasls/BaSEIB_exercise_bone_health) that encompasses the data analysis of a manuscript entitled "The effect of an exercise intervention program on bone health after bariatric surgery: BaSEIB clinical trial". The [code](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code) folder contains two subfolders: [functions](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/functions), with some function definitions, and [scripts](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/scripts), with 9 different scripts regarding distinct steps of the data processing and statistical analysis. Also, code to generate the manuscript figures are inside the [figs](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/figs) folder.
+This report covers the content of a [github repository](https://github.com/verasls/BaSEIB_exercise_bone_health) that encompasses the data analysis of a manuscript entitled "The effect of an exercise intervention program on bone health after bariatric surgery: BaSEIB clinical trial". The [code](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code) folder contains two subfolders: [functions](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/functions), with some function definitions, and [scripts](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/scripts), with 9 different scripts regarding distinct steps of the data processing and statistical analysis. Also, the .Rmd file used to generate this report is inside the [code](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code) folder and the code to generate the manuscript figures are inside the [figs](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/figs) folder.
 
 <br>
 
@@ -108,7 +108,7 @@ Initially, a sum contrast was set to the `group` variable and a polynomial contr
 
 - `subj`: subject identifier;
 - `group` and `time`: factors included in the analysis;
-- Dependent variable (e.g., `FN_MBD`);
+- Dependent variable (e.g., `FN_BMD`);
 - Baseline values of the dependent variable (e.g., `FN_BMD_adjust`) for adjustment;
 - `BMI_adjust`: with baseline BMI values for adjustment (significant differences between groups at baseline were found).
 
@@ -140,7 +140,7 @@ FN_LMM <- lmer(
 )
 ```
 
-After building the model, some parameters were calculated The R^2^ was determined through the `rsquared()` function of the `piecewiseSEM` [package](https://cran.r-project.org/web/packages/piecewiseSEM/piecewiseSEM.pdf). Afther that, the `anova()` function (`stats` package) is used to compute the F tests associated with the model fixed effects and the `summary()` function (`base` package) is used to calculate the fixed and random effects estimates. Then, the estimated marginal means for the main effects and their interaction are given by the `emmeans()` function (`emmeans` [package](https://cran.r-project.org/web/packages/emmeans/emmeans.pdf)). Finally, the post hoc tests, without any adjustments, was done by the `pairs()` function (`graphics` package), and with the Bonferroni correction was done by the user-defined  `bonferroni()` [function](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/functions/bonferroni.R). The code to compute all of these parameters is shown below:
+After building the model, some parameters were calculated. The R^2^ was determined through the `rsquared()` function of the `piecewiseSEM` [package](https://cran.r-project.org/web/packages/piecewiseSEM/piecewiseSEM.pdf). Afther that, the `anova()` function (`stats` package) is used to compute the F tests associated with the model fixed effects and the `summary()` function (`base` package) is used to calculate the fixed and random effects estimates. Then, the estimated marginal means for the main effects and their interaction are given by the `emmeans()` function (`emmeans` [package](https://cran.r-project.org/web/packages/emmeans/emmeans.pdf)). Finally, the post hoc tests, without any adjustments, were done by the `pairs()` function (`graphics` package), and with the Bonferroni correction were done by the user-defined  `bonferroni()` [function](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/functions/bonferroni.R). The code to compute all of these parameters is shown below:
 
 ```{r primary_LMM_parameters}
 # R-squared
@@ -180,8 +180,8 @@ Similarly to the primary analyses, a sum contrast was set to the `attend_cat` va
 
 - `subj`: subject identifier;
 - `attend_cat` and `time`: factors included in the analysis;
-- Dependent variable (e.g., `delta_FN_MBD`);
-- `BMI_adjust`: with baseline BMI values for adjustment (significant differences between groups at baseline were found).
+- Dependent variable (e.g., `delta_FN_BMD`);
+- `BMI_adjust`: with baseline BMI values for adjustment (significant differences among groups at baseline were found).
 
 In the secondary analysis, for the bone parameters, percent change from the baseline were used, differing from the prmary analysis in which the absolute values were utilized. Therefore, no adjustment for baseline values of the dependent variables were done, since at baseline all this values were 0%.
 
@@ -256,7 +256,7 @@ contrasts(lm_df$attend_cat) <- matrix(rev(contr.sum(2)), ncol = 1)
 FN_lm_data <- lm_df %>% dplyr::select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
 ```
 
-After that, linear models were fitted using the `lm()` function (`stats` package). These models had the percent change from the baseline of the BMD variables as dependent variable, attend_cat as factor and baseline BMI values as covariate. Finally, the treatment effect size was estimated using the `omega_sq()` function of the `sjstats` [package](https://cran.r-project.org/web/packages/sjstats/sjstats.pdf).
+After that, linear models were fitted using the `lm()` function (`stats` package). These models had the BMD percent change as dependent variable, attend_cat as factor and baseline BMI values as covariate. Finally, the treatment effect size was estimated using the `omega_sq()` function of the `sjstats` [package](https://cran.r-project.org/web/packages/sjstats/sjstats.pdf).
 
 ```{r omega_squared}
 FN_lm <- lm(
@@ -294,7 +294,7 @@ FN_model <- get_lavaan_model(
 )
 ```
 
-To run the mediation analysis, the `sem()` function (`lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf)) was used. The model summary was obtained with the `summary()` function (`base` package) and the model parameter estimates were obtained with the `parameterEstimates()` function (`lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf))). The confidence intervals obtained with 5000 bootstrap re-samples (`sem()` arguments: `se = "bootstrap"` and `bootstrap = 5000`).
+To run the mediation analysis, the `sem()` function (`lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf) was used. The model summary was obtained with the `summary()` function (`base` package) and the model parameter estimates were obtained with the `parameterEstimates()` function (`lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf). The confidence intervals obtained with 5000 bootstrap re-samples (`sem()` arguments: `se = "bootstrap"` and `bootstrap = 5000`).
 
 ```{r mediation}
 FN_mediation <- sem(data = FN_delta_data, model = FN_model, se = "bootstrap", bootstrap = 5000)
