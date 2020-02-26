@@ -1,18 +1,19 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 library(sjstats)
 
 # Load and prepare data ---------------------------------------------------
 
-source("code/scripts/01_tidy_data.R")
+source(here("code", "scripts", "01_tidy_data.R"))
 # Create an intermediate df
 lm_df <- df %>% filter(
   time == 4 & attend_cat %in% c("Control", "Over 50% training attendance")
 )
 # Drop unused level
 lm_df$attend_cat <- factor(lm_df$attend_cat)
-# Set contrasts of variable group to deviation
+# Set contrasts of variable group to sum
 contrasts(lm_df$attend_cat) <- matrix(rev(contr.sum(2)), ncol = 1)
 
 # Select variables
