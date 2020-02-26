@@ -3,7 +3,7 @@
 library(here)
 library(tidyverse)
 library(lavaan)
-source(here("code", "function", "get_lavaan_model.R"))
+source(here("code", "functions", "get_lavaan_model.R"))
 
 # Load and prepare data ---------------------------------------------------
 
