@@ -1,12 +1,13 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 library(lavaan)
-source("code/functions/get_lavaan_model.R")
+source(here("code", "function", "get_lavaan_model.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source("code/scripts/01_tidy_data.R")
+source(here("code", "scripts", "01_tidy_data.R"))
 # Select variables
 FN_delta_data <- df %>% 
   dplyr::select(subj, time, group, attend_cat, delta_FN_BMD, delta_whole_body_lean_mass, BMI_adjust) %>% 
