@@ -1,17 +1,18 @@
 # Load packages and functions ---------------------------------------------
 
+library(here)
 library(tidyverse)
 library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
-source("code/functions/center_variable.R")
-source("code/functions/bonferroni.R")
+source(here("code", "functions", "center_variable.R"))
+source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source("code/scripts/01_tidy_data.R")
-# Set contrasts of variable group to deviation
+source(here("code", "scripts", "01_tidy_data.R"))
+# Set contrasts of variable group to sum
 contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
 # Set contrasts of variable time to polynomial
 contrasts(df$time) <- contr.poly(4)
