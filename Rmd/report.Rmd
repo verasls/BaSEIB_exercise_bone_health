@@ -16,9 +16,22 @@ editor_options:
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, results = "hide")
+knitr::opts_chunk$set(eval = FALSE)
 ```
  
+```{r loads, eval=TRUE, echo=FALSE, include=FALSE}
+library(here)
+source(here("code", "scripts", "01_tidy_data.R"))
+source(here("code", "scripts", "02_compare_groups_baseline.R"))
+source(here("code", "scripts", "03_model_BMD_variables.R"))
+source(here("code", "scripts", "04_model_biochemical_BMSi_variables.R"))
+source(here("code", "scripts", "05_model_delta_BMD_variables.R"))
+source(here("code", "scripts", "06_model_delta_biochemical_BMSi_variables.R"))
+source(here("code", "scripts", "07_compute_omega2_delta_BMD_variables.R"))
+source(here("code", "scripts", "08_model_BC_PA_variables.R"))
+source(here("code", "scripts", "09_model_mediation.R"))
+```
+
 <br>
  
 This report covers the content of a [github repository](https://github.com/verasls/BaSEIB_exercise_bone_health) that encompasses the data analysis of a manuscript entitled "The effect of an exercise intervention program on bone health after bariatric surgery: BaSEIB clinical trial". The [code](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code) folder contains two subfolders: [functions](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/functions), with some function definitions, and [scripts](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/code/scripts), with 9 different scripts regarding distinct steps of the data processing and statistical analysis. Also, code to generate the manuscript figures are inside the [figs](https://github.com/verasls/BaSEIB_exercise_bone_health/tree/master/figs) folder.
@@ -28,14 +41,6 @@ This report covers the content of a [github repository](https://github.com/veras
 # Load and tidy data
 
 The [01_tidy_data.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/01_tidy_data.R) script loads the database.csv file. It, then, selects, renames and recodes some variables and excludes data from subjects who do not have at least one follow-up assessment.
-
-```{r loads, echo=FALSE}
-library(here)
-source(here("code", "scripts", "01_tidy_data.R"))
-source(here("code", "scripts", "02_compare_groups_baseline.R"))
-source(here("code", "scripts", "03_model_BMD_variables.R"))
-source(here("code", "scripts", "04_model_biochemical_BMSi_variables.R"))
-```
 
 <br>
 
@@ -60,7 +65,7 @@ baseline_exc_df <- filter(baseline_df, exclude == "Yes")
 
 For the continuous variables, first, normality tests were run with the `shapiro.test()` function. Then, independent samples t tests were run with the `t.test()` function, when comparing two groups, and analysis of variance (ANOVA) were run with the `aov()` function when comparing three groups. If the ANOVA results showed significant results, parwise t tests with the Bonferroni correction were done with the `pairwise.t.test()` function. All of these functions are on the `stats` package.
 
-For the categorical variabels, the chi-square test was used to the baseline comparisons with the `CrossTable()` function of the `gmodels` package.
+For the categorical variabels, the chi-square test was used to the baseline comparisons with the `CrossTable()` function of the `gmodels` [package](https://cran.r-project.org/web/packages/gmodels/gmodels.pdf).
 
 An example of the code used to these analyses is shown below.
 
@@ -97,7 +102,7 @@ CrossTable(
 
 # Primary analysis
 
-A primary analysis was conducted comparing the outcomes between the groups (control and exercise) as randomized. These analysis were divided into two separate scripts, [03_model_BMD_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/03_model_BMD_variables.R) for the bone mineral density (BMD) variables, and [04_model_biochemical_BMSi_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/04_model_biochemical_BMSi_variables.R) for the biochemical variables and the bone material strength index (BMSi). The analyses in both scripts were done similarly, varying only in the variables.
+A primary analysis was conducted comparing the outcomes between the groups (control and exercise) as randomized. These analyses were divided into two separate scripts, [03_model_BMD_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/03_model_BMD_variables.R) for the bone mineral density (BMD) variables, and [04_model_biochemical_BMSi_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/04_model_biochemical_BMSi_variables.R) for the biochemical variables and the bone material strength index (BMSi). The analyses in both scripts were done similarly, varying only in the variables.
 
 Initially, a sum contrast was set to the `group` variable and a polynomial contrast was set to the `time` variable. This was accomplished with the functions `contrasts()`, `contr.sum()` and `contr.poly()` from the `stats` package. After that, a different data frame was created for each variable analyzed, selecting only the necessary columns from the main data frame. These variables were:
 
@@ -111,7 +116,7 @@ Then, the baseline values of the dependent variable were centered, using the use
 
 An example of the code used to this process is shown below:
 
-```{r setip_LMM}
+```{r setup_LMM}
 # Set contrasts of variable group to sum
 contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
@@ -126,7 +131,7 @@ FN_data <- center_variable(FN_data, "FN_BMD_adjust")
 
 ## Linear mixed models
 
-The treatment effect on bone parameters was tested by linear mixed-models analysis  using the `lmer()` function the `lme4` package. The models included group, time and group X time interaction as fixed factors, baseline values of the BMI and of the dependent variable as covariates and the subjects as a random factor. An example of the code to build the models can be seen below:
+The treatment effect on bone parameters was tested by linear mixed-models analysis  using the `lmer()` function of the `lme4` [package](https://cran.r-project.org/web/packages/lme4/lme4.pdf). The models included group, time and group X time interaction as fixed factors, baseline values of the BMI and of the dependent variable as covariates and the subjects as a random factor. An example of the code to build the models can be seen below:
 
 ```{r primary_LMM}
 FN_LMM <- lmer(
@@ -134,6 +139,8 @@ FN_LMM <- lmer(
   data = FN_data
 )
 ```
+
+After building the model, some parameters were calculated The R^2^ was determined through the `rsquared()` function of the `piecewiseSEM` [package](https://cran.r-project.org/web/packages/piecewiseSEM/piecewiseSEM.pdf). Afther that, the `anova()` function (`stats` package) is used to compute the F tests associated with the model fixed effects and the `summary()` function (`base` package) is used to calculate the fixed and random effects estimates. Then, the estimated marginal means for the main effects and their interaction are given by the `emmeans()` function (`emmeans` [package](https://cran.r-project.org/web/packages/emmeans/emmeans.pdf)). Finally, the post hoc tests, without any adjustments, was done by the `pairs()` function (`graphics` package), and with the Bonferroni correction was done by the user-defined  `bonferroni()` [function](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/functions/bonferroni.R). The code to compute all of these parameters is shown below:
 
 ```{r primary_LMM_parameters}
 # R-squared
@@ -153,22 +160,154 @@ time_FN_emm <- emmeans(FN_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_FN_emm  <- emmeans(FN_LMM, ~ group:time)
-# Save into a data frame to build the plots
-interaction_FN_emm_df <- as.data.frame(interaction_FN_emm)
-write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
 
 # Post hocs
 ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
 ph_FN_bonf <- bonferroni(as.data.frame(ph_FN_none), 16)
 ```
 
+The script [04_model_biochemical_BMSi_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/04_model_biochemical_BMSi_variables.R) contains the same analyses, but with different dependent variables and covariates.
 
+<br>
+
+# Secondary analysis
+
+Subsequently, a secondary analysis was also performed dividing the exercise group (EG) into two subgroups according to the attendance to the exercise protocol: participants with attendance rate <50% (EG<50%) and attendance rate ≥50% (EG≥50% ) in addition to the control group (CG). This analysis was conducted to determine if the effects of the exercise intervention on the selected outcomes differed according to the attendance rate.
+
+These analyses were also divided into two separate scripts, [05_model_delta_BMD_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/05_model_delta_BMD_variables.R) for the bone mineral density (BMD) variables, and [06_model_delta_biochemical_BMSi_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/06_model_delta_biochemical_BMSi_variables.R) for the biochemical variables and the bone material strength index (BMSi).
+
+Similarly to the primary analyses, a sum contrast was set to the `attend_cat` variable, which now represents the groups according to their attendace rate, and a polynomial contrast was set to the `time` variable. After that, a different data frame was created for each variable analyzed, selecting only the necessary columns from the main data frame. These variables were:
+
+- `subj`: subject identifier;
+- `attend_cat` and `time`: factors included in the analysis;
+- Dependent variable (e.g., `delta_FN_MBD`);
+- `BMI_adjust`: with baseline BMI values for adjustment (significant differences between groups at baseline were found).
+
+In the secondary analysis, for the bone parameters, percent change from the baseline were used, differing from the prmary analysis in which the absolute values were utilized. Therefore, no adjustment for baseline values of the dependent variables were done, since at baseline all this values were 0%.
+
+An example of the code used to this process is shown below:
+
+```{r setup_LMM_sec}
+# Set contrasts of variable group to sum
+contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
+# Set contrasts of variable time to polynomial
+contrasts(df$time) <- contr.poly(4)
+
+# Select variables
+FN_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
+```
+
+## Linear mixed models
+
+The treatment effect on bone parameters was also tested by linear mixed-models analysis  using the same [package](https://cran.r-project.org/web/packages/lme4/lme4.pdf) and function than the primary analysis. The models included attend_cat, time and attend_cat X time interaction as fixed factors, baseline values of the BMI as covariate and the subjects as a random factor. An example of the code to build the models can be seen below:
+
+```{r secondary_LMM}
+delta_FN_LMM <- lmer(
+  formula = delta_FN_BMD ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  data = FN_delta_data
+)
+```
+
+Then, the same parameters (R^2^, F tests for fixed effects, fixed and random effects estimates, estimated marginal means and post hoc test) were computed using the same procedures than the primary analysis. An example of the code for these computations is shown below:
+
+```{r secondary_LMM_parameters}
+# R-squared
+rsquared(delta_FN_LMM)
+
+# Fixed effects test
+anova(delta_FN_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(delta_FN_LMM)
+
+# Estimated marginal means for group
+group_delta_FN_emm <- emmeans(delta_FN_LMM, ~ attend_cat)
+
+# Estimated marginal means for time
+time_delta_FN_emm <- emmeans(delta_FN_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_delta_FN_emm  <- emmeans(delta_FN_LMM, ~ attend_cat:time)
+
+# Post hocs
+ph_delta_FN_none <- pairs(interaction_delta_FN_emm, adjust = "none")
+ph_delta_FN_bonf <- bonferroni(as.data.frame(ph_delta_FN_none), 3)
+```
+
+The script [06_model_delta_biochemical_BMSi_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/06_model_delta_biochemical_BMSi_variables.R) contains the same analyses, but with different dependent variables and covariates.
+
+The script [05.1_test_attendance_cutoffs.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/05.1_test_attendance_cutoffs.R) was used to test the effect of other attendance rate cut-offs on the linear mixed models of the BMD variables.
+
+## Treatment effect size
+
+Afterwards, treatment effect size ($\omega$^2^) was estimated for the BMD variables. To do so, first, an intermediate data frame was created, selecting only the CG and the EG≥50% and the time 4 (12 monts post-bariatric surgery). Then, the attend_cat unused level (EG<50%) was droped, and a sum contrast was set for the remaining levels. Finally, the same variables used in the linear mixed models were selected:
+
+```{r effect_size_setup}
+# Create an intermediate df
+lm_df <- df %>% filter(
+  time == 4 & attend_cat %in% c("Control", "Over 50% training attendance")
+)
+# Drop unused level
+lm_df$attend_cat <- factor(lm_df$attend_cat)
+# Set contrasts of variable group to sum
+contrasts(lm_df$attend_cat) <- matrix(rev(contr.sum(2)), ncol = 1)
+
+# Select variables
+FN_lm_data <- lm_df %>% dplyr::select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
+```
+
+After that, linear models were fitted using the `lm()` function (`stats` package). These models had the percent change from the baseline of the BMD variables as dependent variable, attend_cat as factor and baseline BMI values as covariate. Finally, the treatment effect size was estimated using the `omega_sq()` function of the `sjstats` [package](https://cran.r-project.org/web/packages/sjstats/sjstats.pdf).
+
+```{r omega_squared}
+FN_lm <- lm(
+  delta_FN_BMD ~ attend_cat + BMI_adjust,
+  data = FN_lm_data
+)
+omega_sq(FN_lm)
+```
+
+## Mediation analysis
+
+Finally, we analyzed to what extent the effects of exercise participation on bone parameters was mediated by other factors. The factors that could have been influenced by the exercise intervention are body composition or physical activity variables. So, to test for the effect of the exercise intervention on these variables, again, linear mixed models were utilized using the same procedures as in the bone parameters linear mixed models. These analyses were done in the [08_model_BC_PA_variables.R](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/scripts/08_model_BC_PA_variables.R) script. As only the whole body lean mass have shown to be significantly influenced by the exercise training, this was the only variable utilized in the mediation model.
+
+Before running the models, a new data frame was created selecting only the CG and the EG≥50% and the time 4 (12 monts post-bariatric surgery). Besides that, the desired variables were selected and the group variable was recoded into a numerical variable.
+
+```{r mediation_setup}
+# Select variables
+FN_delta_data <- df %>% 
+  dplyr::select(subj, time, group, attend_cat, delta_FN_BMD, delta_whole_body_lean_mass, BMI_adjust) %>% 
+  filter(time == 4) %>% 
+  filter(attend_cat == "Control" | attend_cat == "Over 50% training attendance") %>% 
+  na.omit()
+# Recode group variable into numerical
+FN_delta_data$group <- as.double(FN_delta_data$group)
+```
+
+The `lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf) was used run the mediation models. This package uses a particular model syntax, that can be overviewed in this [tutorial](http://lavaan.ugent.be/tutorial/index.html). In order to generate the syntax needed for the analyses, the user-defined [function](https://github.com/verasls/BaSEIB_exercise_bone_health/blob/master/code/functions/get_lavaan_model.R) `get_lavaan_model()` was used, taking for parameters the model outcome, predictor, mediator and covariate. An example of model syntax can be seen below:
+
+```{r mediation_model_syntax, eval=TRUE}
+FN_model <- get_lavaan_model(
+  outcome = "delta_FN_BMD",
+  predictor = "group",
+  mediator = "delta_whole_body_lean_mass",
+  covariate = "BMI_adjust"
+)
+```
+
+To run the mediation analysis, the `sem()` function (`lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf)) was used. The model summary was obtained with the `summary()` function (`base` package) and the model parameter estimates were obtained with the `parameterEstimates()` function (`lavaan` [package](https://cran.r-project.org/web/packages/lavaan/lavaan.pdf))). The confidence intervals obtained with 5000 bootstrap re-samples (`sem()` arguments: `se = "bootstrap"` and `bootstrap = 5000`).
+
+```{r mediation}
+FN_mediation <- sem(data = FN_delta_data, model = FN_model, se = "bootstrap", bootstrap = 5000)
+summary(FN_mediation)
+parameterEstimates(FN_mediation)
+```
+  
 <br>
 
 # R session info
 
-R session info with all lackages loaded and their versions.
+R session info with all packages loaded and their versions.
 
-```{r session_info}
+```{r session_info, eval=TRUE}
 devtools::session_info()
 ```
