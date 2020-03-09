@@ -1,7 +1,7 @@
 ---
 title: | 
   | Data analysis report - 
-  | The effect of an exercise intervention program on bone health after bariatric surgery: BaSEIB clinical trial
+  | The effect of an exercise intervention program on bone health after bariatric surgery: A Randomized Controlled Trial
 author: "Lucas Veras"
 date: "`r Sys.Date()`"
 output: 
