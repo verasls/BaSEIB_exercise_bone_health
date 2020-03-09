@@ -172,4 +172,5 @@ lean_mass_plot <- ggplot(data = filter(delta_BC_plot_df, variable == "% whole bo
   labs(
     x = "",
     y = "% whole body lean mass change"
-  )
+  ) +
+  annotate("text", x = 3, y = -11.5, label = "a")
