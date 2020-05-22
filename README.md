@@ -19,7 +19,7 @@ There are 2 subdirectories in this repository:
 1. [code](code/)
 3. [figs](figs/)
 
-## [R](R/) contents
+## [code](code/) contents
 
 Subdirectory **R** contains 2 subdirectories and a file:
 
