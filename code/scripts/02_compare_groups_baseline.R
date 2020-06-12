@@ -6,7 +6,8 @@ library(gmodels)
 
 # Load and prepare data ---------------------------------------------------
 
-source(here("code", "scripts", "01_tidy_data.R"))
+df <- read_csv(here("data", "df.csv"))
+baseline_df <- read_csv(here("data", "baseline_df.csv"))
 control_df <- filter(baseline_df, group == "Control" & exclude == "No")
 exercise_df <- filter(baseline_df, group == "Exercise" & exclude == "No")
 exercise_under_50_df <- filter(baseline_df, attend_cat == "Under 50% training attendance" & exclude == "No")
