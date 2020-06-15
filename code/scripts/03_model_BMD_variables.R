@@ -6,6 +6,7 @@ library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
+source(here("code", "functions", "read_data.R"))
 source(here("code", "functions", "center_variable.R"))
 source(here("code", "functions", "bonferroni.R"))
 
