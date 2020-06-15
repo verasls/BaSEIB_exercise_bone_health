@@ -11,7 +11,7 @@ source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source(here("code", "scripts", "01_tidy_data.R"))
+df <- read_data(here("data", "df.csv"))
 # Set contrasts of variable group to sum
 contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
@@ -31,12 +31,17 @@ TR_data <- center_variable(TR_data, "TR_BMD_adjust")
 
 # Build models ------------------------------------------------------------
 
+build_formula <- function(var) {
+  f <- paste0(
+    var, "_BMD ~ 1 + group + time + group:time + ", var, 
+    "_BMD_adjust_centered + BMI_adjust + (1 | subj)"
+  )
+  as.formula(f)
+}
+
 # ** TH_BMD ---------------------------------------------------------------
 
-TH_LMM <- lmer(
-  formula = TH_BMD ~ 1 + group + time + group:time + TH_BMD_adjust_centered + BMI_adjust + (1 | subj),
-  data = TH_data
-)
+TH_LMM <- lmer(formula = build_formula("TH"), data = TH_data)
 
 # R-squared
 rsquared(TH_LMM)
@@ -59,16 +64,12 @@ interaction_TH_emm  <- emmeans(TH_LMM, ~ group:time)
 interaction_TH_emm_df <- as.data.frame(interaction_TH_emm)
 write_csv(interaction_TH_emm_df, here("output", "interaction_TH_emm.csv"))
 
-# Post hocs
+# Post hoc
 ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
-ph_TH_bonf <- bonferroni(as.data.frame(ph_TH_none), 16)
 
 # ** FN_BMD ---------------------------------------------------------------
 
-FN_LMM <- lmer(
-  formula = FN_BMD ~ 1 + group + time + group:time + FN_BMD_adjust_centered + BMI_adjust + (1 | subj),
-  data = FN_data
-)
+FN_LMM <- lmer(formula = build_formula("FN"), data = FN_data)
 
 # R-squared
 rsquared(FN_LMM)
@@ -91,16 +92,12 @@ interaction_FN_emm  <- emmeans(FN_LMM, ~ group:time)
 interaction_FN_emm_df <- as.data.frame(interaction_FN_emm)
 write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
 
-# Post hocs
+# Post hoc
 ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
-ph_FN_bonf <- bonferroni(as.data.frame(ph_FN_none), 16)
 
 # ** LS_BMD ---------------------------------------------------------------
 
-LS_LMM <- lmer(
-  formula = LS_BMD ~ 1 + group + time + group:time + LS_BMD_adjust_centered+ BMI_adjust + (1 | subj),
-  data = LS_data
-)
+LS_LMM <- lmer(formula = build_formula("LS"), data = LS_data)
 
 # R-squared
 rsquared(LS_LMM)
@@ -123,16 +120,12 @@ interaction_LS_emm  <- emmeans(LS_LMM, ~ group:time)
 interaction_LS_emm_df <- as.data.frame(interaction_LS_emm)
 write_csv(interaction_LS_emm_df, here("output", "interaction_LS_emm.csv"))
 
-# Post hocs
+# Post hoc
 ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
-ph_LS_bonf <- bonferroni(as.data.frame(ph_LS_none), 16)
 
 # ** TR_BMD ---------------------------------------------------------------
   
-TR_LMM <- lmer(
-  formula = TR_BMD ~ 1 + group + time + group:time + TR_BMD_adjust_centered + BMI_adjust + (1 | subj),
-  data = TR_data
-)
+TR_LMM <- lmer(formula = build_formula("TR"), data = TR_data)
 
 # R-squared
 rsquared(TR_LMM)
@@ -155,6 +148,5 @@ interaction_TR_emm  <- emmeans(TR_LMM, ~ group:time)
 interaction_TR_emm_df <- as.data.frame(interaction_TR_emm)
 write_csv(interaction_TR_emm_df, here("output", "interaction_TR_emm.csv"))
 
-# Post hocs
+# Post hoc
 ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
-ph_TR_bonf <- bonferroni(as.data.frame(ph_TR_none), 16)
