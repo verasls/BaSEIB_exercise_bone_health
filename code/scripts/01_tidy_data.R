@@ -2,7 +2,7 @@
 
 library(here)
 library(tidyverse)
-library(lvmisc)
+source(here("code", "functions", "repeat_baseline_values.R"))
 
 # Rename variables --------------------------------------------------------
 
@@ -67,6 +67,43 @@ df <- df %>%
       "2" = "Over 50% training attendance"
     )
   )
+
+# Create baseline adjustment variables ------------------------------------
+
+df <- df %>% 
+  mutate(
+    whole_body_fat_mass_adjust = repeat_baseline_values(
+      df, whole_body_fat_mass, subj, time, 1
+    ),
+    whole_body_lean_mass_adjust = repeat_baseline_values(
+      df, whole_body_lean_mass, subj, time, 1
+    ),
+    steps_adjust = repeat_baseline_values(
+      df, steps, subj, time, 1
+    ),
+    SB_h_adjust = repeat_baseline_values(
+      df, SB_h, subj, time, 1
+    ),
+    LPA_h_adjust = repeat_baseline_values(
+      df, LPA_h, subj, time, 1
+    ),
+    MVPA_min_adjust = repeat_baseline_values(
+      df, MVPA_min, subj, time, 1
+    ),
+    peak_torque_knee_ext_60ds_adjust = repeat_baseline_values(
+      df, peak_torque_knee_ext_60ds, subj, time, 1
+    ),
+    peak_torque_knee_fle_60ds_adjust = repeat_baseline_values(
+      df, peak_torque_knee_fle_60ds, subj, time, 1
+    ),
+    
+    peak_torque_knee_ext_60ds_body_mass_adjust = repeat_baseline_values(
+      df, peak_torque_knee_ext_60ds_body_mass, subj, time, 1
+    ),
+    peak_torque_knee_fle_60ds_body_mass_adjust = repeat_baseline_values(
+      df, peak_torque_knee_fle_60ds_body_mass, subj, time, 1
+    )
+  )
   
 # Prepare data frame for baseline comparisons -----------------------------
 
@@ -97,6 +134,7 @@ exclude <- c(
   53, 57, 59, 64, 65, 66, 74, 76, 82, 84, 86
 )
 
+'%!in%' <- function(x, table) !(x %in% table)
 df <- df %>% filter(subj %!in% exclude)
 
 baseline_df <- baseline_df %>% 
