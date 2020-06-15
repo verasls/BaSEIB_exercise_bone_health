@@ -11,7 +11,7 @@ source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source(here("code", "scripts", "01_tidy_data.R"))
+df <- read_data(here("data", "df.csv"))
 # Set contrasts of variable group to sum
 contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
@@ -35,12 +35,17 @@ BMSi_data       <- center_variable(BMSi_data, "BMSi_adjust")
 
 # Build models ------------------------------------------------------------
 
+build_formula <- function(var) {
+  f <- paste0(
+    var, " ~ 1 + group + time + group:time + ", var, 
+    "_adjust_centered + BMI_adjust + (1 | subj)"
+  )
+  as.formula(f)
+}
+
 # ** P1NP_BMD ---------------------------------------------------------------
 
-P1NP_LMM <- lmer(
-  formula = P1NP ~ 1 + group + time + group:time + P1NP_adjust_centered + BMI_adjust + (1 | subj),
-  data = P1NP_data
-)
+P1NP_LMM <- lmer(formula = build_formula("P1NP"), data = P1NP_data)
 
 # R-squared
 rsquared(P1NP_LMM)
@@ -60,16 +65,12 @@ time_P1NP_emm <- emmeans(P1NP_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_P1NP_emm  <- emmeans(P1NP_LMM, ~ group:time)
 
-# Post hocs
+# Post hoc
 ph_P1NP_none <- pairs(interaction_P1NP_emm, adjust = "none")
-ph_P1NP_bonf <- bonferroni(as.data.frame(ph_P1NP_none), 16)
 
 # ** CTX_BMD ---------------------------------------------------------------
 
-CTX_LMM <- lmer(
-  formula = CTX ~ 1 + group + time + group:time + CTX_adjust_centered + BMI_adjust + (1 | subj),
-  data = CTX_data
-)
+CTX_LMM <- lmer(formula = build_formula("CTX"), data = CTX_data)
 
 # R-squared
 rsquared(CTX_LMM)
@@ -89,16 +90,12 @@ time_CTX_emm <- emmeans(CTX_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_CTX_emm  <- emmeans(CTX_LMM, ~ group:time)
 
-# Post hocs
+# Post hoc
 ph_CTX_none <- pairs(interaction_CTX_emm, adjust = "none")
-ph_CTX_bonf <- bonferroni(as.data.frame(ph_CTX_none), 16)
 
 # ** PTH_BMD ---------------------------------------------------------------
 
-PTH_LMM <- lmer(
-  formula = PTH ~ 1 + group + time + group:time + PTH_adjust_centered + BMI_adjust + (1 | subj),
-  data = PTH_data
-)
+PTH_LMM <- lmer(formula = build_formula("PTH"), data = PTH_data)
 
 # R-squared
 rsquared(PTH_LMM)
@@ -118,16 +115,12 @@ time_PTH_emm <- emmeans(PTH_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_PTH_emm  <- emmeans(PTH_LMM, ~ group:time)
 
-# Post hocs
+# Post hoc
 ph_PTH_none <- pairs(interaction_PTH_emm, adjust = "none")
-ph_PTH_bonf <- bonferroni(as.data.frame(ph_PTH_none), 16)
 
 # ** vitD_BMD ---------------------------------------------------------------
 
-vitD_LMM <- lmer(
-  formula = vitD ~ 1 + group + time + group:time + vitD_adjust_centered + BMI_adjust + (1 | subj),
-  data = vitD_data
-)
+vitD_LMM <- lmer(formula = build_formula("vitD"), data = vitD_data)
 
 # R-squared
 rsquared(vitD_LMM)
@@ -147,16 +140,12 @@ time_vitD_emm <- emmeans(vitD_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_vitD_emm  <- emmeans(vitD_LMM, ~ group:time)
 
-# Post hocs
+# Post hoc
 ph_vitD_none <- pairs(interaction_vitD_emm, adjust = "none")
-ph_vitD_bonf <- bonferroni(as.data.frame(ph_vitD_none), 16)
 
 # ** sclerostin_BMD ---------------------------------------------------------------
 
-sclerostin_LMM <- lmer(
-  formula = sclerostin ~ 1 + group + time + group:time + sclerostin_adjust_centered + BMI_adjust + (1 | subj),
-  data = sclerostin_data
-)
+sclerostin_LMM <- lmer(formula = build_formula("sclerostin"), data = sclerostin_data)
 
 # R-squared
 rsquared(sclerostin_LMM)
@@ -176,16 +165,12 @@ time_sclerostin_emm <- emmeans(sclerostin_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_sclerostin_emm  <- emmeans(sclerostin_LMM, ~ group:time)
 
-# Post hocs
+# Post hoc
 ph_sclerostin_none <- pairs(interaction_sclerostin_emm, adjust = "none")
-ph_sclerostin_bonf <- bonferroni(as.data.frame(ph_sclerostin_none), 16)
 
 # ** BMSi -----------------------------------------------------------------
 
-BMSi_LMM <- lmer(
-  formula = BMSi ~ 1 + group + time + group:time + BMSi_adjust_centered + BMI_adjust + (1 | subj),
-  data = BMSi_data
-)
+BMSi_LMM <- lmer(formula = build_formula("BMSi"), data = BMSi_data)
 
 # R-squared
 rsquared(BMSi_LMM)
@@ -205,6 +190,5 @@ time_BMSi_emm <- emmeans(BMSi_LMM, ~ time)
 # Estimated marginal means for group x time interaction
 interaction_BMSi_emm  <- emmeans(BMSi_LMM, ~ group:time)
 
-# Post hocs
+# Post hoc
 ph_BMSi_none <- pairs(interaction_BMSi_emm, adjust = "none")
-ph_BMSi_bonf <- bonferroni(as.data.frame(ph_BMSi_none), 16)
