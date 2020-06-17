@@ -142,7 +142,33 @@ baseline_df <- baseline_df %>%
     exclude = ifelse(subj %in% exclude, "Yes", "No")
   )
 
+# Prepare accelerometer data ----------------------------------------------
+
+df_join <- df %>% select(subj, time, group, BMI_adjust)
+
+acc <- read_csv(here("data", "raw", "summary_GRF_data.csv")) %>% 
+  dplyr::select(
+    subj = ID, time = eval, duration, n_days, n_peaks, above_thrsh = n_g_4.9
+  ) %>% 
+  mutate(
+    time = recode(
+      as.factor(time),
+      "1st" = "1", "2nd" = "2", "3rd" = "3", "4th" = "4"
+    )
+  ) %>% 
+  left_join(df_join, by = c("subj", "time")) %>% 
+  dplyr::select(subj, time, group, everything()) %>% 
+  arrange(subj)
+
+acc <- acc %>% 
+  mutate(
+    above_thrsh_adjust = repeat_baseline_values(
+      acc, above_thrsh, subj, time, 1
+    )
+  )
+
 # Write data --------------------------------------------------------------
 
 write_csv(df, here("data", "df.csv"))
 write_csv(baseline_df, here("data", "baseline_df.csv"))
+write_csv(acc, here("data", "acc.csv"))
