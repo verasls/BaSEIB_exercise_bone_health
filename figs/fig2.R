@@ -83,10 +83,7 @@ TH_plot <- ggplot(data = TH_plot_df) +
   labs(
     x = "",
     y = quote("Total hip bone mineral density"~(g%.%cm^-2))
-  ) +
-  annotate("text", x = 3.2, y = 0.982, label = "a'', b''") +
-  annotate("text", x = 4.31, y = 0.9482558, label = "a'', b'', c''") +
-  annotate("text", x = 4.18, y = 0.967, label = "a'', b'', c''")
+  )
 
 # FN plot -----------------------------------------------------------------
 
@@ -129,10 +126,10 @@ FN_plot <- ggplot(data = FN_plot_df) +
     x = "",
     y = quote("Femoral neck bone mineral density"~(g%.%cm^-2))
   ) +
-  annotate("text", x = 2.89, y = 0.858, label = "a") +
-  annotate("text", x = 4.2, y = 0.8125381, label = "a'', b'', c''") +
-  annotate("text", x = 3.18, y = 0.865, label = "a', b") +
-  annotate("text", x = 4.24, y = 0.8378519, label = "a'', b''")
+  annotate("segment", x = 4.2, xend = 4.2, y = 0.805, yend = 0.840, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 0.805, yend = 0.805, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 0.840, yend = 0.840, size = 0.5) +
+  annotate("text", x = 4.3, y = 0.82, label = "italic(p) == 0.046", angle = 90, parse = TRUE)
 
 # LS plot -----------------------------------------------------------------
 
@@ -175,10 +172,10 @@ LS_plot <- ggplot(data = LS_plot_df) +
     x = "",
     y = quote("Lumbar spine bone mineral density"~(g%.%cm^-2))
   ) +
-  annotate("text", x = 3.05, y = 1.0255085, label = "b") +
-  annotate("text", x = 3.05, y = 1.0255085, label = "b") +
-  annotate("text", x = 4.18, y = 0.9960772, label = "a'', b'', c'") +
-  annotate("text", x = 4.2, y = 1.0226401, label = "a, b'")
+  annotate("segment", x = 4.2, xend = 4.2, y = 0.995, yend = 1.022, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 0.995, yend = 0.995, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 1.022, yend = 1.022, size = 0.5) +
+  annotate("text", x = 4.3, y = 1.007, label = "italic(p) == 0.006", angle = 90, parse = TRUE)
 
 # TR plot -----------------------------------------------------------------
 
@@ -218,24 +215,26 @@ TR_plot <- ggplot(data = TR_plot_df) +
     x = "",
     y = quote("One-third radius bone mineral density"~(g%.%cm^-2))
   ) +
-  annotate("text", x = 4.15, y = 0.6981351, label = "a")
+  annotate("segment", x = 4.2, xend = 4.2, y = 0.684, yend = 0.698, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 0.684, yend = 0.684, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 0.698, yend = 0.698, size = 0.5) +
+  annotate("text", x = 4.3, y = 0.690, label = "italic(p) == 0.012", angle = 90, parse = TRUE)
 
 # Plot grid ---------------------------------------------------------------
 
 legend <- get_legend(TH_plot)
 
 grid_1 <- plot_grid(
+  LS_plot + theme(legend.position = "none"),
   TH_plot + theme(legend.position = "none"),
   FN_plot + theme(legend.position = "none"),
-  LS_plot + theme(legend.position = "none"),
   TR_plot + theme(legend.position = "none"),
   ncol = 2, nrow = 2
 )
 
 grid <- plot_grid(legend, grid_1, ncol = 1, rel_heights = c(0.1, 1))
 
-# Uncomment lines below to save plot
-# ggsave(
-#   filename = "figs/fig2.tiff",
-#   plot = grid, width = 40, height = 40, dpi = 600, units = "cm"
-# )
+ggsave(
+  filename = "figs/fig2.pdf",
+  plot = grid, width = 40, height = 40, dpi = 200, units = "cm"
+)
