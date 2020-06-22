@@ -3,67 +3,76 @@
 library(here)
 library(tidyverse)
 library(lavaan)
+source(here("code", "functions", "read_data.R"))
 source(here("code", "functions", "get_lavaan_model.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source(here("code", "scripts", "01_tidy_data.R"))
-# Select variables
-FN_delta_data <- df %>% 
-  dplyr::select(subj, time, group, attend_cat, delta_FN_BMD, delta_whole_body_lean_mass, BMI_adjust) %>% 
-  filter(time == 4) %>% 
-  filter(attend_cat == "Control" | attend_cat == "Over 50% training attendance") %>% 
-  na.omit()
-LS_delta_data <- df %>% 
-  dplyr::select(subj, time, group, attend_cat, delta_LS_BMD, delta_whole_body_lean_mass, BMI_adjust) %>% 
-  filter(time == 4) %>% 
-  filter(attend_cat == "Control" | attend_cat == "Over 50% training attendance") %>% 
-  na.omit()
-TR_delta_data <- df %>% 
-  dplyr::select(subj, time, group, attend_cat, delta_TR_BMD, delta_whole_body_lean_mass, BMI_adjust) %>% 
-  filter(time == 4) %>% 
-  filter(attend_cat == "Control" | attend_cat == "Over 50% training attendance") %>% 
-  na.omit()
+df <- read_data(here("data", "df.csv"))
 
-# Recode group variable into numerical
-FN_delta_data$group <- as.double(FN_delta_data$group)
-LS_delta_data$group <- as.double(LS_delta_data$group)
-TR_delta_data$group <- as.double(TR_delta_data$group)
+acc <- read_csv(
+  here("data", "acc.csv"),
+  col_types = cols(
+    time = col_factor(1:4),
+    group = col_factor(c("Control", "Exercise"))
+  )
+) %>% 
+  dplyr::select(subj, time, group, above_thrsh)
+
+# Select variables
+LS_data <- df %>% 
+  dplyr::select(subj, time, group, LS_BMD, BMI_adjust) %>% 
+  filter(time == 4) %>% 
+  left_join(acc, by = c("subj", "time", "group")) %>%
+  mutate(group = as.double(group)) %>% 
+  na.omit()
+FN_data <- df %>%
+  dplyr::select(subj, time, group, FN_BMD, BMI_adjust) %>% 
+  filter(time == 4) %>% 
+  left_join(acc, by = c("subj", "time", "group")) %>%
+  mutate(group = as.double(group)) %>% 
+  na.omit()
+TR_data <- df %>% 
+  dplyr::select(subj, time, group, TR_BMD, BMI_adjust) %>% 
+  filter(time == 4) %>% 
+  left_join(acc, by = c("subj", "time", "group")) %>%
+  mutate(group = as.double(group)) %>% 
+  na.omit()
 
 # Mediation analysis ------------------------------------------------------
-
-# ** FN_BMD ---------------------------------------------------------------
-
-FN_model <- get_lavaan_model(
-  outcome = "delta_FN_BMD",
-  predictor = "group",
-  mediator = "delta_whole_body_lean_mass",
-  covariate = "BMI_adjust"
-)
-FN_mediation <- sem(data = FN_delta_data, model = FN_model, se = "bootstrap", bootstrap = 5000)
-summary(FN_mediation)
-parameterEstimates(FN_mediation)
 
 # ** LS_BMD ---------------------------------------------------------------
 
 LS_model <- get_lavaan_model(
-  outcome = "delta_LS_BMD",
+  outcome = "LS_BMD",
   predictor = "group",
-  mediator = "delta_whole_body_lean_mass",
+  mediator = "above_thrsh",
   covariate = "BMI_adjust"
 )
-LS_mediation <- sem(data = LS_delta_data, model = LS_model, se = "bootstrap", bootstrap = 5000)
+LS_mediation <- sem(data = LS_data, model = LS_model, se = "bootstrap", bootstrap = 5000)
 summary(LS_mediation)
 parameterEstimates(LS_mediation)
+
+# ** FN_BMD ---------------------------------------------------------------
+
+FN_model <- get_lavaan_model(
+  outcome = "FN_BMD",
+  predictor = "group",
+  mediator = "above_thrsh",
+  covariate = "BMI_adjust"
+)
+FN_mediation <- sem(data = FN_data, model = FN_model, se = "bootstrap", bootstrap = 5000)
+summary(FN_mediation)
+parameterEstimates(FN_mediation)
 
 # ** TR_BMD ---------------------------------------------------------------
 
 TR_model <- get_lavaan_model(
-  outcome = "delta_TR_BMD",
+  outcome = "TR_BMD",
   predictor = "group",
-  mediator = "delta_whole_body_lean_mass",
+  mediator = "above_thrsh",
   covariate = "BMI_adjust"
 )
-TR_mediation <- sem(data = TR_delta_data, model = TR_model, se = "bootstrap", bootstrap = 5000)
+TR_mediation <- sem(data = TR_data, model = TR_model, se = "bootstrap", bootstrap = 5000)
 summary(TR_mediation)
 parameterEstimates(TR_mediation)
