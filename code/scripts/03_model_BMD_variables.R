@@ -7,8 +7,6 @@ library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
 source(here("code", "functions", "read_data.R"))
-source(here("code", "functions", "center_variable.R"))
-source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
@@ -19,26 +17,93 @@ contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-TH_data <- df %>% dplyr::select(subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust)
-FN_data <- df %>% dplyr::select(subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust)
-LS_data <- df %>% dplyr::select(subj, time, group, LS_BMD, LS_BMD_adjust, BMI_adjust)
-TR_data <- df %>% dplyr::select(subj, time, group, TR_BMD, TR_BMD_adjust, BMI_adjust)
-
-# Center variables
-LS_data <- center_variable(LS_data, "LS_BMD_adjust")
-TH_data <- center_variable(TH_data, "TH_BMD_adjust")
-FN_data <- center_variable(FN_data, "FN_BMD_adjust")
-TR_data <- center_variable(TR_data, "TR_BMD_adjust")
+TH_data <- df %>% 
+  dplyr::select(
+    subj, time, group, TH_BMD, TH_BMD_adjust, BMI, surgery,
+    age, menopause, diabetes, thiazides, smoker
+  )
+FN_data <- df %>% 
+  dplyr::select(
+    subj, time, group, FN_BMD, FN_BMD_adjust, BMI, surgery,
+    age, menopause, diabetes, thiazides, smoker
+  )
+LS_data <- df %>% 
+  dplyr::select(
+    subj, time, group, LS_BMD, LS_BMD_adjust, BMI, surgery,
+    age, menopause, diabetes, thiazides, smoker
+  )
+TR_data <- df %>% 
+  dplyr::select(
+    subj, time, group, TR_BMD, TR_BMD_adjust, BMI, surgery,
+    age, menopause, diabetes, thiazides, smoker
+  )
 
 # Build models ------------------------------------------------------------
 
 build_formula <- function(var) {
   f <- paste0(
     var, "_BMD ~ 1 + group + time + group:time + ", var, 
-    "_BMD_adjust_centered + BMI_adjust + (1 | subj)"
+    "_BMD_adjust + BMI + surgery + menopause + 
+    age + diabetes + thiazides + smoker + (1 | subj)"
   )
   as.formula(f)
 }
+
+# ** LS_BMD ---------------------------------------------------------------
+
+LS_LMM <- lmer(formula = build_formula("LS"), data = LS_data)
+
+# R-squared
+rsquared(LS_LMM)
+
+# Fixed effects test
+anova(LS_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(LS_LMM)
+
+# Estimated marginal means for group
+group_LS_emm <- emmeans(LS_LMM, ~ group)
+
+# Estimated marginal means for time
+time_LS_emm <- emmeans(LS_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_LS_emm  <- emmeans(LS_LMM, ~ group:time)
+# Save into a data frame to build the plots
+interaction_LS_emm_df <- as.data.frame(interaction_LS_emm)
+write_csv(interaction_LS_emm_df, here("output", "interaction_LS_emm.csv"))
+
+# Post hoc
+ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
+
+# ** TR_BMD ---------------------------------------------------------------
+
+TR_LMM <- lmer(formula = build_formula("TR"), data = TR_data)
+
+# R-squared
+rsquared(TR_LMM)
+
+# Fixed effects test
+anova(TR_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(TR_LMM)
+
+# Estimated marginal means for group
+group_TR_emm <- emmeans(TR_LMM, ~ group)
+
+# Estimated marginal means for time
+time_TR_emm <- emmeans(TR_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_TR_emm  <- emmeans(TR_LMM, ~ group:time)
+# Save into a data frame to build the plots
+interaction_TR_emm_df <- as.data.frame(interaction_TR_emm)
+write_csv(interaction_TR_emm_df, here("output", "interaction_TR_emm.csv"))
+
+# Post hoc
+ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
 
 # ** TH_BMD ---------------------------------------------------------------
 
@@ -95,59 +160,3 @@ write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
 
 # Post hoc
 ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
-
-# ** LS_BMD ---------------------------------------------------------------
-
-LS_LMM <- lmer(formula = build_formula("LS"), data = LS_data)
-
-# R-squared
-rsquared(LS_LMM)
-
-# Fixed effects test
-anova(LS_LMM, type = 3, test = "F")
-
-# Random components and fixed effects parameters estimates
-summary(LS_LMM)
-
-# Estimated marginal means for group
-group_LS_emm <- emmeans(LS_LMM, ~ group)
-
-# Estimated marginal means for time
-time_LS_emm <- emmeans(LS_LMM, ~ time)
-
-# Estimated marginal means for group x time interaction
-interaction_LS_emm  <- emmeans(LS_LMM, ~ group:time)
-# Save into a data frame to build the plots
-interaction_LS_emm_df <- as.data.frame(interaction_LS_emm)
-write_csv(interaction_LS_emm_df, here("output", "interaction_LS_emm.csv"))
-
-# Post hoc
-ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
-
-# ** TR_BMD ---------------------------------------------------------------
-  
-TR_LMM <- lmer(formula = build_formula("TR"), data = TR_data)
-
-# R-squared
-rsquared(TR_LMM)
-
-# Fixed effects test
-anova(TR_LMM, type = 3, test = "F")
-
-# Random components and fixed effects parameters estimates
-summary(TR_LMM)
-
-# Estimated marginal means for group
-group_TR_emm <- emmeans(TR_LMM, ~ group)
-
-# Estimated marginal means for time
-time_TR_emm <- emmeans(TR_LMM, ~ time)
-
-# Estimated marginal means for group x time interaction
-interaction_TR_emm  <- emmeans(TR_LMM, ~ group:time)
-# Save into a data frame to build the plots
-interaction_TR_emm_df <- as.data.frame(interaction_TR_emm)
-write_csv(interaction_TR_emm_df, here("output", "interaction_TR_emm.csv"))
-
-# Post hoc
-ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
