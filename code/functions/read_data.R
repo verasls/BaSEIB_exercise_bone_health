@@ -17,7 +17,7 @@ read_data <- function(file) {
       group = col_factor(c("Control", "Exercise")),
       surgery = col_factor(c("RYGB", "Sleeve")),
       sex = col_factor(c("Male", "Female")),
-      menopause = col_factor(c("No", "Yes")),
+      menopause = col_factor(c("No", "Yes", "Male")),
       pre_diabetes = col_factor(c("No", "Yes")),
       diabetes = col_factor(c("No", "Yes")),
       thiazides = col_factor(c("No", "Yes")),
