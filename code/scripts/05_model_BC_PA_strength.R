@@ -7,8 +7,6 @@ library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
 source(here("code", "functions", "read_data.R"))
-source(here("code", "functions", "center_variable.R"))
-source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
@@ -21,57 +19,81 @@ contrasts(df$time) <- contr.poly(4)
 # Select variables
 # Body composition
 body_mass_data <- df %>% 
-  dplyr::select(subj, time, group, body_mass, body_mass_adjust , BMI_adjust)
+  dplyr::select(
+    subj, time, group, body_mass, body_mass_adjust , BMI, 
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 BMI_data <- df %>% 
-  dplyr::select(subj, time, group, BMI, BMI_adjust)
+  dplyr::select(
+    subj, time, group, BMI, BMI_adjust, 
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 fat_mass_data <- df %>% 
   dplyr::select(
-    subj, time, group, whole_body_fat_mass, whole_body_fat_mass_adjust , BMI_adjust
+    subj, time, group, whole_body_fat_mass, whole_body_fat_mass_adjust,
+    BMI, surgery, age, menopause, diabetes, thiazides, smoker
   )
 lean_mass_data <- df %>% 
   dplyr::select(
-    subj, time, group, whole_body_lean_mass, whole_body_lean_mass_adjust , BMI_adjust
+    subj, time, group, whole_body_lean_mass, whole_body_lean_mass_adjust,
+    BMI, surgery, age, menopause, diabetes, thiazides, smoker
   )
 
 # Physical activity
 steps_data <- df %>% 
-  dplyr::select(subj, time, group, steps, steps_adjust, BMI_adjust)
+  dplyr::select(
+    subj, time, group, steps, steps_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 SB_data <- df %>% 
-  dplyr::select(subj, time, group, SB_h, SB_h_adjust, BMI_adjust)
+  dplyr::select(
+    subj, time, group, SB_h, SB_h_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 LPA_data <- df %>% 
-  dplyr::select(subj, time, group, LPA_h, LPA_h_adjust, BMI_adjust)
+  dplyr::select(
+    subj, time, group, LPA_h, LPA_h_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 MVPA_data <- df %>% 
-  dplyr::select(subj, time, group, MVPA_min, MVPA_min_adjust, BMI_adjust)
+  dplyr::select(
+    subj, time, group, MVPA_min, MVPA_min_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 
 # Isokinetic strength
 pt_ext_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_ext_60ds, 
-    peak_torque_knee_ext_60ds_adjust, BMI_adjust
+    peak_torque_knee_ext_60ds_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 pt_fle_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_fle_60ds, 
-    peak_torque_knee_fle_60ds_adjust, BMI_adjust
+    peak_torque_knee_fle_60ds_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 pt_ext_rel_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_ext_60ds_body_mass, 
-    peak_torque_knee_ext_60ds_body_mass_adjust, BMI_adjust
+    peak_torque_knee_ext_60ds_body_mass_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 pt_fle_rel_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_fle_60ds_body_mass, 
-    peak_torque_knee_fle_60ds_body_mass_adjust, BMI_adjust
+    peak_torque_knee_fle_60ds_body_mass_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
-
 
 # Build models ------------------------------------------------------------
 
 build_formula <- function(var) {
   f <- paste0(
     var, " ~ 1 + group + time + group:time + ", var, 
-    "_adjust + BMI_adjust + (1 | subj)"
+    "_adjust + BMI + surgery + age + menopause + 
+    diabetes + thiazides + smoker + (1 | subj)"
   )
   as.formula(f)
 }
@@ -109,7 +131,8 @@ ph_body_mass_none <- pairs(interaction_body_mass_emm, adjust = "none")
 # **** BMI ----------------------------------------------------------------
 
 BMI_LMM <- lmer(
-  formula = BMI ~ 1 + group + time + group:time + BMI_adjust + (1 | subj),
+  formula = BMI ~ 1 + group + time + group:time + surgery + age + 
+    menopause + diabetes + thiazides + smoker + (1 | subj),
   data = BMI_data
 )
 
@@ -223,7 +246,7 @@ write_csv(interaction_steps_emm_df, here("output", "interaction_steps_emm.csv"))
 # Post hocs
 ph_steps_none <- pairs(interaction_steps_emm, adjust = "none")
 
-# **** Sedentary behaviour ------------------------------------------------
+# **** Sedentary behavior -------------------------------------------------
 
 SB_LMM <- lmer(formula = build_formula("SB_h"), data = SB_data)
 
