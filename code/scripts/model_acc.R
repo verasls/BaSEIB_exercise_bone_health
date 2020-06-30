@@ -9,13 +9,19 @@ library(emmeans)
 
 # Load and prepare data ---------------------------------------------------
 
+df <- read_data(here("data", "df.csv")) %>% 
+  dplyr::select(
+    subj, time, group, BMI, surgery, age, 
+    menopause, diabetes, thiazides, smoker
+  )
 acc <- read_csv(
   here("data", "acc.csv"),
   col_types = cols(
     time = col_factor(1:4),
     group = col_factor(c("Control", "Exercise"))
   )
-)
+) %>% 
+  left_join(df, by = c("subj", "time", "group"))
 
 # Set contrasts of variable group to sum
 contrasts(acc$group) <- matrix(rev(contr.sum(2)), ncol = 1)
@@ -25,7 +31,8 @@ contrasts(acc$time) <- contr.poly(4)
 # Model -------------------------------------------------------------------
 
 peaks_LMM <- lmer(
-  formula = above_thrsh ~ 1 + group + time + group:time + above_thrsh_adjust + BMI_adjust + (1 | subj),
+  formula = above_thrsh ~ 1 + group + time + group:time + above_thrsh_adjust + BMI + 
+    surgery + age + menopause + diabetes + thiazides + smoker + (1 | subj),
   data = acc
 )
 
