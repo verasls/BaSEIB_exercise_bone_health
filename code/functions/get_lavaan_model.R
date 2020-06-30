@@ -11,30 +11,21 @@ get_lavaan_model <- function(outcome, predictor, mediator, covariate) {
   # Returns:
   #   The model syntax and prints it as formated text
   
-  require(stringr)
-  
-  # Get direct effect model
-  direct <- str_c(outcome, " ~ c*", predictor, " + ", covariate)
-  # Get mediator model
-  mediator <- str_c(
+  # Get mediator
+  mediator <- paste0(
     mediator, " ~ a*", predictor, " + ", covariate, "\n",
-    outcome, " ~ b*", mediator
+    outcome, " ~ c*", predictor, " + ", covariate, " + b*", mediator
   )
-  # Get indirect effect
-  indirect <- "ab := a*b"
-  # Get total effect
-  total <- "total := c + (a*b)"
-  
-  # Combine parts into the model
-  model <- str_c(
-    "# Direct effect\n",
-    direct, "\n\n",
+  # Combine parts into the model syntax
+  model <- paste0(
     "# Mediator\n",
     mediator, "\n\n",
+    "# Direct effect\n",
+    "direct := c", "\n\n",
     "# Indirect effect (a*b)\n",
-    indirect, "\n\n",
+    "indirect := a*b", "\n\n",
     "# Total effect\n",
-    total
+    "total := c + (a*b)"
   )
   
   cat(model)
