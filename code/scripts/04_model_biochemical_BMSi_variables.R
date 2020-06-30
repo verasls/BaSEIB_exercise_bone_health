@@ -6,8 +6,7 @@ library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
-source(here("code", "functions", "center_variable.R"))
-source(here("code", "functions", "bonferroni.R"))
+source(here("code", "functions", "read_data.R"))
 
 # Load and prepare data ---------------------------------------------------
 
@@ -18,27 +17,44 @@ contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-P1NP_data       <- df %>% dplyr::select(subj, time, group, P1NP, P1NP_adjust, BMI_adjust)
-CTX_data        <- df %>% dplyr::select(subj, time, group, CTX, CTX_adjust, BMI_adjust)
-PTH_data        <- df %>% dplyr::select(subj, time, group, PTH, PTH_adjust, BMI_adjust)
-vitD_data       <- df %>% dplyr::select(subj, time, group, vitD, vitD_adjust, BMI_adjust)
-sclerostin_data <- df %>% dplyr::select(subj, time, group, sclerostin, sclerostin_adjust, BMI_adjust)
-BMSi_data       <- df %>% dplyr::select(subj, time, group, BMSi, BMSi_adjust, BMI_adjust)
-
-# Center variables
-P1NP_data       <- center_variable(P1NP_data, "P1NP_adjust")
-CTX_data        <- center_variable(CTX_data, "CTX_adjust")
-PTH_data        <- center_variable(PTH_data, "PTH_adjust")
-vitD_data       <- center_variable(vitD_data, "vitD_adjust")
-sclerostin_data <- center_variable(sclerostin_data, "sclerostin_adjust")
-BMSi_data       <- center_variable(BMSi_data, "BMSi_adjust")
+P1NP_data <- df %>% 
+  dplyr::select(
+    subj, time, group, P1NP, P1NP_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+CTX_data <- df %>% 
+  dplyr::select(
+    subj, time, group, CTX, CTX_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+PTH_data <- df %>% 
+  dplyr::select(
+    subj, time, group, PTH, PTH_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+vitD_data <- df %>% 
+  dplyr::select(
+    subj, time, group, vitD, vitD_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+sclerostin_data <- df %>% 
+  dplyr::select(
+    subj, time, group, sclerostin, sclerostin_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+BMSi_data <- df %>% 
+  dplyr::select(
+    subj, time, group, BMSi, BMSi_adjust, BMI,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 
 # Build models ------------------------------------------------------------
 
 build_formula <- function(var) {
   f <- paste0(
     var, " ~ 1 + group + time + group:time + ", var, 
-    "_adjust_centered + BMI_adjust + (1 | subj)"
+    "_adjust + BMI + surgery + age + menopause +
+    diabetes + thiazides + smoker + (1 | subj)"
   )
   as.formula(f)
 }
