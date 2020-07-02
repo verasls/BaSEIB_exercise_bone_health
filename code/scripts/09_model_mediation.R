@@ -2,13 +2,22 @@
 
 library(here)
 library(tidyverse)
+library(sjmisc)
 library(lavaan)
 source(here("code", "functions", "read_data.R"))
-source(here("code", "functions", "get_lavaan_model.R"))
 
 # Load and prepare data ---------------------------------------------------
 
 df <- read_data(here("data", "df.csv"))
+df <- df %>%
+  to_dummy(group, surgery, menopause, diabetes, thiazides, smoker, suffix = "label") %>% 
+  bind_cols(df) %>% 
+  filter(time == 4) %>% 
+  select(
+    subj, whole_body_lean_mass, steps, BMI, age, LS_BMD, TR_BMD,
+    group_Control, surgery_RYGB, menopause_Yes, menopause_Male, diabetes_Yes, diabetes_Yes, smoker_Yes
+  ) %>% 
+  as_tibble()
 
 acc <- read_csv(
   here("data", "acc.csv"),
@@ -17,62 +26,99 @@ acc <- read_csv(
     group = col_factor(c("Control", "Exercise"))
   )
 ) %>% 
-  dplyr::select(subj, time, group, above_thrsh)
+  filter(time == 4) %>% 
+  dplyr::select(subj, n_peaks = above_thrsh)
+  
 
 # Select variables
-LS_data <- df %>% 
-  dplyr::select(subj, time, group, LS_BMD, BMI_adjust) %>% 
-  filter(time == 4) %>% 
-  left_join(acc, by = c("subj", "time", "group")) %>%
-  mutate(group = as.double(group)) %>% 
+LS_data <-  df %>%
+  left_join(acc, by = "subj") %>%
+  select(subj, LS_BMD, everything()) %>% 
   na.omit()
-FN_data <- df %>%
-  dplyr::select(subj, time, group, FN_BMD, BMI_adjust) %>% 
-  filter(time == 4) %>% 
-  left_join(acc, by = c("subj", "time", "group")) %>%
-  mutate(group = as.double(group)) %>% 
-  na.omit()
-TR_data <- df %>% 
-  dplyr::select(subj, time, group, TR_BMD, BMI_adjust) %>% 
-  filter(time == 4) %>% 
-  left_join(acc, by = c("subj", "time", "group")) %>%
-  mutate(group = as.double(group)) %>% 
+TR_data <-  df %>%
+  left_join(acc, by = "subj") %>%
+  select(subj, TR_BMD, everything()) %>% 
   na.omit()
 
 # Mediation analysis ------------------------------------------------------
 
 # ** LS_BMD ---------------------------------------------------------------
 
-LS_model <- get_lavaan_model(
-  outcome = "LS_BMD",
-  predictor = "group",
-  mediator = "above_thrsh",
-  covariate = "BMI_adjust"
-)
+LS_model <- "
+  # Mediator
+  LS_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*steps + b3*n_peaks + 
+    BMI + surgery_RYGB + age + menopause_Yes + menopause_Male + diabetes_Yes + 
+    diabetes_Yes + smoker_Yes
+  whole_body_lean_mass ~ a1*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  steps ~ a2*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  n_peaks ~ a3*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+
+  # Direct
+  direct := c
+  
+  # Indirect
+  indirect1 := a1*b1
+  indirect2 := a2*b2
+  indirect3 := a3*b3
+  
+  # Total
+  total := c + (a1*b1) + (a2*b2) + (a3*b3)
+  
+  # Covariates
+  whole_body_lean_mass ~~ steps
+  whole_body_lean_mass ~~ n_peaks
+  steps ~~ n_peaks
+  
+  # Contrasts
+  con1 := indirect1 - indirect2
+  con2 := indirect1 - indirect3
+  con3 := indirect2 - indirect3
+"
+
 LS_mediation <- sem(data = LS_data, model = LS_model, se = "bootstrap", bootstrap = 5000)
 summary(LS_mediation)
 parameterEstimates(LS_mediation)
 
-# ** FN_BMD ---------------------------------------------------------------
-
-FN_model <- get_lavaan_model(
-  outcome = "FN_BMD",
-  predictor = "group",
-  mediator = "above_thrsh",
-  covariate = "BMI_adjust"
-)
-FN_mediation <- sem(data = FN_data, model = FN_model, se = "bootstrap", bootstrap = 5000)
-summary(FN_mediation)
-parameterEstimates(FN_mediation)
 
 # ** TR_BMD ---------------------------------------------------------------
 
-TR_model <- get_lavaan_model(
-  outcome = "TR_BMD",
-  predictor = "group",
-  mediator = "above_thrsh",
-  covariate = "BMI_adjust"
-)
+TR_model <- "
+  # Mediator
+  TR_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*steps + b3*n_peaks + 
+    BMI + surgery_RYGB + age + menopause_Yes + menopause_Male + diabetes_Yes + 
+    diabetes_Yes + smoker_Yes
+  whole_body_lean_mass ~ a1*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  steps ~ a2*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  n_peaks ~ a3*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+
+  # Direct
+  direct := c
+  
+  # Indirect
+  indirect1 := a1*b1
+  indirect2 := a2*b2
+  indirect3 := a3*b3
+  
+  # Total
+  total := c + (a1*b1) + (a2*b2) + (a3*b3)
+  
+  # Covariates
+  whole_body_lean_mass ~~ steps
+  whole_body_lean_mass ~~ n_peaks
+  steps ~~ n_peaks
+  
+  # Contrasts
+  con1 := indirect1 - indirect2
+  con2 := indirect1 - indirect3
+  con3 := indirect2 - indirect3
+"
+
 TR_mediation <- sem(data = TR_data, model = TR_model, se = "bootstrap", bootstrap = 5000)
 summary(TR_mediation)
 parameterEstimates(TR_mediation)
