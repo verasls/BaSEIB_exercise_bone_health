@@ -4,43 +4,35 @@ library(tidyverse)
 
 # Load and prepare data ---------------------------------------------------
 
-delta_TH_plot_df <- read.csv("output/interaction_delta_TH_emm.csv") %>% 
+delta_TH_plot_df <- read_csv("output/interaction_delta_TH_emm.csv") %>% 
   mutate(region = "Total hip")
-delta_FN_plot_df <- read.csv("output/interaction_delta_FN_emm.csv") %>% 
+delta_FN_plot_df <- read_csv("output/interaction_delta_FN_emm.csv") %>% 
   mutate(region = "Femoral neck")
-delta_LS_plot_df <- read.csv("output/interaction_delta_LS_emm.csv") %>% 
+delta_LS_plot_df <- read_csv("output/interaction_delta_LS_emm.csv") %>% 
   mutate(region = "Lumbar spine")
-delta_TR_plot_df <- read.csv("output/interaction_delta_TR_emm.csv") %>% 
+delta_TR_plot_df <- read_csv("output/interaction_delta_TR_emm.csv") %>% 
   mutate(region = "One-third radius")
 
 # Combine into a single data frame
-delta_plot_df <- delta_TH_plot_df %>% 
+delta_plot_df <- delta_TH_plot_df %>%
   rbind(
     delta_FN_plot_df,
     delta_LS_plot_df,
     delta_TR_plot_df
   ) %>% 
-  filter(time == 4)
-
-# Refactor variables
-delta_plot_df$region <- factor(
-  delta_plot_df$region,
-  levels = c("Total hip", "Femoral neck", "Lumbar spine", "One-third radius")
-)
-delta_plot_df$attend_cat <- factor(
-  delta_plot_df$attend_cat,
-  levels = c(
-    "Control", 
-    "Under 50% training attendance", 
-    "Over 50% training attendance"
+  filter(time == 4) %>% 
+  mutate(
+    region = factor(
+      region,
+      levels = c("Lumbar spine", "One-third radius", "Femoral neck", "Total hip")
+    ),
+    attend_cat = recode(
+      as.factor(attend_cat),
+      "Control" = "Control group",
+      "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
+      "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
+    )
   )
-)
-delta_plot_df$attend_cat <- recode(
-  delta_plot_df$attend_cat,
-  "Control" = "Control group",
-  "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
-  "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
-)
 
 # Overall plots config
 dodge <- position_dodge(0.5)
@@ -60,10 +52,10 @@ delta_plot <- ggplot(data = delta_plot_df) +
   scale_y_continuous(breaks = seq(-10, 4, 2)) +
   scale_x_discrete(
     labels = c(
-      "Total hip" = "Total hip\n\nCG: n = 16         \nEG<50%: n = 19\nEG≥50%: n = 14",
-      "Femoral neck" = "Femoral neck\n\nCG: n = 16         \nEG<50%: n = 19\nEG≥50%: n = 14",
       "Lumbar spine" = "Lumbar spine\n\nCG: n = 16         \nEG<50%: n = 17\nEG≥50%: n = 14",
-      "One-third radius" = "One-third radius\n\nCG: n = 16         \nEG<50%: n = 18\nEG≥50%: n = 15"
+      "One-third radius" = "One-third radius\n\nCG: n = 16         \nEG<50%: n = 18\nEG≥50%: n = 15",
+      "Femoral neck" = "Femoral neck\n\nCG: n = 16         \nEG<50%: n = 19\nEG≥50%: n = 14",
+      "Total hip" = "Total hip\n\nCG: n = 16         \nEG<50%: n = 19\nEG≥50%: n = 14"
     )
   ) +
   scale_color_manual(values = c("#0072B2", "#D55E00", "#009E73")) +
@@ -78,14 +70,9 @@ delta_plot <- ggplot(data = delta_plot_df) +
   labs(
     x = "",
     y = "% bone mineral density change from pre-BS to 12-months post-BS"
-  ) +
-  annotate("text", x = 4.17, y = 3.7, label = "a") +
-  annotate("text", x = 3.17, y = 0.8, label = "a'") +
-  annotate("text", x = 2.17, y = -0.4, label = "a'") +
-  annotate("text", x = 2.00, y = -5.2, label = "b")
+  )
 
-# Uncomment lines below to save plot
-# ggsave(
-#   filename = "figs/fig3.tiff",
-#   plot = delta_plot, width = 30, height = 20, dpi = 600, units = "cm"
-# )
+ggsave(
+  filename = "figs/fig3.pdf",
+  plot = delta_plot, width = 30, height = 20, dpi = 200, units = "cm"
+)
