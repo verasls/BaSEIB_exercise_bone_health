@@ -15,6 +15,16 @@ LS_plot_df <- read_csv("output/interaction_LS_emm.csv") %>%
     )
   )
 
+TR_plot_df <- read_csv("output/interaction_TR_emm.csv") %>% 
+  mutate(
+    time = as.factor(time),
+    group = recode(
+      as.factor(group),
+      "Control" = "Control group",
+      "Exercise" = "Exercise group"
+    )
+  )
+
 TH_plot_df <- read_csv("output/interaction_TH_emm.csv") %>% 
   mutate(
     time = as.factor(time),
@@ -26,16 +36,6 @@ TH_plot_df <- read_csv("output/interaction_TH_emm.csv") %>%
   )
 
 FN_plot_df <- read_csv("output/interaction_FN_emm.csv") %>% 
-  mutate(
-    time = as.factor(time),
-    group = recode(
-      as.factor(group),
-      "Control" = "Control group",
-      "Exercise" = "Exercise group"
-    )
-  )
-
-TR_plot_df <- read_csv("output/interaction_TR_emm.csv") %>% 
   mutate(
     time = as.factor(time),
     group = recode(
