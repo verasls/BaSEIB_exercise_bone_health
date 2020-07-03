@@ -6,12 +6,13 @@ library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
+source(here("code", "functions", "read_data.R"))
 
 # Load and prepare data ---------------------------------------------------
 
 df <- read_data(here("data", "df.csv")) %>% 
   dplyr::select(
-    subj, time, group, BMI, surgery, age, 
+    subj, time, group, surgery, age, 
     menopause, diabetes, thiazides, smoker
   )
 acc <- read_csv(
@@ -31,7 +32,7 @@ contrasts(acc$time) <- contr.poly(4)
 # Model -------------------------------------------------------------------
 
 peaks_LMM <- lmer(
-  formula = above_thrsh ~ 1 + group + time + group:time + above_thrsh_adjust + BMI + 
+  formula = above_thrsh ~ 1 + group + time + group:time + above_thrsh_adjust + BMI_adjust + 
     surgery + age + menopause + diabetes + thiazides + smoker + (1 | subj),
   data = acc
 )

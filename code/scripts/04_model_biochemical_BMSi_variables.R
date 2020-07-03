@@ -19,32 +19,32 @@ contrasts(df$time) <- contr.poly(4)
 # Select variables
 P1NP_data <- df %>% 
   dplyr::select(
-    subj, time, group, P1NP, P1NP_adjust, BMI,
+    subj, time, group, P1NP, P1NP_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 CTX_data <- df %>% 
   dplyr::select(
-    subj, time, group, CTX, CTX_adjust, BMI,
+    subj, time, group, CTX, CTX_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 PTH_data <- df %>% 
   dplyr::select(
-    subj, time, group, PTH, PTH_adjust, BMI,
+    subj, time, group, PTH, PTH_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 vitD_data <- df %>% 
   dplyr::select(
-    subj, time, group, vitD, vitD_adjust, BMI,
+    subj, time, group, vitD, vitD_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 sclerostin_data <- df %>% 
   dplyr::select(
-    subj, time, group, sclerostin, sclerostin_adjust, BMI,
+    subj, time, group, sclerostin, sclerostin_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 BMSi_data <- df %>% 
   dplyr::select(
-    subj, time, group, BMSi, BMSi_adjust, BMI,
+    subj, time, group, BMSi, BMSi_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 
@@ -53,7 +53,7 @@ BMSi_data <- df %>%
 build_formula <- function(var) {
   f <- paste0(
     var, " ~ 1 + group + time + group:time + ", var, 
-    "_adjust + BMI + surgery + age + menopause +
+    "_adjust + BMI_adjust + surgery + age + menopause +
     diabetes + thiazides + smoker + (1 | subj)"
   )
   as.formula(f)

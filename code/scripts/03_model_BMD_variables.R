@@ -19,23 +19,23 @@ contrasts(df$time) <- contr.poly(4)
 # Select variables
 TH_data <- df %>% 
   dplyr::select(
-    subj, time, group, TH_BMD, TH_BMD_adjust, BMI, surgery,
-    age, menopause, diabetes, thiazides, smoker
+    subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust, 
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 FN_data <- df %>% 
   dplyr::select(
-    subj, time, group, FN_BMD, FN_BMD_adjust, BMI, surgery,
-    age, menopause, diabetes, thiazides, smoker
+    subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 LS_data <- df %>% 
   dplyr::select(
-    subj, time, group, LS_BMD, LS_BMD_adjust, BMI, surgery,
-    age, menopause, diabetes, thiazides, smoker
+    subj, time, group, LS_BMD, LS_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 TR_data <- df %>% 
   dplyr::select(
-    subj, time, group, TR_BMD, TR_BMD_adjust, BMI, surgery,
-    age, menopause, diabetes, thiazides, smoker
+    subj, time, group, TR_BMD, TR_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
   )
 
 # Build models ------------------------------------------------------------
@@ -43,7 +43,7 @@ TR_data <- df %>%
 build_formula <- function(var) {
   f <- paste0(
     var, "_BMD ~ 1 + group + time + group:time + ", var, 
-    "_BMD_adjust + BMI + surgery + menopause + 
+    "_BMD_adjust + BMI_adjust + surgery + menopause + 
     age + diabetes + thiazides + smoker + (1 | subj)"
   )
   as.formula(f)

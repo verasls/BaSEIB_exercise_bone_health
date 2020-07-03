@@ -20,7 +20,7 @@ contrasts(df$time) <- contr.poly(4)
 # Body composition
 body_mass_data <- df %>% 
   dplyr::select(
-    subj, time, group, body_mass, body_mass_adjust , BMI, 
+    subj, time, group, body_mass, body_mass_adjust , BMI_adjust, 
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 BMI_data <- df %>% 
@@ -31,33 +31,33 @@ BMI_data <- df %>%
 fat_mass_data <- df %>% 
   dplyr::select(
     subj, time, group, whole_body_fat_mass, whole_body_fat_mass_adjust,
-    BMI, surgery, age, menopause, diabetes, thiazides, smoker
+    BMI_adjust, surgery, age, menopause, diabetes, thiazides, smoker
   )
 lean_mass_data <- df %>% 
   dplyr::select(
     subj, time, group, whole_body_lean_mass, whole_body_lean_mass_adjust,
-    BMI, surgery, age, menopause, diabetes, thiazides, smoker
+    BMI_adjust, surgery, age, menopause, diabetes, thiazides, smoker
   )
 
 # Physical activity
 steps_data <- df %>% 
   dplyr::select(
-    subj, time, group, steps, steps_adjust, BMI,
+    subj, time, group, steps, steps_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 SB_data <- df %>% 
   dplyr::select(
-    subj, time, group, SB_h, SB_h_adjust, BMI,
+    subj, time, group, SB_h, SB_h_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 LPA_data <- df %>% 
   dplyr::select(
-    subj, time, group, LPA_h, LPA_h_adjust, BMI,
+    subj, time, group, LPA_h, LPA_h_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 MVPA_data <- df %>% 
   dplyr::select(
-    subj, time, group, MVPA_min, MVPA_min_adjust, BMI,
+    subj, time, group, MVPA_min, MVPA_min_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 
@@ -65,25 +65,25 @@ MVPA_data <- df %>%
 pt_ext_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_ext_60ds, 
-    peak_torque_knee_ext_60ds_adjust, BMI,
+    peak_torque_knee_ext_60ds_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 pt_fle_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_fle_60ds, 
-    peak_torque_knee_fle_60ds_adjust, BMI,
+    peak_torque_knee_fle_60ds_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 pt_ext_rel_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_ext_60ds_body_mass, 
-    peak_torque_knee_ext_60ds_body_mass_adjust, BMI,
+    peak_torque_knee_ext_60ds_body_mass_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 pt_fle_rel_data <- df %>% 
   dplyr::select(
     subj, time, group, peak_torque_knee_fle_60ds_body_mass, 
-    peak_torque_knee_fle_60ds_body_mass_adjust, BMI,
+    peak_torque_knee_fle_60ds_body_mass_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 
@@ -92,7 +92,7 @@ pt_fle_rel_data <- df %>%
 build_formula <- function(var) {
   f <- paste0(
     var, " ~ 1 + group + time + group:time + ", var, 
-    "_adjust + BMI + surgery + age + menopause + 
+    "_adjust + BMI_adjust + surgery + age + menopause + 
     diabetes + thiazides + smoker + (1 | subj)"
   )
   as.formula(f)
@@ -131,7 +131,7 @@ ph_body_mass_none <- pairs(interaction_body_mass_emm, adjust = "none")
 # **** BMI ----------------------------------------------------------------
 
 BMI_LMM <- lmer(
-  formula = BMI ~ 1 + group + time + group:time + surgery + age + 
+  formula = BMI ~ 1 + group + time + group:time + BMI_adjust + surgery + age + 
     menopause + diabetes + thiazides + smoker + (1 | subj),
   data = BMI_data
 )
