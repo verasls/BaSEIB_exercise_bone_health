@@ -8,20 +8,6 @@ source(here("code", "functions", "read_data.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-df <- read_data(here("data", "df.csv"))
-df <- df %>%
-  to_dummy(
-    group, surgery, menopause, diabetes, thiazides, smoker, suffix = "label"
-  ) %>% 
-  bind_cols(df) %>% 
-  filter(time == 4) %>% 
-  select(
-    subj, whole_body_lean_mass, steps, BMI_adjust, age, 
-    LS_BMD, TR_BMD, group_Control, surgery_RYGB, menopause_Yes,
-    menopause_Male, diabetes_Yes, smoker_Yes
-  ) %>% 
-  as_tibble()
-
 acc <- read_csv(
   here("data", "acc.csv"),
   col_types = cols(
@@ -31,17 +17,36 @@ acc <- read_csv(
 ) %>% 
   filter(time == 4) %>% 
   dplyr::select(subj, n_peaks = above_thrsh)
-  
 
-# Select variables
-LS_data <-  df %>%
-  left_join(acc, by = "subj") %>%
-  select(subj, LS_BMD, everything()) %>% 
-  na.omit()
-TR_data <-  df %>%
-  left_join(acc, by = "subj") %>%
-  select(subj, TR_BMD, everything()) %>% 
-  na.omit()
+df <- read_data(here("data", "df.csv"))
+
+mediation_df <- df %>%
+  to_dummy(
+    group, surgery, menopause, diabetes, thiazides, smoker, suffix = "label"
+  ) %>% 
+  bind_cols(df) %>% 
+  filter(time == 4) %>% 
+  select(
+    subj, whole_body_lean_mass, steps, BMI_adjust, age, 
+    LS_BMD, TR_BMD, LS_BMD_adjust, TR_BMD_adjust,
+    group_Control, surgery_RYGB, menopause_Yes,
+    menopause_Male, diabetes_Yes, smoker_Yes
+  ) %>% 
+  left_join(acc, by = "subj") %>% 
+  as_tibble()
+# 
+# 
+#   
+# 
+# # Select variables
+# LS_data <-  df %>%
+#   left_join(acc, by = "subj") %>%
+#   select(subj, LS_BMD, everything()) %>% 
+#   na.omit()
+# TR_data <-  df %>%
+#   left_join(acc, by = "subj") %>%
+#   select(subj, TR_BMD, everything()) %>% 
+#   na.omit()
 
 # Mediation analysis ------------------------------------------------------
 
@@ -50,8 +55,8 @@ TR_data <-  df %>%
 LS_model <- "
   # Mediator
   LS_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*n_peaks + 
-    BMI_adjust + surgery_RYGB + age + menopause_Yes + menopause_Male + 
-    diabetes_Yes + diabetes_Yes + smoker_Yes
+    LS_BMD_adjust + BMI_adjust + surgery_RYGB + age + menopause_Yes + 
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
   whole_body_lean_mass ~ a1*group_Control + BMI_adjust + surgery_RYGB + age + 
     menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
   n_peaks ~ a2*group_Control + BMI_adjust + surgery_RYGB + age + 
@@ -75,7 +80,7 @@ LS_model <- "
 "
 
 LS_mediation <- sem(
-  data = LS_data, 
+  data = mediation_df, 
   model = LS_model, 
   se = "bootstrap", 
   bootstrap = 5000
@@ -89,8 +94,8 @@ parameterEstimates(LS_mediation)
 TR_model <- "
   # Mediator
   TR_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*n_peaks + 
-    BMI_adjust + surgery_RYGB + age + menopause_Yes + menopause_Male + 
-    diabetes_Yes + diabetes_Yes + smoker_Yes
+    TR_BMD_adjust + BMI_adjust + surgery_RYGB + age + menopause_Yes +
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
   whole_body_lean_mass ~ a1*group_Control + BMI_adjust + surgery_RYGB + age + 
     menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
   n_peaks ~ a2*group_Control + BMI_adjust + surgery_RYGB + age + 
@@ -114,7 +119,7 @@ TR_model <- "
 "
 
 TR_mediation <- sem(
-  data = TR_data, 
+  data = mediation_df, 
   model = TR_model, 
   se = "bootstrap", 
   bootstrap = 5000
