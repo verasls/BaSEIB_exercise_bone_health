@@ -89,11 +89,11 @@ LS_plot <- ggplot(data = LS_plot_df) +
     x = "",
     y = quote("Lumbar spine bone mineral density"~(g%.%cm^-2))
   ) +
-  annotate("segment", x = 4.20, xend = 4.20, y = 0.998, yend = 1.026, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.20, y = 0.998, yend = 0.998, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.20, y = 1.026, yend = 1.026, size = 0.5) +
-  annotate("text", x = 4.3, y = 1.012, label = "italic(p) == 0.005", angle = 90, parse = TRUE) +
-  annotate("text", x = 4.4, y = 1.012, label = "paste(\"+ 0.028\", g%.%cm^-2)", angle = 90, parse = TRUE)
+  annotate("segment", x = 4.20, xend = 4.20, y = 1.000, yend = 1.024, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 1.000, yend = 1.000, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 1.024, yend = 1.024, size = 0.5) +
+  annotate("text", x = 4.3, y = 1.012, label = "italic(p) == 0.015", angle = 90, parse = TRUE) +
+  annotate("text", x = 4.4, y = 1.012, label = "paste(\"+ 0.024\", g%.%cm^-2)", angle = 90, parse = TRUE)
 
 # TR plot -----------------------------------------------------------------
 
@@ -133,10 +133,10 @@ TR_plot <- ggplot(data = TR_plot_df) +
     x = "",
     y = quote("One-third radius bone mineral density"~(g%.%cm^-2))
   ) +
-  annotate("segment", x = 4.20, xend = 4.20, y = 0.679, yend = 0.692, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.20, y = 0.679, yend = 0.679, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.20, y = 0.692, yend = 0.692, size = 0.5) +
-  annotate("text", x = 4.3, y = 0.686, label = "italic(p) == 0.014", angle = 90, parse = TRUE) +
+  annotate("segment", x = 4.20, xend = 4.20, y = 0.680, yend = 0.693, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.680, yend = 0.680, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.693, yend = 0.693, size = 0.5) +
+  annotate("text", x = 4.3, y = 0.686, label = "italic(p) == '0.020'", angle = 90, parse = TRUE) +
   annotate("text", x = 4.4, y = 0.686, label = "paste(\"+ 0.013\", g%.%cm^-2)", angle = 90, parse = TRUE)
 
 # TH plot -----------------------------------------------------------------
