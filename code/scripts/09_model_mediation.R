@@ -10,12 +10,15 @@ source(here("code", "functions", "read_data.R"))
 
 df <- read_data(here("data", "df.csv"))
 df <- df %>%
-  to_dummy(group, surgery, menopause, diabetes, thiazides, smoker, suffix = "label") %>% 
+  to_dummy(
+    group, surgery, menopause, diabetes, thiazides, smoker, suffix = "label"
+  ) %>% 
   bind_cols(df) %>% 
   filter(time == 4) %>% 
   select(
-    subj, whole_body_lean_mass, steps, BMI, age, LS_BMD, TR_BMD,
-    group_Control, surgery_RYGB, menopause_Yes, menopause_Male, diabetes_Yes, diabetes_Yes, smoker_Yes
+    subj, whole_body_lean_mass, steps, BMI_adjust, age, 
+    LS_BMD, TR_BMD, group_Control, surgery_RYGB, menopause_Yes,
+    menopause_Male, diabetes_Yes, smoker_Yes
   ) %>% 
   as_tibble()
 
@@ -46,15 +49,13 @@ TR_data <-  df %>%
 
 LS_model <- "
   # Mediator
-  LS_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*steps + b3*n_peaks + 
-    BMI + surgery_RYGB + age + menopause_Yes + menopause_Male + diabetes_Yes + 
-    diabetes_Yes + smoker_Yes
-  whole_body_lean_mass ~ a1*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-  steps ~ a2*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-  n_peaks ~ a3*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  LS_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*n_peaks + 
+    BMI_adjust + surgery_RYGB + age + menopause_Yes + menopause_Male + 
+    diabetes_Yes + diabetes_Yes + smoker_Yes
+  whole_body_lean_mass ~ a1*group_Control + BMI_adjust + surgery_RYGB + age + 
+    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  n_peaks ~ a2*group_Control + BMI_adjust + surgery_RYGB + age + 
+    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
 
   # Direct
   direct := c
@@ -62,23 +63,23 @@ LS_model <- "
   # Indirect
   indirect1 := a1*b1
   indirect2 := a2*b2
-  indirect3 := a3*b3
   
   # Total
-  total := c + (a1*b1) + (a2*b2) + (a3*b3)
+  total := c + (a1*b1) + (a2*b2)
   
   # Covariates
-  whole_body_lean_mass ~~ steps
   whole_body_lean_mass ~~ n_peaks
-  steps ~~ n_peaks
   
   # Contrasts
-  con1 := indirect1 - indirect2
-  con2 := indirect1 - indirect3
-  con3 := indirect2 - indirect3
+  con := indirect1 - indirect2
 "
 
-LS_mediation <- sem(data = LS_data, model = LS_model, se = "bootstrap", bootstrap = 5000)
+LS_mediation <- sem(
+  data = LS_data, 
+  model = LS_model, 
+  se = "bootstrap", 
+  bootstrap = 5000
+)
 summary(LS_mediation)
 parameterEstimates(LS_mediation)
 
@@ -87,15 +88,13 @@ parameterEstimates(LS_mediation)
 
 TR_model <- "
   # Mediator
-  TR_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*steps + b3*n_peaks + 
-    BMI + surgery_RYGB + age + menopause_Yes + menopause_Male + diabetes_Yes + 
-    diabetes_Yes + smoker_Yes
-  whole_body_lean_mass ~ a1*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-  steps ~ a2*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-  n_peaks ~ a3*group_Control + BMI + surgery_RYGB + age + menopause_Yes + 
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  TR_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*n_peaks + 
+    BMI_adjust + surgery_RYGB + age + menopause_Yes + menopause_Male + 
+    diabetes_Yes + diabetes_Yes + smoker_Yes
+  whole_body_lean_mass ~ a1*group_Control + BMI_adjust + surgery_RYGB + age + 
+    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  n_peaks ~ a2*group_Control + BMI_adjust + surgery_RYGB + age + 
+    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
 
   # Direct
   direct := c
@@ -103,22 +102,22 @@ TR_model <- "
   # Indirect
   indirect1 := a1*b1
   indirect2 := a2*b2
-  indirect3 := a3*b3
   
   # Total
-  total := c + (a1*b1) + (a2*b2) + (a3*b3)
+  total := c + (a1*b1) + (a2*b2)
   
   # Covariates
-  whole_body_lean_mass ~~ steps
   whole_body_lean_mass ~~ n_peaks
-  steps ~~ n_peaks
   
   # Contrasts
-  con1 := indirect1 - indirect2
-  con2 := indirect1 - indirect3
-  con3 := indirect2 - indirect3
+  con := indirect1 - indirect2
 "
 
-TR_mediation <- sem(data = TR_data, model = TR_model, se = "bootstrap", bootstrap = 5000)
+TR_mediation <- sem(
+  data = TR_data, 
+  model = TR_model, 
+  se = "bootstrap", 
+  bootstrap = 5000
+)
 summary(TR_mediation)
 parameterEstimates(TR_mediation)
