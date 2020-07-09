@@ -34,19 +34,6 @@ mediation_df <- df %>%
   ) %>% 
   left_join(acc, by = "subj") %>% 
   as_tibble()
-# 
-# 
-#   
-# 
-# # Select variables
-# LS_data <-  df %>%
-#   left_join(acc, by = "subj") %>%
-#   select(subj, LS_BMD, everything()) %>% 
-#   na.omit()
-# TR_data <-  df %>%
-#   left_join(acc, by = "subj") %>%
-#   select(subj, TR_BMD, everything()) %>% 
-#   na.omit()
 
 # Mediation analysis ------------------------------------------------------
 
