@@ -7,6 +7,7 @@ library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
 source(here("code", "functions", "read_data.R"))
+source(here("code", "functions", "mean_difference.R"))
 
 # Load and prepare data ---------------------------------------------------
 
@@ -77,6 +78,9 @@ write_csv(interaction_LS_emm_df, here("output", "interaction_LS_emm.csv"))
 # Post hoc
 ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
 
+# Mean difference
+mean_difference(LS_data, interaction_LS_emm_df)
+
 # ** TR_BMD ---------------------------------------------------------------
 
 TR_LMM <- lmer(formula = build_formula("TR"), data = TR_data)
@@ -104,6 +108,9 @@ write_csv(interaction_TR_emm_df, here("output", "interaction_TR_emm.csv"))
 
 # Post hoc
 ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
+
+# Mean difference
+mean_difference(TR_data, interaction_TR_emm_df)
 
 # ** TH_BMD ---------------------------------------------------------------
 
@@ -133,6 +140,9 @@ write_csv(interaction_TH_emm_df, here("output", "interaction_TH_emm.csv"))
 # Post hoc
 ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
 
+# Mean difference
+mean_difference(TH_data, interaction_TH_emm_df)
+
 # ** FN_BMD ---------------------------------------------------------------
 
 FN_LMM <- lmer(formula = build_formula("FN"), data = FN_data)
@@ -160,3 +170,6 @@ write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
 
 # Post hoc
 ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
+
+# Mean difference
+mean_difference(FN_data, interaction_FN_emm_df)
