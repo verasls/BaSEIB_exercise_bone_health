@@ -3,57 +3,68 @@
 library(here)
 library(tidyverse)
 library(sjstats)
+source(here("code", "functions", "read_data.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source(here("code", "scripts", "01_tidy_data.R"))
-# Create an intermediate df
-lm_df <- df %>% filter(
-  time == 4 & attend_cat %in% c("Control", "Over 50% training attendance")
-)
-# Drop unused level
-lm_df$attend_cat <- factor(lm_df$attend_cat)
-# Set contrasts of variable group to sum
-contrasts(lm_df$attend_cat) <- matrix(rev(contr.sum(2)), ncol = 1)
-
+df <- read_data(here("data", "df.csv"))
 # Select variables
-TH_lm_data <- lm_df %>% dplyr::select(subj, time, attend_cat, delta_TH_BMD, BMI_adjust)
-FN_lm_data <- lm_df %>% dplyr::select(subj, time, attend_cat, delta_FN_BMD, BMI_adjust)
-LS_lm_data <- lm_df %>% dplyr::select(subj, time, attend_cat, delta_LS_BMD, BMI_adjust)
-TR_lm_data <- lm_df %>% dplyr::select(subj, time, attend_cat, delta_TR_BMD, BMI_adjust)
+LS_lm_data <- df %>% 
+  filter(time == 4) %>% 
+  dplyr::select(
+    subj, time, group, LS_BMD, LS_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+TR_lm_data <- df %>% 
+  filter(time == 4) %>% 
+  dplyr::select(
+    subj, time, group, TR_BMD, TR_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+TH_lm_data <- df %>% 
+  filter(time == 4) %>% 
+  dplyr::select(
+    subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust, 
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+FN_lm_data <- df %>% 
+  filter(time == 4) %>% 
+  dplyr::select(
+    subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+
+# Build models ------------------------------------------------------------
+
+build_formula <- function(var) {
+  f <- paste0(
+    var, "_BMD ~ 1 + group + ", var, 
+    "_BMD_adjust + BMI_adjust + surgery + menopause + 
+    age + diabetes + thiazides + smoker + (1 | subj)"
+  )
+  as.formula(f)
+}
+
+# LS model ----------------------------------------------------------------
+
+LS_lm <- lm(build_formula("LS"), data = LS_lm_data)
+summary(LS_lm)
+omega_sq(LS_lm)
 
 # TH model ----------------------------------------------------------------
 
-TH_lm <- lm(
-  delta_TH_BMD ~ attend_cat + BMI_adjust,
-  data = TH_lm_data
-)
+TH_lm <- lm(build_formula("TH"), data = TH_lm_data)
 summary(TH_lm)
 omega_sq(TH_lm)
 
 # FN model ----------------------------------------------------------------
 
-FN_lm <- lm(
-  delta_FN_BMD ~ attend_cat + BMI_adjust,
-  data = FN_lm_data
-)
+FN_lm <- lm(build_formula("FN"), data = FN_lm_data)
 summary(FN_lm)
 omega_sq(FN_lm)
 
-# LS model ----------------------------------------------------------------
-
-LS_lm <- lm(
-  delta_LS_BMD ~ attend_cat + BMI_adjust,
-  data = LS_lm_data
-)
-summary(LS_lm)
-omega_sq(LS_lm)
-
 # TR model ----------------------------------------------------------------
 
-TR_lm <- lm(
-  delta_TR_BMD ~ attend_cat + BMI_adjust,
-  data = TR_lm_data
-)
+TR_lm <- lm(build_formula("TR"), data = TR_lm_data)
 summary(TR_lm)
 omega_sq(TR_lm)
