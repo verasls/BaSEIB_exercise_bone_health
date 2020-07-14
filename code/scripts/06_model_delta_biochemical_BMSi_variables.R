@@ -6,31 +6,64 @@ library(lme4)
 library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
-source(here("code", "functions", "center_variable.R"))
+source(here("code", "functions", "read_data.R"))
 source(here("code", "functions", "bonferroni.R"))
 
 # Load and prepare data ---------------------------------------------------
 
-source(here("code", "scripts", "01_tidy_data.R"))
+df <- read_data(here("data", "df.csv"))
 # Set contrasts of variable group to sum
-contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
+contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-P1NP_delta_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_P1NP, BMI_adjust)
-CTX_delta_data        <- df %>% dplyr::select(subj, time, attend_cat, delta_CTX, BMI_adjust)
-PTH_delta_data        <- df %>% dplyr::select(subj, time, attend_cat, delta_PTH, BMI_adjust)
-vitD_delta_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_vitD, BMI_adjust)
-sclerostin_delta_data <- df %>% dplyr::select(subj, time, attend_cat, delta_sclerostin, BMI_adjust)
-BMSi_delta_data       <- df %>% dplyr::select(subj, time, attend_cat, delta_BMSi, BMI_adjust)
+P1NP_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_P1NP, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+CTX_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_CTX, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+PTH_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_PTH, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+vitD_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_vitD, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+sclerostin_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_sclerostin, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+BMSi_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_BMSi, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
 
 # Build models ------------------------------------------------------------
+
+build_formula <- function(var) {
+  f <- paste0(
+    "delta_", var, " ~ 1 + attend_cat + time + attend_cat:time + ",
+    "BMI_adjust + surgery + age + menopause +
+    diabetes + thiazides + smoker + (1 | subj)"
+  )
+  as.formula(f)
+}
 
 # ** delta_P1NP -----------------------------------------------------------
 
 delta_P1NP_LMM <- lmer(
-  formula = delta_P1NP ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  formula = build_formula("P1NP"),
   data = P1NP_delta_data
 )
 
@@ -59,7 +92,7 @@ ph_delta_P1NP_bonf <- bonferroni(as.data.frame(ph_delta_P1NP_none), 3)
 # ** delta_CTX ------------------------------------------------------------
 
 delta_CTX_LMM <- lmer(
-  formula = delta_CTX ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  formula = build_formula("CTX"),
   data = CTX_delta_data
 )
 
@@ -88,7 +121,7 @@ ph_delta_CTX_bonf <- bonferroni(as.data.frame(ph_delta_CTX_none), 3)
 # ** delta_PTH ------------------------------------------------------------
 
 delta_PTH_LMM <- lmer(
-  formula = delta_PTH ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  formula = build_formula("PTH"),
   data = PTH_delta_data
 )
 
@@ -117,7 +150,7 @@ ph_delta_PTH_bonf <- bonferroni(as.data.frame(ph_delta_PTH_none), 3)
 # ** delta_vitD -----------------------------------------------------------
 
 delta_vitD_LMM <- lmer(
-  formula = delta_vitD ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  formula = build_formula("vitD"),
   data = vitD_delta_data
 )
 
@@ -146,7 +179,7 @@ ph_delta_vitD_bonf <- bonferroni(as.data.frame(ph_delta_vitD_none), 3)
 # ** delta_sclerostin -----------------------------------------------------
 
 delta_sclerostin_LMM <- lmer(
-  formula = delta_sclerostin ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  formula = build_formula("sclerostin"),
   data = sclerostin_delta_data
 )
 
@@ -175,7 +208,7 @@ ph_delta_sclerostin_bonf <- bonferroni(as.data.frame(ph_delta_sclerostin_none), 
 # ** delta_BMSi -----------------------------------------------------------
 
 delta_BMSi_LMM <- lmer(
-  formula = delta_BMSi ~ 1 + attend_cat + time + attend_cat:time + BMI_adjust + (1 | subj),
+  formula = build_formula("BMSi"),
   data = BMSi_delta_data
 )
 
