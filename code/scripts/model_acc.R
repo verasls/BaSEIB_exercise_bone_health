@@ -7,6 +7,7 @@ library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
 source(here("code", "functions", "read_data.R"))
+source(here("code", "functions", "mean_difference.R"))
 
 # Load and prepare data ---------------------------------------------------
 
@@ -59,4 +60,7 @@ interaction_peaks_emm_df <- as.data.frame(interaction_peaks_emm)
 write_csv(interaction_peaks_emm_df, here("output", "interaction_peaks_emm.csv"))
 
 # Post hoc
-pairs(interaction_peaks_emm, adjust = "none")
+ph_peaks_none <- pairs(interaction_peaks_emm, adjust = "none")
+
+# Mean difference
+mean_difference(ph_peaks_none)
