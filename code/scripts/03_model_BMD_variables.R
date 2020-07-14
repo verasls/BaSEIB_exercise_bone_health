@@ -18,16 +18,6 @@ contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 contrasts(df$time) <- contr.poly(4)
 
 # Select variables
-TH_data <- df %>% 
-  dplyr::select(
-    subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust, 
-    surgery, age, menopause, diabetes, thiazides, smoker
-  )
-FN_data <- df %>% 
-  dplyr::select(
-    subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust,
-    surgery, age, menopause, diabetes, thiazides, smoker
-  )
 LS_data <- df %>% 
   dplyr::select(
     subj, time, group, LS_BMD, LS_BMD_adjust, BMI_adjust,
@@ -36,6 +26,16 @@ LS_data <- df %>%
 TR_data <- df %>% 
   dplyr::select(
     subj, time, group, TR_BMD, TR_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+TH_data <- df %>% 
+  dplyr::select(
+    subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust, 
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+FN_data <- df %>% 
+  dplyr::select(
+    subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 
@@ -79,7 +79,7 @@ write_csv(interaction_LS_emm_df, here("output", "interaction_LS_emm.csv"))
 ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
 
 # Mean difference
-mean_difference(LS_data, interaction_LS_emm_df)
+mean_difference(ph_LS_none)
 
 # ** TR_BMD ---------------------------------------------------------------
 
@@ -110,7 +110,7 @@ write_csv(interaction_TR_emm_df, here("output", "interaction_TR_emm.csv"))
 ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
 
 # Mean difference
-mean_difference(TR_data, interaction_TR_emm_df)
+mean_difference(ph_TR_none)
 
 # ** TH_BMD ---------------------------------------------------------------
 
@@ -141,7 +141,7 @@ write_csv(interaction_TH_emm_df, here("output", "interaction_TH_emm.csv"))
 ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
 
 # Mean difference
-mean_difference(TH_data, interaction_TH_emm_df)
+mean_difference(ph_TH_none)
 
 # ** FN_BMD ---------------------------------------------------------------
 
@@ -172,4 +172,4 @@ write_csv(interaction_FN_emm_df, here("output", "interaction_FN_emm.csv"))
 ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
 
 # Mean difference
-mean_difference(FN_data, interaction_FN_emm_df)
+mean_difference(ph_FN_none)
