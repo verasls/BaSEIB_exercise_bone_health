@@ -7,6 +7,7 @@ library(lmerTest)
 library(piecewiseSEM)
 library(emmeans)
 source(here("code", "functions", "read_data.R"))
+source(here("code", "functions", "mean_difference.R"))
 
 # Load and prepare data ---------------------------------------------------
 
@@ -215,6 +216,9 @@ write_csv(interaction_lean_mass_emm_df, here("output", "interaction_lean_mass_em
 
 # Post hocs
 ph_lean_mass_none <- pairs(interaction_lean_mass_emm, adjust = "none")
+
+# Mean difference
+mean_difference(ph_lean_mass_none)
 
 # ** Physical activity variables ------------------------------------------
 
