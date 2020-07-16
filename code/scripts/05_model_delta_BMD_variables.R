@@ -82,6 +82,11 @@ ph_delta_LS_bonf <- bonferroni(as.data.frame(ph_delta_LS_none), 3)
 
 # Mean difference
 mean_difference_delta(ph_delta_LS_none)
+eff_size(
+  interaction_delta_LS_emm,
+  sigma = sigma(delta_LS_LMM),
+  edf = 150
+)
 
 # ** delta_TR_BMD ---------------------------------------------------------
 
@@ -114,6 +119,11 @@ ph_delta_TR_bonf <- bonferroni(as.data.frame(ph_delta_TR_none), 3)
 
 # Mean difference
 mean_difference_delta(ph_delta_TR_none)
+eff_size(
+  interaction_delta_TR_emm,
+  sigma = sigma(delta_TR_LMM),
+  edf = 176
+)
 
 # ** delta_TH_BMD ---------------------------------------------------------
 
@@ -179,3 +189,8 @@ ph_delta_FN_bonf <- bonferroni(as.data.frame(ph_delta_FN_none), 3)
 # Mean difference
 mean_difference_delta(ph_delta_FN_none)
 mean_difference_delta_2(ph_delta_FN_none)
+eff_size(
+  interaction_delta_FN_emm,
+  sigma = sigma(delta_FN_LMM),
+  edf = 148
+)
