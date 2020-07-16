@@ -29,8 +29,16 @@ delta_plot_df <- delta_TH_plot_df %>%
     attend_cat = recode(
       as.factor(attend_cat),
       "Control" = "Control group",
-      "Under 50% training attendance" = "Exercise group (under 50% training attendance)",
-      "Over 50% training attendance" = "Exercise group (over 50% training attendance)"
+      "Under 50% training attendance" = "Exercise group (<50% training attendance)",
+      "Over 50% training attendance" = "Exercise group (≥50% training attendance)"
+    ),
+    attend_cat = fct_relevel(
+      attend_cat,
+      c(
+        "Control group",
+        "Exercise group (<50% training attendance)",
+        "Exercise group (≥50% training attendance)"
+      )
     )
   )
 
@@ -70,9 +78,12 @@ delta_plot <- ggplot(data = delta_plot_df) +
   labs(
     x = "",
     y = "% bone mineral density change from pre-BS to 12-months post-BS"
-  )
+  ) +
+  annotate("text", x = 1.17, y = 1.40, label = "a'") +
+  annotate("text", x = 3.00, y = - 2.70, label = "b") +
+  annotate("text", x = 3.17, y = 2.45, label = "a")
 
 ggsave(
-  filename = "figs/fig3.pdf",
+  filename = "figs/fig4.pdf",
   plot = delta_plot, width = 30, height = 20, dpi = 200, units = "cm"
 )
