@@ -136,9 +136,6 @@ time_n_peaks_emm <- emmeans(n_peaks_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_n_peaks_emm  <- emmeans(n_peaks_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_n_peaks_emm_df <- as.data.frame(interaction_n_peaks_emm)
-write_csv(interaction_n_peaks_emm_df, here("output", "interaction_n_peaks_emm.csv"))
 
 # Post hocs
 ph_n_peaks_none <- pairs(interaction_n_peaks_emm, adjust = "none")
@@ -167,9 +164,6 @@ time_body_mass_emm <- emmeans(body_mass_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_body_mass_emm  <- emmeans(body_mass_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_body_mass_emm_df <- as.data.frame(interaction_body_mass_emm)
-write_csv(interaction_body_mass_emm_df, here("output", "interaction_body_mass_emm.csv"))
 
 # Post hocs
 ph_body_mass_none <- pairs(interaction_body_mass_emm, adjust = "none")
@@ -200,9 +194,6 @@ time_BMI_emm <- emmeans(BMI_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_BMI_emm  <- emmeans(BMI_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_BMI_emm_df <- as.data.frame(interaction_BMI_emm)
-write_csv(interaction_BMI_emm_df, here("output", "interaction_BMI_emm.csv"))
 
 # Post hocs
 ph_BMI_none <- pairs(interaction_BMI_emm, adjust = "none")
@@ -229,9 +220,6 @@ time_fat_mass_emm <- emmeans(fat_mass_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_fat_mass_emm  <- emmeans(fat_mass_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_fat_mass_emm_df <- as.data.frame(interaction_fat_mass_emm)
-write_csv(interaction_fat_mass_emm_df, here("output", "interaction_fat_mass_emm.csv"))
 
 # Post hocs
 ph_fat_mass_none <- pairs(interaction_fat_mass_emm, adjust = "none")
@@ -258,9 +246,6 @@ time_lean_mass_emm <- emmeans(lean_mass_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_lean_mass_emm  <- emmeans(lean_mass_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_lean_mass_emm_df <- as.data.frame(interaction_lean_mass_emm)
-write_csv(interaction_lean_mass_emm_df, here("output", "interaction_lean_mass_emm.csv"))
 
 # Post hocs
 ph_lean_mass_none <- pairs(interaction_lean_mass_emm, adjust = "none")
@@ -289,9 +274,6 @@ time_steps_emm <- emmeans(steps_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_steps_emm  <- emmeans(steps_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_steps_emm_df <- as.data.frame(interaction_steps_emm)
-write_csv(interaction_steps_emm_df, here("output", "interaction_steps_emm.csv"))
 
 # Post hocs
 ph_steps_none <- pairs(interaction_steps_emm, adjust = "none")
@@ -318,9 +300,6 @@ time_SB_emm <- emmeans(SB_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_SB_emm  <- emmeans(SB_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_SB_emm_df <- as.data.frame(interaction_SB_emm)
-write_csv(interaction_SB_emm_df, here("output", "interaction_SB_emm.csv"))
 
 # Post hocs
 ph_SB_none <- pairs(interaction_SB_emm, adjust = "none")
@@ -347,9 +326,6 @@ time_LPA_emm <- emmeans(LPA_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_LPA_emm  <- emmeans(LPA_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_LPA_emm_df <- as.data.frame(interaction_LPA_emm)
-write_csv(interaction_LPA_emm_df, here("output", "interaction_LPA_emm.csv"))
 
 # Post hocs
 ph_LPA_none <- pairs(interaction_LPA_emm, adjust = "none")
@@ -376,9 +352,6 @@ time_MVPA_emm <- emmeans(MVPA_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_MVPA_emm  <- emmeans(MVPA_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_MVPA_emm_df <- as.data.frame(interaction_MVPA_emm)
-write_csv(interaction_MVPA_emm_df, here("output", "interaction_MVPA_emm.csv"))
 
 # Post hocs
 ph_MVPA_none <- pairs(interaction_MVPA_emm, adjust = "none")
@@ -410,9 +383,6 @@ time_pt_ext_emm <- emmeans(pt_ext_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_pt_ext_emm  <- emmeans(pt_ext_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_pt_ext_emm_df <- as.data.frame(interaction_pt_ext_emm)
-write_csv(interaction_pt_ext_emm_df, here("output", "interaction_pt_ext_emm_df.csv"))
 
 # Post hocs
 ph_pt_ext_none <- pairs(interaction_pt_ext_emm, adjust = "none")
@@ -442,9 +412,6 @@ time_pt_fle_emm <- emmeans(pt_fle_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_pt_fle_emm  <- emmeans(pt_fle_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_pt_fle_emm_df <- as.data.frame(interaction_pt_fle_emm)
-write_csv(interaction_pt_fle_emm_df, here("output", "interaction_pt_fle_emm_df.csv"))
 
 # Post hocs
 ph_pt_fle_none <- pairs(interaction_pt_fle_emm, adjust = "none")
@@ -474,9 +441,6 @@ time_pt_ext_rel_emm <- emmeans(pt_ext_rel_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_pt_ext_rel_emm  <- emmeans(pt_ext_rel_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_pt_ext_rel_emm_df <- as.data.frame(interaction_pt_ext_rel_emm)
-write_csv(interaction_pt_ext_rel_emm_df, here("output", "interaction_pt_ext_rel_emm_df.csv"))
 
 # Post hocs
 ph_pt_ext_rel_none <- pairs(interaction_pt_ext_rel_emm, adjust = "none")
@@ -506,9 +470,6 @@ time_pt_fle_rel_emm <- emmeans(pt_fle_rel_LMM, ~ time)
 
 # Estimated marginal means for group x time interaction
 interaction_pt_fle_rel_emm  <- emmeans(pt_fle_rel_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_pt_fle_rel_emm_df <- as.data.frame(interaction_pt_fle_rel_emm)
-write_csv(interaction_pt_fle_rel_emm_df, here("output", "interaction_pt_fle_rel_emm_df.csv"))
 
 # Post hocs
 ph_pt_fle_rel_none <- pairs(interaction_pt_fle_rel_emm, adjust = "none")
