@@ -92,8 +92,7 @@ LS_plot <- ggplot(data = LS_plot_df) +
   annotate("segment", x = 4.20, xend = 4.20, y = 1.000, yend = 1.024, size = 0.5) +
   annotate("segment", x = 4.15, xend = 4.20, y = 1.000, yend = 1.000, size = 0.5) +
   annotate("segment", x = 4.15, xend = 4.20, y = 1.024, yend = 1.024, size = 0.5) +
-  annotate("text", x = 4.3, y = 1.012, label = "italic(p) == 0.015", angle = 90, parse = TRUE) +
-  annotate("text", x = 4.4, y = 1.012, label = "paste(\"+ 0.024\", g%.%cm^-2)", angle = 90, parse = TRUE)
+  annotate("text", x = 4.3, y = 1.012, label = "italic(p) == 0.015", angle = 90, parse = TRUE)
 
 # TR plot -----------------------------------------------------------------
 
@@ -136,8 +135,7 @@ TR_plot <- ggplot(data = TR_plot_df) +
   annotate("segment", x = 4.20, xend = 4.20, y = 0.680, yend = 0.693, size = 0.5) +
   annotate("segment", x = 4.15, xend = 4.20, y = 0.680, yend = 0.680, size = 0.5) +
   annotate("segment", x = 4.15, xend = 4.20, y = 0.693, yend = 0.693, size = 0.5) +
-  annotate("text", x = 4.3, y = 0.686, label = "italic(p) == '0.020'", angle = 90, parse = TRUE) +
-  annotate("text", x = 4.4, y = 0.686, label = "paste(\"+ 0.013\", g%.%cm^-2)", angle = 90, parse = TRUE)
+  annotate("text", x = 4.3, y = 0.686, label = "italic(p) == '0.020'", angle = 90, parse = TRUE)
 
 # TH plot -----------------------------------------------------------------
 
@@ -179,7 +177,11 @@ TH_plot <- ggplot(data = TH_plot_df) +
   labs(
     x = "",
     y = quote("Total hip bone mineral density"~(g%.%cm^-2))
-  )
+  ) +
+  annotate("segment", x = 4.20, xend = 4.20, y = 0.954, yend = 0.963, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.954, yend = 0.954, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.963, yend = 0.963, size = 0.5) +
+  annotate("text", x = 4.3, y = 0.959, label = "italic(p) == 0.431", angle = 90, parse = TRUE)
 
 # FN plot -----------------------------------------------------------------
 
@@ -221,7 +223,11 @@ FN_plot <- ggplot(data = FN_plot_df) +
   labs(
     x = "",
     y = quote("Femoral neck bone mineral density"~(g%.%cm^-2))
-  )
+  ) +
+  annotate("segment", x = 4.20, xend = 4.20, y = 0.835, yend = 0.855, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.835, yend = 0.835, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.855, yend = 0.855, size = 0.5) +
+  annotate("text", x = 4.3, y = 0.845, label = "italic(p) == 0.109", angle = 90, parse = TRUE)
 
 # Plot grid ---------------------------------------------------------------
 
@@ -230,8 +236,8 @@ legend <- get_legend(TH_plot)
 grid_1 <- plot_grid(
   LS_plot + theme(legend.position = "none"),
   TR_plot + theme(legend.position = "none"),
-  TH_plot + theme(legend.position = "none"),
   FN_plot + theme(legend.position = "none"),
+  TH_plot + theme(legend.position = "none"),
   ncol = 2, nrow = 2
 )
 
