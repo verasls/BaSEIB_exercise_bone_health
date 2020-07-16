@@ -12,6 +12,7 @@ source(here("code", "functions", "mean_difference.R"))
 # Load and prepare data ---------------------------------------------------
 
 df <- read_data(here("data", "df.csv"))
+
 # Set contrasts of variable group to sum
 contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
 # Set contrasts of variable time to polynomial
@@ -80,6 +81,11 @@ ph_LS_none <- pairs(interaction_LS_emm, adjust = "none")
 
 # Mean difference
 mean_difference(ph_LS_none)
+eff_size(
+  interaction_LS_emm,
+  sigma = sigma(LS_LMM),
+  edf = 137
+)
 
 # ** TR_BMD ---------------------------------------------------------------
 
@@ -111,6 +117,11 @@ ph_TR_none <- pairs(interaction_TR_emm, adjust = "none")
 
 # Mean difference
 mean_difference(ph_TR_none)
+eff_size(
+  interaction_TR_emm,
+  sigma = sigma(TR_LMM),
+  edf = 171
+)
 
 # ** TH_BMD ---------------------------------------------------------------
 
@@ -142,6 +153,11 @@ ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
 
 # Mean difference
 mean_difference(ph_TH_none)
+eff_size(
+  interaction_TH_emm,
+  sigma = sigma(TH_LMM),
+  edf = 134
+)
 
 # ** FN_BMD ---------------------------------------------------------------
 
@@ -173,3 +189,8 @@ ph_FN_none <- pairs(interaction_FN_emm, adjust = "none")
 
 # Mean difference
 mean_difference(ph_FN_none)
+eff_size(
+  interaction_FN_emm,
+  sigma = sigma(FN_LMM),
+  edf = 137
+)
