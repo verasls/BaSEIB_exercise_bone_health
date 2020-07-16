@@ -33,8 +33,8 @@ acc_plot <- ggplot(data = acc_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(- 40, 100, 20),
-    limits = c(-40, 105)
+    breaks = seq(- 40, 120, 20),
+    limits = c(-40, 120)
   ) +
   scale_x_discrete(
     labels = c(
@@ -58,10 +58,10 @@ acc_plot <- ggplot(data = acc_plot_df) +
     x = "",
     y = expression(paste("N° of acceleration peaks above 4.9", italic(g), " per day"))
   ) +
-  annotate("segment", x = 4.2, xend = 4.2, y = 9.77, yend = 73.8, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.2, y = 9.77, yend = 9.77, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.2, y = 73.8, yend = 73.8, size = 0.5) +
-  annotate("text", x = 4.3, y = 41.785, label = "italic(p) == 0.005", angle = 90, parse = TRUE)
+  annotate("segment", x = 4.2, xend = 4.2, y = 30.065, yend = 81.439, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 30.065, yend = 30.065, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 81.439, yend = 81.439, size = 0.5) +
+  annotate("text", x = 4.3, y = 55.752, label = "italic(p) == 0.026", angle = 90, parse = TRUE)
 
 ggsave(
   filename = "figs/acc_fig.pdf",
