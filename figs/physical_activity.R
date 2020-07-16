@@ -64,8 +64,8 @@ steps_plot <- ggplot(data = steps_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(4000, 9000, 1000),
-    limits = c(4000, 9000)
+    breaks = seq(3000, 9000, 1000),
+    limits = c(3000, 9000)
   ) +
   scale_x_discrete(
     labels = c(
@@ -78,6 +78,7 @@ steps_plot <- ggplot(data = steps_plot_df) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
+    title = element_text(size = 14, face = "bold"),
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     legend.position = "top",
@@ -86,8 +87,9 @@ steps_plot <- ggplot(data = steps_plot_df) +
     axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
+    title = "C) Daily physical activity",
     x = "",
-    y = "Number of steps"
+    y = quote("Number of"~"steps")
   )
 
 # Sedentary behavior plot -------------------------------------------------
@@ -106,8 +108,8 @@ SB_plot <- ggplot(data = SB_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(6, 9, 1),
-    limits = c(6, 9)
+    breaks = seq(6, 10, 0.5),
+    limits = c(6, 10)
   ) +
   scale_x_discrete(
     labels = c(
@@ -129,7 +131,7 @@ SB_plot <- ggplot(data = SB_plot_df) +
   ) +
   labs(
     x = "",
-    y = "Time in sedentary behavior (hours)"
+    y = quote("Time in sedentary behavior"~(hours))
   )
 
 # Light physical activity plot --------------------------------------------
@@ -148,8 +150,8 @@ LPA_plot <- ggplot(data = LPA_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(4, 8, 1),
-    limits = c(4, 8)
+    breaks = seq(4.5, 8, 0.5),
+    limits = c(4.5, 8)
   ) +
   scale_x_discrete(
     labels = c(
@@ -171,7 +173,7 @@ LPA_plot <- ggplot(data = LPA_plot_df) +
   ) +
   labs(
     x = "",
-    y = "Time in light physical activity (hours)"
+    y = quote("Time in light physical activity"~(hours))
   )
 
 # Moderate-to-vigorous physical activity plot -----------------------------
@@ -190,8 +192,8 @@ MVPA_plot <- ggplot(data = MVPA_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(15, 50, 5),
-    limits = c(15, 50)
+    breaks = seq(10, 50, 5),
+    limits = c(10, 50)
   ) +
   scale_x_discrete(
     labels = c(
@@ -213,7 +215,7 @@ MVPA_plot <- ggplot(data = MVPA_plot_df) +
   ) +
   labs(
     x = "",
-    y = "Time in moderate-to-vigorous physical activity (minutes)"
+    y = quote("Time in moderate-to-vigorous physical activity"~(minutes))
   )
 
 # Plot grid ---------------------------------------------------------------
