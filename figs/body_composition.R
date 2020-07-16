@@ -78,14 +78,16 @@ BM_plot <- ggplot(data = BM_plot_df) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
+    title = element_text(size = 14, face = "bold"),
     legend.title = element_blank(),
-    legend.text = element_text(size = 12),
+    legend.text = element_text(size = 15),
     legend.position = "top",
     axis.title.y = element_text(size = 14, face = "bold"),
     axis.text.y = element_text(size = 12, face = "bold"),
     axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
+    title = "A) Body composition",
     x = "",
     y = quote("Body mass"~(kg))
   )
@@ -190,7 +192,7 @@ LM_plot <- ggplot(data = LM_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(40, 55, 5),
+    breaks = seq(40, 56, 2),
     limits = c(40, 56)
   ) +
   scale_x_discrete(
@@ -214,7 +216,11 @@ LM_plot <- ggplot(data = LM_plot_df) +
   labs(
     x = "",
     y = quote("Whole body lean mass"~(kg))
-  )
+  ) +
+  annotate("segment", x = 4.2, xend = 4.2, y = 42.720, yend = 44.222, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 42.720, yend = 42.720, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.2, y = 44.222, yend = 44.222, size = 0.5) +
+  annotate("text", x = 4.3, y = 43.472, label = "italic(p) == 0.037", angle = 90, parse = TRUE)
 
 # Plot grid ---------------------------------------------------------------
 
