@@ -64,8 +64,8 @@ ext_plot <- ggplot(data = ext_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(110, 160, 10),
-    limits = c(105, 160)
+    breaks = seq(110, 175, 10),
+    limits = c(105, 175)
   ) +
   scale_x_discrete(
     labels = c(
@@ -78,6 +78,7 @@ ext_plot <- ggplot(data = ext_plot_df) +
   scale_color_manual(values = c("#0072B2", "#D55E00")) +
   theme_classic() +
   theme(
+    title = element_text(size = 14, face = "bold"),
     legend.title = element_blank(),
     legend.text = element_text(size = 12),
     legend.position = "top",
@@ -86,6 +87,7 @@ ext_plot <- ggplot(data = ext_plot_df) +
     axis.text.x = element_text(size = 12, face = "bold")
   ) +
   labs(
+    title = "B) Muscle strength",
     x = "",
     y = quote("Knee extension absolute strength"~(Nm))
   )
@@ -106,8 +108,8 @@ fle_plot <- ggplot(data = fle_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(55, 85, 5),
-    limits = c(55, 85)
+    breaks = seq(55, 90, 5),
+    limits = c(55, 90)
   ) +
   scale_x_discrete(
     labels = c(
@@ -148,8 +150,8 @@ rel_ext_plot <- ggplot(data = rel_ext_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(1.1, 2, 0.1),
-    limits = c(1.1, 2)
+    breaks = seq(1.1, 2.1, 0.1),
+    limits = c(1.1, 2.1)
   ) +
   scale_x_discrete(
     labels = c(
@@ -190,8 +192,8 @@ rel_fle_plot <- ggplot(data = rel_fle_plot_df) +
     position = dodge, size = 1, width = 0.1
   ) +
   scale_y_continuous(
-    breaks = seq(0.6, 1.1, 0.1),
-    limits = c(0.55, 1.1)
+    breaks = seq(0.6, 1.2, 0.1),
+    limits = c(0.55, 1.2)
   ) +
   scale_x_discrete(
     labels = c(
