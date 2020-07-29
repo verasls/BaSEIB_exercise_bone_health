@@ -25,7 +25,7 @@ TR_plot_df <- read_csv("output/interaction_TR_emm.csv") %>%
     )
   )
 
-TH_plot_df <- read_csv("output/interaction_TH_emm.csv") %>% 
+FN_plot_df <- read_csv("output/interaction_FN_emm.csv") %>% 
   mutate(
     time = as.factor(time),
     group = recode(
@@ -35,7 +35,7 @@ TH_plot_df <- read_csv("output/interaction_TH_emm.csv") %>%
     )
   )
 
-FN_plot_df <- read_csv("output/interaction_FN_emm.csv") %>% 
+TH_plot_df <- read_csv("output/interaction_TH_emm.csv") %>% 
   mutate(
     time = as.factor(time),
     group = recode(
@@ -137,52 +137,6 @@ TR_plot <- ggplot(data = TR_plot_df) +
   annotate("segment", x = 4.15, xend = 4.20, y = 0.693, yend = 0.693, size = 0.5) +
   annotate("text", x = 4.3, y = 0.686, label = "italic(p) == '0.020'", angle = 90, parse = TRUE)
 
-# TH plot -----------------------------------------------------------------
-
-TH_plot <- ggplot(data = TH_plot_df) +
-  geom_point(
-    aes(x = time, y = emmean, shape = group, colour = group),
-    position = dodge, size = 4
-  ) +
-  geom_line(
-    aes(x = time, y = emmean, linetype = group, group = group, colour = group),
-    position = dodge, size = 1
-  ) +
-  geom_errorbar(
-    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
-    position = dodge, size = 1, width = 0.1
-  ) +
-  scale_y_continuous(
-    breaks = seq(0, 2, 0.01), 
-    labels = scales::number_format(accuracy = 0.001)
-  ) +
-  scale_x_discrete(
-    labels = c(
-      "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
-      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 39",
-      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 39",
-      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 33"
-    )
-  ) +
-  scale_color_manual(values = c("#0072B2", "#D55E00")) +
-  theme_classic() +
-  theme(
-    legend.title = element_blank(),
-    legend.text = element_text(size = 12),
-    legend.position = "top",
-    axis.title.y = element_text(size = 14, face = "bold"),
-    axis.text.y = element_text(size = 12, face = "bold"),
-    axis.text.x = element_text(size = 12, face = "bold")
-  ) +
-  labs(
-    x = "",
-    y = quote("Total hip bone mineral density"~(g%.%cm^-2))
-  ) +
-  annotate("segment", x = 4.20, xend = 4.20, y = 0.954, yend = 0.963, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.20, y = 0.954, yend = 0.954, size = 0.5) +
-  annotate("segment", x = 4.15, xend = 4.20, y = 0.963, yend = 0.963, size = 0.5) +
-  annotate("text", x = 4.3, y = 0.959, label = "italic(p) == 0.431", angle = 90, parse = TRUE)
-
 # FN plot -----------------------------------------------------------------
 
 FN_plot <- ggplot(data = FN_plot_df) +
@@ -229,6 +183,52 @@ FN_plot <- ggplot(data = FN_plot_df) +
   annotate("segment", x = 4.15, xend = 4.20, y = 0.855, yend = 0.855, size = 0.5) +
   annotate("text", x = 4.3, y = 0.845, label = "italic(p) == 0.109", angle = 90, parse = TRUE)
 
+# TH plot -----------------------------------------------------------------
+
+TH_plot <- ggplot(data = TH_plot_df) +
+  geom_point(
+    aes(x = time, y = emmean, shape = group, colour = group),
+    position = dodge, size = 4
+  ) +
+  geom_line(
+    aes(x = time, y = emmean, linetype = group, group = group, colour = group),
+    position = dodge, size = 1
+  ) +
+  geom_errorbar(
+    aes(x = time, ymin = lower.CL, ymax = upper.CL, group = group, colour = group), 
+    position = dodge, size = 1, width = 0.1
+  ) +
+  scale_y_continuous(
+    breaks = seq(0, 2, 0.01), 
+    labels = scales::number_format(accuracy = 0.001)
+  ) +
+  scale_x_discrete(
+    labels = c(
+      "1" = "Pre-BS\n\nCG: n = 20\nEG: n = 40",
+      "2" = "1-month post-BS\n\nCG: n = 18\nEG: n = 39",
+      "3" = "6-months post-BS\n\nCG: n = 19\nEG: n = 39",
+      "4" = "12-months post-BS\n\nCG: n = 16\nEG: n = 33"
+    )
+  ) +
+  scale_color_manual(values = c("#0072B2", "#D55E00")) +
+  theme_classic() +
+  theme(
+    legend.title = element_blank(),
+    legend.text = element_text(size = 12),
+    legend.position = "top",
+    axis.title.y = element_text(size = 14, face = "bold"),
+    axis.text.y = element_text(size = 12, face = "bold"),
+    axis.text.x = element_text(size = 12, face = "bold")
+  ) +
+  labs(
+    x = "",
+    y = quote("Total hip bone mineral density"~(g%.%cm^-2))
+  ) +
+  annotate("segment", x = 4.20, xend = 4.20, y = 0.954, yend = 0.963, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.954, yend = 0.954, size = 0.5) +
+  annotate("segment", x = 4.15, xend = 4.20, y = 0.963, yend = 0.963, size = 0.5) +
+  annotate("text", x = 4.3, y = 0.959, label = "italic(p) == 0.431", angle = 90, parse = TRUE)
+
 # Plot grid ---------------------------------------------------------------
 
 legend <- get_legend(TH_plot)
@@ -244,6 +244,6 @@ grid_1 <- plot_grid(
 grid <- plot_grid(legend, grid_1, ncol = 1, rel_heights = c(0.1, 1))
 
 ggsave(
-  filename = "figs/fig2.pdf",
-  plot = grid, width = 40, height = 40, dpi = 200, units = "cm"
+  filename = "figs/fig2.tiff",
+  plot = grid, width = 40, height = 40, dpi = 150, units = "cm"
 )
