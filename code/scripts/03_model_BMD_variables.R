@@ -29,14 +29,14 @@ TR_data <- df %>%
     subj, time, group, TR_BMD, TR_BMD_adjust, BMI_adjust,
     surgery, age, menopause, diabetes, thiazides, smoker
   )
-TH_data <- df %>% 
-  dplyr::select(
-    subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust, 
-    surgery, age, menopause, diabetes, thiazides, smoker
-  )
 FN_data <- df %>% 
   dplyr::select(
     subj, time, group, FN_BMD, FN_BMD_adjust, BMI_adjust,
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+TH_data <- df %>% 
+  dplyr::select(
+    subj, time, group, TH_BMD, TH_BMD_adjust, BMI_adjust, 
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 
@@ -123,42 +123,6 @@ eff_size(
   edf = 171
 )
 
-# ** TH_BMD ---------------------------------------------------------------
-
-TH_LMM <- lmer(formula = build_formula("TH"), data = TH_data)
-
-# R-squared
-rsquared(TH_LMM)
-
-# Fixed effects test
-anova(TH_LMM, type = 3, test = "F")
-
-# Random components and fixed effects parameters estimates
-summary(TH_LMM)
-
-# Estimated marginal means for group
-group_TH_emm <- emmeans(TH_LMM, ~ group)
-
-# Estimated marginal means for time
-time_TH_emm <- emmeans(TH_LMM, ~ time)
-
-# Estimated marginal means for group x time interaction
-interaction_TH_emm  <- emmeans(TH_LMM, ~ group:time)
-# Save into a data frame to build the plots
-interaction_TH_emm_df <- as.data.frame(interaction_TH_emm)
-write_csv(interaction_TH_emm_df, here("output", "interaction_TH_emm.csv"))
-
-# Post hoc
-ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
-
-# Mean difference
-mean_difference(ph_TH_none)
-eff_size(
-  interaction_TH_emm,
-  sigma = sigma(TH_LMM),
-  edf = 134
-)
-
 # ** FN_BMD ---------------------------------------------------------------
 
 FN_LMM <- lmer(formula = build_formula("FN"), data = FN_data)
@@ -193,4 +157,40 @@ eff_size(
   interaction_FN_emm,
   sigma = sigma(FN_LMM),
   edf = 137
+)
+
+# ** TH_BMD ---------------------------------------------------------------
+
+TH_LMM <- lmer(formula = build_formula("TH"), data = TH_data)
+
+# R-squared
+rsquared(TH_LMM)
+
+# Fixed effects test
+anova(TH_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(TH_LMM)
+
+# Estimated marginal means for group
+group_TH_emm <- emmeans(TH_LMM, ~ group)
+
+# Estimated marginal means for time
+time_TH_emm <- emmeans(TH_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_TH_emm  <- emmeans(TH_LMM, ~ group:time)
+# Save into a data frame to build the plots
+interaction_TH_emm_df <- as.data.frame(interaction_TH_emm)
+write_csv(interaction_TH_emm_df, here("output", "interaction_TH_emm.csv"))
+
+# Post hoc
+ph_TH_none <- pairs(interaction_TH_emm, adjust = "none")
+
+# Mean difference
+mean_difference(ph_TH_none)
+eff_size(
+  interaction_TH_emm,
+  sigma = sigma(TH_LMM),
+  edf = 134
 )
