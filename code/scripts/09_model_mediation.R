@@ -39,6 +39,47 @@ mediation_df <- df %>%
 
 # Mediation analysis ------------------------------------------------------
 
+# ** FN_BMD ---------------------------------------------------------------
+
+FN_model <- "
+  # Mediator
+  FN_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*n_peaks + 
+    FN_BMD_adjust + BMI_adjust + surgery_RYGB + age + menopause_Yes +
+    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  whole_body_lean_mass ~ a1*group_Control + BMI_adjust + surgery_RYGB + age + 
+    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+  n_peaks ~ a2*group_Control + BMI_adjust + surgery_RYGB + age + 
+    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
+
+  # Direct
+  direct := c
+  
+  # Indirect
+  indirect1 := a1*b1
+  indirect2 := a2*b2
+  
+  # Total
+  total := c + (a1*b1) + (a2*b2)
+  
+  # Covariates
+  whole_body_lean_mass ~~ n_peaks
+  
+  # Contrasts
+  con := indirect1 - indirect2
+"
+
+FN_mediation <- sem(
+  data = mediation_df, 
+  model = FN_model, 
+  se = "bootstrap", 
+  bootstrap = 5000
+)
+summary(FN_mediation)
+parameterEstimates(FN_mediation)
+FN_ab_ps_ind_1 <- bootstrap_ab_ps(mediation_df, "FN_BMD", - 0.006)
+FN_ab_ps_ind_2 <- bootstrap_ab_ps(mediation_df, "FN_BMD", 0.006)
+FN_ab_ps_ind_tot <- bootstrap_ab_ps(mediation_df, "FN_BMD", - 0.006 + 0.006)
+
 # ** LS_BMD ---------------------------------------------------------------
 
 LS_model <- "
@@ -120,44 +161,3 @@ parameterEstimates(TR_mediation)
 TR_ab_ps_ind_1 <- bootstrap_ab_ps(mediation_df, "TR_BMD", 0.000)
 TR_ab_ps_ind_2 <- bootstrap_ab_ps(mediation_df, "TR_BMD", 0.002)
 TR_ab_ps_ind_tot <- bootstrap_ab_ps(mediation_df, "TR_BMD", 0.000 + 0.002)
-
-# ** FN_BMD ---------------------------------------------------------------
-
-FN_model <- "
-  # Mediator
-  FN_BMD ~ c*group_Control + b1*whole_body_lean_mass + b2*n_peaks + 
-    FN_BMD_adjust + BMI_adjust + surgery_RYGB + age + menopause_Yes +
-    menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-  whole_body_lean_mass ~ a1*group_Control + BMI_adjust + surgery_RYGB + age + 
-    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-  n_peaks ~ a2*group_Control + BMI_adjust + surgery_RYGB + age + 
-    menopause_Yes + menopause_Male + diabetes_Yes + diabetes_Yes + smoker_Yes
-
-  # Direct
-  direct := c
-  
-  # Indirect
-  indirect1 := a1*b1
-  indirect2 := a2*b2
-  
-  # Total
-  total := c + (a1*b1) + (a2*b2)
-  
-  # Covariates
-  whole_body_lean_mass ~~ n_peaks
-  
-  # Contrasts
-  con := indirect1 - indirect2
-"
-
-FN_mediation <- sem(
-  data = mediation_df, 
-  model = FN_model, 
-  se = "bootstrap", 
-  bootstrap = 5000
-)
-summary(FN_mediation)
-parameterEstimates(FN_mediation)
-FN_ab_ps_ind_1 <- bootstrap_ab_ps(mediation_df, "FN_BMD", - 0.006)
-FN_ab_ps_ind_2 <- bootstrap_ab_ps(mediation_df, "FN_BMD", 0.006)
-FN_ab_ps_ind_tot <- bootstrap_ab_ps(mediation_df, "FN_BMD", - 0.006 + 0.006)
