@@ -4,14 +4,14 @@ library(tidyverse)
 
 # Load and prepare data ---------------------------------------------------
 
-delta_TH_plot_df <- read_csv("output/interaction_delta_TH_emm.csv") %>% 
-  mutate(region = "Total hip")
-delta_FN_plot_df <- read_csv("output/interaction_delta_FN_emm.csv") %>% 
-  mutate(region = "Femoral neck")
 delta_LS_plot_df <- read_csv("output/interaction_delta_LS_emm.csv") %>% 
   mutate(region = "Lumbar spine")
 delta_TR_plot_df <- read_csv("output/interaction_delta_TR_emm.csv") %>% 
   mutate(region = "One-third radius")
+delta_FN_plot_df <- read_csv("output/interaction_delta_FN_emm.csv") %>% 
+  mutate(region = "Femoral neck")
+delta_TH_plot_df <- read_csv("output/interaction_delta_TH_emm.csv") %>% 
+  mutate(region = "Total hip")
 
 # Combine into a single data frame
 delta_plot_df <- delta_TH_plot_df %>%
@@ -84,6 +84,6 @@ delta_plot <- ggplot(data = delta_plot_df) +
   annotate("text", x = 3.17, y = 2.45, label = "a")
 
 ggsave(
-  filename = "figs/fig4.pdf",
-  plot = delta_plot, width = 30, height = 20, dpi = 200, units = "cm"
+  filename = "figs/fig4.tiff",
+  plot = delta_plot, width = 30, height = 20, dpi = 150, units = "cm"
 )
