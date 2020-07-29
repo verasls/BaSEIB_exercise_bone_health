@@ -29,14 +29,14 @@ TR_delta_data <- df %>%
     subj, time, attend_cat, delta_TR_BMD, BMI_adjust, 
     surgery, age, menopause, diabetes, thiazides, smoker
   )
-TH_delta_data <- df %>% 
-  dplyr::select(
-    subj, time, attend_cat, delta_TH_BMD, BMI_adjust, 
-    surgery, age, menopause, diabetes, thiazides, smoker
-  )
 FN_delta_data <- df %>% 
   dplyr::select(
     subj, time, attend_cat, delta_FN_BMD, BMI_adjust, 
+    surgery, age, menopause, diabetes, thiazides, smoker
+  )
+TH_delta_data <- df %>% 
+  dplyr::select(
+    subj, time, attend_cat, delta_TH_BMD, BMI_adjust, 
     surgery, age, menopause, diabetes, thiazides, smoker
   )
 
@@ -125,38 +125,6 @@ eff_size(
   edf = 176
 )
 
-# ** delta_TH_BMD ---------------------------------------------------------
-
-delta_TH_LMM <- lmer(formula = build_formula("TH"), data = TH_delta_data)
-
-# R-squared
-rsquared(delta_TH_LMM)
-
-# Fixed effects test
-anova(delta_TH_LMM, type = 3, test = "F")
-
-# Random components and fixed effects parameters estimates
-summary(delta_TH_LMM)
-
-# Estimated marginal means for group
-group_delta_TH_emm <- emmeans(delta_TH_LMM, ~ attend_cat)
-
-# Estimated marginal means for time
-time_delta_TH_emm <- emmeans(delta_TH_LMM, ~ time)
-
-# Estimated marginal means for group x time interaction
-interaction_delta_TH_emm  <- emmeans(delta_TH_LMM, ~ attend_cat:time)
-# Save into a data frame to build the plots
-interaction_delta_TH_emm_df <- as.data.frame(interaction_delta_TH_emm)
-write_csv(interaction_delta_TH_emm_df, here("output", "interaction_delta_TH_emm.csv"))
-
-# Post hocs
-ph_delta_TH_none <- pairs(interaction_delta_TH_emm, adjust = "none")
-ph_delta_TH_bonf <- bonferroni(as.data.frame(ph_delta_TH_none), 3)
-
-# Mean difference
-mean_difference_delta(ph_delta_TH_none)
-
 # ** delta_FN_BMD ---------------------------------------------------------
 
 delta_FN_LMM <- lmer(formula = build_formula("FN"), data = FN_delta_data)
@@ -194,3 +162,35 @@ eff_size(
   sigma = sigma(delta_FN_LMM),
   edf = 148
 )
+
+# ** delta_TH_BMD ---------------------------------------------------------
+
+delta_TH_LMM <- lmer(formula = build_formula("TH"), data = TH_delta_data)
+
+# R-squared
+rsquared(delta_TH_LMM)
+
+# Fixed effects test
+anova(delta_TH_LMM, type = 3, test = "F")
+
+# Random components and fixed effects parameters estimates
+summary(delta_TH_LMM)
+
+# Estimated marginal means for group
+group_delta_TH_emm <- emmeans(delta_TH_LMM, ~ attend_cat)
+
+# Estimated marginal means for time
+time_delta_TH_emm <- emmeans(delta_TH_LMM, ~ time)
+
+# Estimated marginal means for group x time interaction
+interaction_delta_TH_emm  <- emmeans(delta_TH_LMM, ~ attend_cat:time)
+# Save into a data frame to build the plots
+interaction_delta_TH_emm_df <- as.data.frame(interaction_delta_TH_emm)
+write_csv(interaction_delta_TH_emm_df, here("output", "interaction_delta_TH_emm.csv"))
+
+# Post hocs
+ph_delta_TH_none <- pairs(interaction_delta_TH_emm, adjust = "none")
+ph_delta_TH_bonf <- bonferroni(as.data.frame(ph_delta_TH_none), 3)
+
+# Mean difference
+mean_difference_delta(ph_delta_TH_none)
