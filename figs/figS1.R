@@ -6,10 +6,10 @@ library(here)
 
 # Source code that creates subplots ---------------------------------------
 
-source(here("figs", "body_composition.R"))
-source(here("figs", "strength.R"))
-source(here("figs", "physical_activity.R"))
-source(here("figs", "acc_plot.R"))
+source(here("figs", "plot_body_composition.R"))
+source(here("figs", "plot_strength.R"))
+source(here("figs", "plot_physical_activity.R"))
+source(here("figs", "plot_n_peaks.R"))
 
 # Create the plot grid ----------------------------------------------------
 

@@ -1,12 +1,13 @@
 # Load packages -----------------------------------------------------------
 
-library(tidyverse)
+library(ggplot2)
 library(cowplot)
+library(here)
 
 # Source code that creates subplots ---------------------------------------
 
-source("figs/body_composition.R")
-source("figs/acc_plot.R")
+source(here("figs", "plot_body_composition.R"))
+source(here("figs", "plot_n_peaks.R"))
 
 # Create the plot grid ----------------------------------------------------
 
