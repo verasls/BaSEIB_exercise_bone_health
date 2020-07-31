@@ -8,7 +8,7 @@ This repository contains data analysis resources from the manuscript "The effect
 
 **Manuscript authors:**
 
-Florêncio Diniz-Sousa, Giorjines Boppre, Lucas Veras, Pedro Sa-Couto, Vítor Devezas, Hugo Santos-Sousa, John Preto, João Paulo Vilas-Boas, Leandro Machado, José Oliveira, Hélder Fonseca
+Florêncio Diniz-Sousa, Lucas Veras, Giorjines Boppre, Pedro Sa-Couto, Vítor Devezas, Hugo Santos-Sousa, John Preto, João Paulo Vilas-Boas, Leandro Machado, José Oliveira, Hélder Fonseca
 
 ---
 
