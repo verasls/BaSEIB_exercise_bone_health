@@ -2,7 +2,8 @@ import os
 from glob import glob
 import pandas as pd
 import numpy as np
-from scipy import signal
+from scipy import signal, stats
+from math import sqrt
 
 data_path = "/Volumes/LV_HD_2/Accelerometry/training_sessions_IMU/"
 acc_files = [os.path.basename(x) for x in glob(data_path + "*.csv")]
@@ -49,3 +50,11 @@ for i in range(0, len(acc_files)):
     output["n_peaks"].append(len(peaks))
 
     df = pd.DataFrame(output)
+
+# Compute mean and confidence interval of the number of peaks
+std = df["n_peaks"].std()
+n = len(df.index)
+
+mean = df["n_peaks"].mean()
+lower_ci = mean - stats.t.ppf(0.975, n - 1) * (std / sqrt(n))
+upper_ci = mean + stats.t.ppf(0.975, n - 1) * (std / sqrt(n))
