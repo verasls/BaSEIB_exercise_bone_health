@@ -68,12 +68,17 @@ FN_model <- "
   con := indirect1 - indirect2
 "
 
-FN_mediation <- sem(
-  data = mediation_df, 
-  model = FN_model, 
-  se = "bootstrap", 
-  bootstrap = 5000
-)
+FN_model_exists <- file.exists(here("code", "cache", "mediation_models.Rdata"))
+if (FN_model_exists) {
+  load(here("code", "cache", "mediation_models.Rdata"))
+} else {
+  FN_mediation <- sem(
+    data = mediation_df, 
+    model = FN_model, 
+    se = "bootstrap", 
+    bootstrap = 5000
+  )
+}
 summary(FN_mediation)
 parameterEstimates(FN_mediation)
 FN_ab_ps_ind_1 <- bootstrap_ab_ps(mediation_df, "FN_BMD", - 0.006)
@@ -109,12 +114,17 @@ LS_model <- "
   con := indirect1 - indirect2
 "
 
-LS_mediation <- sem(
-  data = mediation_df, 
-  model = LS_model, 
-  se = "bootstrap", 
-  bootstrap = 5000
-)
+LS_model_exists <- file.exists(here("code", "cache", "mediation_models.Rdata"))
+if (LS_model_exists) {
+  load(here("code", "cache", "mediation_models.Rdata"))
+} else {
+  LS_mediation <- sem(
+    data = mediation_df, 
+    model = LS_model, 
+    se = "bootstrap", 
+    bootstrap = 5000
+  )
+}
 summary(LS_mediation)
 parameterEstimates(LS_mediation)
 LS_ab_ps_ind_1 <- bootstrap_ab_ps(mediation_df, "LS_BMD", - 0.007)
@@ -150,14 +160,26 @@ TR_model <- "
   con := indirect1 - indirect2
 "
 
-TR_mediation <- sem(
-  data = mediation_df, 
-  model = TR_model, 
-  se = "bootstrap", 
-  bootstrap = 5000
-)
+TR_model_exists <- file.exists(here("code", "cache", "mediation_models.Rdata"))
+if (TR_model_exists) {
+  load(here("code", "cache", "mediation_models.Rdata"))
+} else {
+  TR_mediation <- sem(
+    data = mediation_df, 
+    model = TR_model, 
+    se = "bootstrap", 
+    bootstrap = 5000
+  )
+}
 summary(TR_mediation)
 parameterEstimates(TR_mediation)
 TR_ab_ps_ind_1 <- bootstrap_ab_ps(mediation_df, "TR_BMD", 0.000)
 TR_ab_ps_ind_2 <- bootstrap_ab_ps(mediation_df, "TR_BMD", 0.002)
 TR_ab_ps_ind_tot <- bootstrap_ab_ps(mediation_df, "TR_BMD", 0.000 + 0.002)
+
+# Save model objects ------------------------------------------------------
+
+save(
+  FN_mediation, LS_mediation, TR_mediation,
+  file = here("code", "cache", "mediation_models.Rdata")
+)
