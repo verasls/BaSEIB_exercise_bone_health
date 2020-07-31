@@ -14,7 +14,7 @@ source(here("code", "functions", "mean_difference.R"))
 
 df <- read_data(here("data", "df.csv"))
 # Set contrasts of variable group to sum
-contrasts(df$group) <- matrix(rev(contr.sum(2)), ncol = 1)
+contrasts(df$attend_cat) <- matrix(rev(contr.sum(3)), ncol = 2)
 # Set contrasts of variable time to polynomial
 contrasts(df$time) <- contr.poly(4)
 
