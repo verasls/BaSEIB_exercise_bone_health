@@ -132,7 +132,7 @@ baseline_df <- baseline_df %>%
 # Subjects to exclude due to not having at least one follow-up assessment
 exclude <- c(
   13, 15, 18, 19, 25, 32, 33, 35, 37, 40, 42, 48,
-  53, 57, 59, 64, 65, 66, 74, 76, 82, 84, 86
+  53, 57, 59, 64, 65, 66, 74, 76, 82, 84
 )
 
 '%!in%' <- function(x, table) !(x %in% table)
