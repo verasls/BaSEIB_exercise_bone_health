@@ -1,6 +1,6 @@
 # BaSEIB_exercise_bone_health
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3701331.svg)](https://doi.org/10.5281/zenodo.3701331)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3969039.svg)](https://doi.org/10.5281/zenodo.3969039)
 
 This repository contains data analysis resources from the manuscript "The effect of an exercise intervention program on bone health after bariatric surgery: A Randomized Controlled Trial".
 
