@@ -30,11 +30,11 @@ for i in range(0, len(acc_files)):
     cutoff = 20  # cut-off frequency (Hz)
     fnyq = samp_freq / 2  # Nyquist frequency
     Wn = cutoff / fnyq
-    b, a = signal.butter(N, Wn, btype="low")
+    sos = signal.butter(N, Wn, btype="low", output="sos")
 
-    aX = signal.filtfilt(b, a, aX)
-    aY = signal.filtfilt(b, a, aY)
-    aZ = signal.filtfilt(b, a, aZ)
+    aX = signal.sosfiltfilt(sos, aX)
+    aY = signal.sosfiltfilt(sos, aY)
+    aZ = signal.sosfiltfilt(sos, aZ)
     # Compute resultant acceleration
     aR = np.sqrt(aX ** 2 + aY ** 2 + aZ ** 2)
 
