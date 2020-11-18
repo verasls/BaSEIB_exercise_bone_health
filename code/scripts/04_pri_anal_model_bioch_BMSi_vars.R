@@ -59,7 +59,7 @@ build_formula <- function(var) {
   as.formula(f)
 }
 
-# ** P1NP_BMD ---------------------------------------------------------------
+# ** P1NP_LMM ---------------------------------------------------------------
 
 P1NP_LMM <- lmer(formula = build_formula("P1NP"), data = P1NP_data)
 
@@ -84,7 +84,7 @@ interaction_P1NP_emm  <- emmeans(P1NP_LMM, ~ group:time)
 # Post hoc
 ph_P1NP_none <- pairs(interaction_P1NP_emm, adjust = "none")
 
-# ** CTX_BMD ---------------------------------------------------------------
+# ** CTX_LMM-------------------------------------------------------------
 
 CTX_LMM <- lmer(formula = build_formula("CTX"), data = CTX_data)
 
@@ -109,7 +109,7 @@ interaction_CTX_emm  <- emmeans(CTX_LMM, ~ group:time)
 # Post hoc
 ph_CTX_none <- pairs(interaction_CTX_emm, adjust = "none")
 
-# ** PTH_BMD ---------------------------------------------------------------
+# ** PTH_LMM ---------------------------------------------------------------
 
 PTH_LMM <- lmer(formula = build_formula("PTH"), data = PTH_data)
 
@@ -134,7 +134,7 @@ interaction_PTH_emm  <- emmeans(PTH_LMM, ~ group:time)
 # Post hoc
 ph_PTH_none <- pairs(interaction_PTH_emm, adjust = "none")
 
-# ** vitD_BMD ---------------------------------------------------------------
+# ** vitD_LMM ---------------------------------------------------------------
 
 vitD_LMM <- lmer(formula = build_formula("vitD"), data = vitD_data)
 
@@ -159,7 +159,7 @@ interaction_vitD_emm  <- emmeans(vitD_LMM, ~ group:time)
 # Post hoc
 ph_vitD_none <- pairs(interaction_vitD_emm, adjust = "none")
 
-# ** sclerostin_BMD ---------------------------------------------------------------
+# ** sclerostin_LMM ---------------------------------------------------------------
 
 sclerostin_LMM <- lmer(formula = build_formula("sclerostin"), data = sclerostin_data)
 
