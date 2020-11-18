@@ -78,7 +78,7 @@ write_csv(interaction_delta_LS_emm_df, here("output", "interaction_delta_LS_emm.
 
 # Post hocs
 ph_delta_LS_none <- pairs(interaction_delta_LS_emm, adjust = "none")
-ph_delta_LS_bonf <- bonferroni(as.data.frame(ph_delta_LS_none), 3)
+ph_delta_LS_bonf <- bonferroni(as.data.frame(ph_delta_LS_none), 12)
 
 # Mean difference
 mean_difference_delta(ph_delta_LS_none)
@@ -115,7 +115,7 @@ write_csv(interaction_delta_TR_emm_df, here("output", "interaction_delta_TR_emm.
 
 # Post hocs
 ph_delta_TR_none <- pairs(interaction_delta_TR_emm, adjust = "none")
-ph_delta_TR_bonf <- bonferroni(as.data.frame(ph_delta_TR_none), 3)
+ph_delta_TR_bonf <- bonferroni(as.data.frame(ph_delta_TR_none), 12)
 
 # Mean difference
 mean_difference_delta(ph_delta_TR_none)
@@ -152,7 +152,7 @@ write_csv(interaction_delta_FN_emm_df, here("output", "interaction_delta_FN_emm.
 
 # Post hocs
 ph_delta_FN_none <- pairs(interaction_delta_FN_emm, adjust = "none")
-ph_delta_FN_bonf <- bonferroni(as.data.frame(ph_delta_FN_none), 3)
+ph_delta_FN_bonf <- bonferroni(as.data.frame(ph_delta_FN_none), 12)
 
 # Mean difference
 mean_difference_delta(ph_delta_FN_none)
@@ -190,7 +190,7 @@ write_csv(interaction_delta_TH_emm_df, here("output", "interaction_delta_TH_emm.
 
 # Post hocs
 ph_delta_TH_none <- pairs(interaction_delta_TH_emm, adjust = "none")
-ph_delta_TH_bonf <- bonferroni(as.data.frame(ph_delta_TH_none), 3)
+ph_delta_TH_bonf <- bonferroni(as.data.frame(ph_delta_TH_none), 12)
 
 # Mean difference
 mean_difference_delta(ph_delta_TH_none)
